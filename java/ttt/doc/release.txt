@@ -1,0 +1,159 @@
+// TeleTeachingTool - Presentation Recording With Automated Indexing
+//
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// 
+//    This file is part of TeleTeachingTool.
+//
+//    TeleTeachingTool is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    TeleTeachingTool is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+// 
+//    You should have received a copy of the GNU General Public License
+//    along with TeleTeachingTool.  If not, see <http://www.gnu.org/licenses/>.
+
+----------------------------------
+TeleTeachingTool - Version History
+----------------------------------
+by Peter Ziewer - http://ttt.in.tum.de
+  
+Bugs and known issues:
+known: flash uses thumbnails without annotations
+bug: flash: annotations are not deleted if skipping backwards within same index/clip
+bug: flash converter: last thumb is missing after splitting indices due to 16000 frame limit
+bug: volume monitor of recorder blocks playback (Linux only?)
+bug: audio recording may fail whenever recording, playing and recording again (observed for Linux with JMF2.1.1a)
+bug: unstable fullscreen mode under MS Windows
+
+TODO: notifier pop-up if recorder has not been startet (to inform teacher) (loopback recorder only)
+TODO: improve Flash startup under Windows (displays while opening under Windows - slow!!!!!!! - add preload)
+TODO: autodetection for cursor support 
+	SHAPE+POS is ok and No SHAPE and No POS is ok
+	SHAPE but No POS is BAD!!!
+	if shape comes but no pos message, disable shape encoding.
+TODO: set recording folder per lecture profile
+TODO: check for mp3 support at startup (about dialog) 
+TODO: break infinite reconnect loop if VNC Server is not available
+TODO: handle change of desktop resolution or auto close (currently only showing warning message)
+
+
+TODO add %CLASSPATH% to ttt.bat path
+
+------------------------------
+
+
+fixed Flash export for recordings with many messages by lowering the framerate (caused blank Flash video)
+fixed Flash handling errors caused by resolution change during recording
+
+
+Version 20.08.2008
+
+released under GNU General Puplic License (GPL) 
+added support for OmniPage 16 (reading of xml searchbase files)
+fixed filenames of ocr input to support recordings with more than 99 indices
+fixed encoding problems for special characters like umlauts in title and searchbase (caused unreadable recordings)
+fixed remote call to update online searchbase during publishing
+fixed bug in Lecture Profiling Dialog (when selecting new remote server)
+fixed visibility of dialogs in fullscreen mode (leave fullscreen mode before displaying)
+fixed key input issues and focus handling for java 6
+fixed skipping of unknown message types
+fixed server connection handling if server is unreachable - set timeout to 20 sec (default was 3 min)
+fixed handling of VNC Server resolution changes - show NOT SUPPORTED message 
+improved post processing performance for thumbnails and flash about 10-30%
+cleaned source code (removed some unused code)
+
+
+Version 19.02.2008
+
+fixed video monitor and recorder under Windows
+fixed window size
+
+
+Version 28.11.2007
+
+added audio and video preview
+updated lecture profiling dialog
+added linear sync during replay whenever audio recording is shorter than desktop recording
+added controls for linear sync and manual adjustment
+added linear audio support (WAV)
+added updating online searchbase via remote call command execution
+fixed flash conversion (edited recordings may have caused doupled audio playback)
+fixed auto-filenaming for lecture names containing "-"
+
+
+Version 14.06.2007
+
+fixed underlining of search results (reading of OmniPage 14 xml searchbase files)
+	note: Version 06.06.2007 and 11.06.2007 may have stored ttt-files with incorrect searchbases - re-integrate searchbase via Post Processing Dialog
+
+
+Version 11.06.2007
+
+fixed recursive copy for lecture publishing (for copying html folder)
+
+
+Version 06.06.2007
+
+improved flash conversion (new GUI, combining updates to handle recordings with a large number of messages)
+added lecture publishing (via ssh/sft)
+added loopback recorder (without displaying recorded desktop - typically for MS Windows systems)
+added support for OmniPage 15 (reading of xml searchbase files)
+changed default color depth to 16 bit (instead of 24 bit)
+fixed handling of mpeg audio layer 2 file with ending .mp2 instead of .mp3
+fixed key handling in teacher mode (control keys F9-F12 are no longer sent to vnc server)
+fixed underlining of search results (failed if first index had no searchable text)
+fixed pdf script generator (support resolutions up to 1024x768)
+fixed html script generator (fixed slash/backslash issues under MS Windows)
+fixed pen width for drawing annotations to scripts
+fixed maximum sizes of internal windows
+fixed index computation for annotated whiteboard pages
+fixed annotations at thumbnails (reworked annotation selection)
+
+
+Version 21.02.2007
+
+added flash converter (create Flash movie for TTT recordings))
+	by use of JavaSWF2
+	http://www.anotherbigidea.com/javaswf/
+added MPEG audio layer 2 to layer 3 converter (needed for flash movies)
+added pdf script generation 
+	by use of iText - a Free Java-PDF library by Bruno Lowagie and Paulo Soares
+	http://www.lowagie.com/iText/	
+added proportional underlining of search results
+added support for multiple whiteboard pages
+added parallel recorder support of MPEG audio layer 2 and layer 3 codecs (JMF: mpegaudio vs mpeglayer3)
+fixed Java 6 compatibility issues
+fixed large mouse cursor in teacher mode
+fixed reading XML searchbase (concatenate words)
+fixed index computation - cumulate area for each timestamp
+fixed functionality of F9-12 buttons (same as previous versions now)
+	F9  toggle color
+	F10 toggle paint mode
+	F11 task switch (emulates alt-tab)
+	F12 enable/disable painting
+
+
+Version 21.06.2006
+
+completely reworked and newly implemented
+it's faster and better looking;-)
+contains:
+	TTT Live Player
+	TTT File Player
+	TTT Recorder
+	TTT Post Processing
+missing:
+	TTT Server for live transmission (use old TTT instead)
+	
+improved performance
+internal windows (within a single main window)
+improved full text search with highlight of results
+automated post processing
+lecture profiling	
+	
+(for version history of old TTT implementation see coresponding history file)
