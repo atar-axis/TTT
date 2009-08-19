@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="bin" path="java"/>
+	<classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
+	<classpathentry kind="con" path="bin"/>
+	<classpathentry kind="con" path="lib"/>
+	<classpathentry kind="lib" path="lib/itext-1.4.8.jar"/>
+	<classpathentry kind="lib" path="lib/jsch-0.1.32-patched.jar"/>
+	<classpathentry kind="lib" path="lib/swing-layout-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/jmf-2.1.1e.jar"/>
+	<classpathentry kind="lib" path="lib/mp3plugin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
