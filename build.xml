@@ -1,0 +1,85 @@
+<project name="TTT" default ="all" basedir=".">
+  <property name="java"       location="java" />
+  <property name="lib"       location="lib" />
+  <property name="classes"   location="bin" />
+  <property name="dist"      location="dist"/>
+  <property name="etc" 	     location="etc" />
+  <property environment="env" />
+
+  <taskdef name="nsis" classname="net.sf.nsisant.Task">
+    <classpath location="${lib}/nsisant-1.2.jar"/>
+  </taskdef>
+
+  <path id="sources">
+    <fileset dir="${src}">
+      <include name="**/**.java" />
+    </fileset>
+  </path>
+
+  <path id="libraries">
+     <pathelement location="${classes}" />
+     <pathelement location="${lib}" />
+     <fileset dir="${lib}">
+       <include name="**/*.jar" />
+       <include name="**/*.zip" />
+     </fileset>
+     <!-- here, we include all necessary libraries -->
+     <!--fileset dir="${plugins}">
+       <include name="**/*.jar" />
+     </fileset-->
+     <pathelement path="${java.class.path}" />
+  </path>
+
+  <!-- initialize the workspace -->
+  <target name="init">
+    <mkdir dir="${classes}" />
+    <mkdir dir="${dist}" />    
+  </target>
+
+  <!-- deletes all build-related directories -->
+  <target name="clean">
+    <delete>
+      <fileset dir="." defaultexcludes="no" includes="**/*~"/>
+      <fileset dir="." defaultexcludes="no" includes="**/#*#"/>
+    </delete>
+    <delete dir="${classes}" />
+    <delete dir="${dist}" />
+    <delete dir="${etc}" />
+  </target>
+
+
+  <!-- Compiles the .java files to the classes directory -->
+  <target name="classes" depends="init">
+    <depend srcdir="${java}" destdir="${classes}" cache="${etc}" />
+    <javac srcdir="${java}" destdir="${classes}" verbose="off" listfiles="off"
+      source="6"  debug="on" encoding="Cp1252" >
+      <classpath refid="libraries"/>
+    </javac>
+    <copy todir="${classes}/ttt/resources"><fileset dir="${java}/ttt/resources"></fileset></copy>
+  </target>
+
+  <!-- Packs the classes into single .jar files -->
+  <target name="pack" depends="classes">
+    <jar jarfile="${dist}/ttt.jar" basedir="${classes}"> 
+      <fileset dir="${classes}/ttt/resources"/>
+      <manifest>
+       <attribute name="Main-Class" value="ttt/TTT" />
+       <attribute name="Class-Path" value="itext-1.4.8.jar jsch-0.1.32-patched.jar swing-layout-1.0.2.jar jmf-2.1.1e.jar mp3plugin.jar" />
+     </manifest>
+     </jar>
+    <copy todir="${dist}"><fileset dir="${lib}"></fileset></copy>
+    <zip destfile="./ttt.zip" basedir="${dist}" update="true"/> 
+  </target>
+
+  <target name="installer" depends="pack">
+    <nsis nocd="on" verbosity="2" script="nsis/ttt.nsi"/>
+  </target>
+
+  <!-- build the whole project -->
+  <target name="all" depends="pack" />
+  <target name="run" depends="pack">
+    <java jar="${dist}/ttt.jar" fork="true">
+      <assertions><disable /></assertions>
+    </java>
+  </target>
+</project>
