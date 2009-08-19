@@ -1,0 +1,4 @@
+iText - a Free Java-PDF library
+by Bruno Lowagie and Paulo Soares
+
+http://www.lowagie.com/iText/
