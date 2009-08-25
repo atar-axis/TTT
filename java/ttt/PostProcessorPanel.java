@@ -59,7 +59,7 @@ public class PostProcessorPanel extends GradientPanel {
 
     // batch mode flag
     private boolean batch = false;
-
+    
     /** Creates new form PostProcessorPanel */
     public PostProcessorPanel(Recording recording) throws IOException {
         this(recording, false);
@@ -1136,7 +1136,7 @@ public class PostProcessorPanel extends GradientPanel {
                     String user = userField.getText();
                     String host = serverField.getText();
                     SftpHelper session = new SftpHelper(user, host);
-
+                    
                     // calculate paths
                     String path = pathField.getText();
                     if (!path.endsWith("/"))
@@ -1214,6 +1214,9 @@ public class PostProcessorPanel extends GradientPanel {
                             session.publish(audio_filename.substring(0, audio_filename.length() - 4) + ".mp2",
                                     basePath, batch);
 
+                    //mp4 podcast
+                    session.publish(recording.getDirectory() + recording.getFileBase() + ".mp4", basePath, batch);
+                    
                     System.out.println("Published\n");
 
                     // remote call to update online searchbase
