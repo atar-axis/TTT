@@ -51,6 +51,8 @@ import ttt.messages.DeleteAllAnnotation;
 import ttt.messages.Message;
 import ttt.messages.MessageConsumer;
 import ttt.messages.WhiteboardMessage;
+import ttt.videoRecorder.*;
+
 
 public class Recorder implements MessageConsumer, Closeable {
 
@@ -59,7 +61,8 @@ public class Recorder implements MessageConsumer, Closeable {
     private DataOutputStream out;
 
     private AudioRecorder audioVideoRecorder;
-
+    private   VideoRecorder VideoRecorder;
+    
     private LectureProfile lectureProfile;
 
     public Recorder(RfbProtocol protocol, LectureProfile lectureProfile) throws IOException {
@@ -327,6 +330,15 @@ public class Recorder implements MessageConsumer, Closeable {
         if (audioVideoRecorder != null)
             audioVideoRecorder.startRec(file.getCanonicalPath());
 
+        //VideoRecStuff start
+        // TODO VideoRecStart
+    if(lectureProfile.isRecordVideoEnabled()){
+        VideoRecorder = new VideoRecorder();    
+        VideoRecorder.setRecordpath(file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));
+        VideoRecorder.Start();
+    }
+        //VideoRecStuff end
+        
         // startime
         long starttime = System.currentTimeMillis();
         new_out.writeLong(starttime);
@@ -402,6 +414,18 @@ public class Recorder implements MessageConsumer, Closeable {
                     audioVideoRecorder.stopRec();
             }
 
+            //TODO VideorecStop
+       
+            if (VideoRecorder != null) {
+                if (closing) {   
+                	VideoRecorder.close();
+                	VideoRecorder = null;
+                	
+                } else
+                    VideoRecorder.Stop();
+            }
+            
+            
             out.flush();
             out.close();
             out = null;

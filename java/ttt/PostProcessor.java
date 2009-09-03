@@ -764,7 +764,7 @@ public class PostProcessor extends JPanel {
         Insets insets = new Insets(0, 10, 0, 10);
 
         // ////////////////////////////////////////////////
-        // infomation about recording
+        // information about recording
         // ////////////////////////////////////////////////
 
         final JLabel titleLabel = new JLabel(recording.prefs.name);

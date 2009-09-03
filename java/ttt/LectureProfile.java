@@ -45,6 +45,7 @@ public class LectureProfile {
     private int port = 5900;
     private boolean record = true;
     private boolean recordVideo = true;
+    private boolean recordWebcam = true;
     private boolean recordLinearAudio = true; // linear = wav
     private boolean loopbackRecorder = false;
     private int colorDepth = Constants.defaultColorDepth;
@@ -488,7 +489,7 @@ public class LectureProfile {
     public void setRecordVideoEnabled(boolean recordVideo) {
         this.recordVideo = recordVideo;
     }
-
+     
     public boolean isRecordLinearAudioEnabled() {
         return recordLinearAudio;
     }

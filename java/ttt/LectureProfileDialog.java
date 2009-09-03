@@ -216,6 +216,13 @@ public class LectureProfileDialog {
         recordVideoCheckBox.setOpaque(false);
         recordVideoCheckBox.setSelected(true);
         recordVideoCheckBox.setEnabled(false);
+        
+        // cam recording
+        final JCheckBox camCheckBox = new JCheckBox("incl. Webcam");
+        camCheckBox.setToolTipText("enable Webcam recoding");
+        camCheckBox.setOpaque(false);
+        camCheckBox.setSelected(true);
+        camCheckBox.setEnabled(false);
 
         // enable/disable according to recorder selection
         recorderCheckBox.addActionListener(new ActionListener() {
@@ -355,6 +362,7 @@ public class LectureProfileDialog {
         ButtonGroup videoRecordingButtonGroup = new ButtonGroup();
         videoRecordingButtonGroup.add(videoRecordingOnCheckbox);
         videoRecordingButtonGroup.add(videoRecordingOffCheckbox);
+        
 
         final JPanel videoRecordingPanel = new JPanel();
         videoRecordingPanel.setLayout(new BoxLayout(videoRecordingPanel, BoxLayout.Y_AXIS));
@@ -374,6 +382,8 @@ public class LectureProfileDialog {
         videoRecordingPanel.add(audioFormatLabel);
         videoRecordingPanel.add(wavRadioButton);
         videoRecordingPanel.add(mp3RadioButton);
+        
+       
 
         videoRecordingPanel.add(Box.createVerticalStrut(5));
 
@@ -551,7 +561,7 @@ public class LectureProfileDialog {
                             hostPortDividerLabel.setEnabled(!loopback);
                             displayDesktopCheckBox.setSelected(!loopback);
 
-                            recorderCheckBox.setSelected(profile.isRecordEnabled());
+                            recorderCheckBox.setSelected(profile.isRecordEnabled());                            
                             recordVideoCheckBox.setSelected(profile.isRecordVideoEnabled());
                             recordVideoCheckBox.setVisible(recorderCheckBox.isSelected());
                             videoRecordingOnCheckbox.setSelected(profile.isRecordVideoEnabled());

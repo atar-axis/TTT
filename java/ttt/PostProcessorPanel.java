@@ -340,6 +340,15 @@ public class PostProcessorPanel extends GradientPanel {
                 ocrStatusField.setText("not found");
                 ocrStatusField.setToolTipText(null);
             }
+            if (recording.getExistingFileBySuffix("zip").exists()) {
+               camStatusField.setForeground(Color.GREEN);
+               camStatusField.setText("folder found");
+               camStatusField.setToolTipText("folder exists - content not confirmed");
+            } else {
+            	camStatusField.setForeground(Color.RED);
+            	camStatusField.setText("not found");
+            	camStatusField.setToolTipText(null);
+            }
             if (recording.getExistingFileBySuffix("mp3").exists()) {
                 mp3StatusField.setForeground(Color.GREEN);
                 mp3StatusField.setText("found");
@@ -475,10 +484,12 @@ public class PostProcessorPanel extends GradientPanel {
         pdfStatusField = new javax.swing.JLabel();
         ocrStatusField = new javax.swing.JLabel();
         flashStatusField = new javax.swing.JLabel();
-        mp3CheckBox = new javax.swing.JCheckBox();
+        mp3CheckBox = new javax.swing.JCheckBox();       
         mp3StatusField = new javax.swing.JLabel();
         mp4CheckBox = new javax.swing.JCheckBox();
         mp4StatusField = new javax.swing.JLabel();
+        camCheckBox = new javax.swing.JCheckBox();
+        camStatusField = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         searchStatusField = new javax.swing.JLabel();
@@ -625,6 +636,11 @@ public class PostProcessorPanel extends GradientPanel {
         flashCheckBox.setText("Flash/SWF");
         flashCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+        camCheckBox.setSelected(true);
+        camCheckBox.setText("Cam");
+        camCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+                
         createButton.setText("Create");
         createButton.setMargin(new java.awt.Insets(0, 8, 0, 8));
         createButton.addActionListener(new java.awt.event.ActionListener() {
@@ -676,7 +692,9 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(ocrCheckBox)
                     .add(mp3CheckBox)
                     .add(flashCheckBox)
-                    .add(mp4CheckBox))
+                    .add(mp4CheckBox)
+                    .add(camCheckBox)
+                    )
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(ocrStatusField)
@@ -687,7 +705,9 @@ public class PostProcessorPanel extends GradientPanel {
                             .add(htmlStatusField)
                             .add(mp3StatusField)
                             .add(flashStatusField)
-                            .add(mp4StatusField))
+                            .add(mp4StatusField)
+                            .add(camStatusField)
+                            )                            
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 370, Short.MAX_VALUE)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(createHelpButton)
@@ -732,6 +752,10 @@ public class PostProcessorPanel extends GradientPanel {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(mp4CheckBox)
                             .add(mp4StatusField))
+                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(camCheckBox)
+                            .add(camStatusField))
                         .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -1004,7 +1028,9 @@ public class PostProcessorPanel extends GradientPanel {
         htmlCheckBox.setEnabled(enabled);
         pdfCheckBox.setEnabled(enabled && ctrlSatus.get(pdfCheckBox));	//---
         ocrCheckBox.setEnabled(enabled);
+
         flashCheckBox.setEnabled(enabled && ctrlSatus.get(flashCheckBox));	//---
+        camCheckBox.setEnabled(enabled);
         mp3CheckBox.setEnabled(enabled && ctrlSatus.get(mp3CheckBox));	//---
         mp4CheckBox.setEnabled(enabled && ctrlSatus.get(mp4CheckBox));	//---
         createHelpButton.setEnabled(enabled);
@@ -1333,6 +1359,8 @@ public class PostProcessorPanel extends GradientPanel {
                         mode |= ScriptCreator.PDF_SCRIPT;
                     if (ocrCheckBox.isSelected())
                         mode |= ScriptCreator.OCR_OPTIMIZED;
+                    
+                 
                     // compute everything specified by mode
                     recording.createScript(mode, batch);
                 } catch (Exception e) {
@@ -1375,6 +1403,18 @@ public class PostProcessorPanel extends GradientPanel {
                     TTT.showMessage("MP4 creation failed: " + e);
                     e.printStackTrace();
                 }
+                
+              //create camVid
+                try {
+                    if (camCheckBox.isSelected()) {
+                        ttt.videoRecorder.VideoCreator newVideo = new  ttt.videoRecorder.VideoCreator();
+                        newVideo.create(recording.getExistingFileBySuffix("bjpg").getPath());//TODO convert 
+                    }
+                } catch (Exception e) {
+                    TTT.showMessage("CamVid creation failed: " + e);
+                    e.printStackTrace();
+                }
+                
                 
                 // update status fields
                 updateStatusFields();
@@ -1490,6 +1530,7 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JButton doneButton;
     private javax.swing.JLabel durationField;
     private javax.swing.JLabel filenameField;
+    private javax.swing.JCheckBox camCheckBox;
     private javax.swing.JCheckBox flashCheckBox;
     private javax.swing.JLabel flashStatusField;
     private javax.swing.JCheckBox htmlCheckBox;
@@ -1519,6 +1560,7 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JLabel mp4StatusField;
     private javax.swing.JCheckBox ocrCheckBox;
     private javax.swing.JLabel ocrStatusField;
+    private javax.swing.JLabel camStatusField;
     private javax.swing.JButton openSearchbaseFileDialogButton;
     private javax.swing.JTextField pathField;
     private javax.swing.JCheckBox pdfCheckBox;

@@ -101,11 +101,13 @@ Section ""
   File dist/swing-layout-1.0.2.jar
   File dist/jsch-0.1.32-patched.jar
   File dist/itext-1.4.8.jar
+  File dist/lti-civil.jar
   File nsis/lame.exe
   File nsis/MP4Box.exe
   File nsis/js32.dll
   File nsis/ffmpeg.exe
   File nsis/ttt.ico
+  File nsis/civil.dll
 
  
   SetOutPath $INSTDIR
