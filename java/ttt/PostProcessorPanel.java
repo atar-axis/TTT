@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -43,6 +44,8 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
+
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 /**
  * 
@@ -59,6 +62,9 @@ public class PostProcessorPanel extends GradientPanel {
 
     // batch mode flag
     private boolean batch = false;
+    
+    //saves the enable status of some components. See setEnabled(boolean)
+    private HashMap<Object, Boolean> ctrlSatus = new HashMap<Object, Boolean>();
     
     /** Creates new form PostProcessorPanel */
     public PostProcessorPanel(Recording recording) throws IOException {
@@ -980,26 +986,38 @@ public class PostProcessorPanel extends GradientPanel {
     }// GEN-LAST:event_doneButtonActionPerformed
 
     public void setEnabled(boolean enabled) {
+    	if (enabled == false) {
+    		//Save the enable status of components which may be disabled
+    		ctrlSatus.put(thumbnailsCheckBox, thumbnailsCheckBox.isEnabled());
+    		ctrlSatus.put(pdfCheckBox, pdfCheckBox.isEnabled());
+    		ctrlSatus.put(flashCheckBox, flashCheckBox.isEnabled());
+    		ctrlSatus.put(mp3CheckBox, mp3CheckBox.isEnabled());
+    		ctrlSatus.put(mp4CheckBox, mp4CheckBox.isEnabled());
+    		ctrlSatus.put(userField, userField.isEnabled());
+    		ctrlSatus.put(serverField, serverField.isEnabled());
+    		ctrlSatus.put(pathField, pathField.isEnabled());
+    		ctrlSatus.put(publishButton, publishButton.isEnabled());
+    	}
         super.setEnabled(enabled);
         titleField.setEnabled(enabled);
-        thumbnailsCheckBox.setEnabled(enabled);
+        thumbnailsCheckBox.setEnabled(enabled && ctrlSatus.get(thumbnailsCheckBox)); //---
         htmlCheckBox.setEnabled(enabled);
-        pdfCheckBox.setEnabled(enabled);
+        pdfCheckBox.setEnabled(enabled && ctrlSatus.get(pdfCheckBox));	//---
         ocrCheckBox.setEnabled(enabled);
-        flashCheckBox.setEnabled(enabled);
-        mp3CheckBox.setEnabled(enabled);
-        mp4CheckBox.setEnabled(enabled);
+        flashCheckBox.setEnabled(enabled && ctrlSatus.get(flashCheckBox));	//---
+        mp3CheckBox.setEnabled(enabled && ctrlSatus.get(mp3CheckBox));	//---
+        mp4CheckBox.setEnabled(enabled && ctrlSatus.get(mp4CheckBox));	//---
         createHelpButton.setEnabled(enabled);
         createButton.setEnabled(enabled);
         searchFilenameField.setEnabled(enabled);
         openSearchbaseFileDialogButton.setEnabled(enabled);
         searchHelpButton.setEnabled(enabled);
         importSearchbaseButton.setEnabled(enabled);
-        userField.setEnabled(enabled);
-        serverField.setEnabled(enabled);
-        pathField.setEnabled(enabled);
+        userField.setEnabled(enabled && ctrlSatus.get(userField));	//---
+        serverField.setEnabled(enabled && ctrlSatus.get(serverField));	//---
+        pathField.setEnabled(enabled && ctrlSatus.get(pathField));	//---
         publishHelpButton.setEnabled(enabled);
-        publishButton.setEnabled(enabled);
+        publishButton.setEnabled(enabled && ctrlSatus.get(publishButton));	//---
         doneButton.setEnabled(enabled);
     }
 
@@ -1519,3 +1537,4 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JLabel videoField;
     // End of variables declaration//GEN-END:variables
 }
+
