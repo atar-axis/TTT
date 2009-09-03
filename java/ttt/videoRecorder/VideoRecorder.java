@@ -41,21 +41,7 @@ public class VideoRecorder  implements WindowListener{
 	public VideoRecorder() {
 
 		
-		if(OSUtils.isWindows())	{
-			try {
-				WBC = new WindowsCam();
-			} catch (CaptureException e) {
-			
-				e.printStackTrace();
-			}			
-		}
-		if(OSUtils.isLinux()){
-			try {
-				WBC = new LinuxCam();
-			} catch (V4L4JException e) {
-					e.printStackTrace();
-			}
-		}
+		WBC= OSUtils.obtainWebcam();
 						
 		WBC.setSelectedCam (WBC.getDeviceID(0));
 							
