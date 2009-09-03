@@ -15,9 +15,9 @@ public final class OSUtils {
 		WebCamControl WBC = null;
 		String cam = null;
 		if (OSUtils.isWindows()) {
-			cam = "WindowsCam";
+			cam = "ttt.videoRecorder.WindowsCam";
 		} else
-			cam = "LinuxCam";
+			cam = "ttt.videoRecorder.LinuxCam";
 		try {
 			Class clazz = Class.forName(cam);
 			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance(null);
