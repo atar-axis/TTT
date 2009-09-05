@@ -170,6 +170,17 @@ public class Recording extends MessageProducerAdapter implements Runnable, Actio
     	File file = getFileBySuffix(suffix);
     	return file.exists() ? file : getFileBySuffix(suffix.toUpperCase());
     }
+    
+    public File getExistingFileBySuffix(String[] suffix) throws IOException {
+    	
+    	for (String curSuffix: suffix) {
+    		File file = getFileBySuffix(curSuffix);
+    		if (file.exists()) {
+    			return file;
+    		}
+    	}
+    	return getFileBySuffix(suffix[0]);
+    }
 
     void read(String filename) throws IOException {
         // open file

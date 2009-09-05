@@ -70,6 +70,16 @@ public class FlashContext extends FlashActionHelper {
     public static boolean flash_debug = false;
     private boolean batch;
 
+	/**
+	 * Checks whether it is possible to create a swf file.
+	 * @param recording
+	 * @return True if there is a mp3 file, or wav or mp2 file which can be encoded to mp3 file using lame.
+	 * @throws IOException
+	 */
+	public static boolean isCreationPossible(Recording recording) throws IOException {
+		return recording.getExistingFileBySuffix("mp3").exists() || (LameEncoder.isLameAvailable() && recording.getExistingFileBySuffix(new String[] {"wav","mp2"}).exists());
+	}
+	
     static public void createFlash(Recording recording, boolean batch) throws IOException {
         FlashContext flashContext = new FlashContext(recording, batch);
 
@@ -176,36 +186,54 @@ public class FlashContext extends FlashActionHelper {
 
     protected void initializeSound() throws IOException {
         // initialise sound
+    	File file = null;
     	try {    	
-	    	File file = recording.getExistingFileBySuffix("mp3");
-	    	if (file.exists() == false) {
-	    		//try to encode audio file if mp3 file doesn't exist
-	        	if (LameEncoder.convertAudioFile(Constants.getExistingFile(recording.fileDesktop.getCanonicalPath(), Constants.AUDIO_FILE), recording.getFileBySuffix("mp3"), batch)) {
-	        		if (!batch) {
-	                    progressMonitor.setProgress(30);
-	        		}
-	        		System.out.println("    audio converted to mpeg layer 3");
-	        		file = recording.getExistingFileBySuffix("mp3");
-	        	} else {
-	        		//canceled by user
-	        		progressMonitor = null;
-	        		return;
-	        	}
-	    	}	    	
-	        System.out.println("    loading audio from " + file);
-	        FileInputStream mp3 = new FileInputStream(file);
-	        blocks = new ArrayList();
-	        System.out.print("    transform audio to flash ... ");
-	        head = MP3Helper.streamingBlocks(mp3, frameRate, blocks);
-	        System.out.println("done");
-	        mp3.close();
-	        
+	    	file = recording.getExistingFileBySuffix(new String[] {"mp3","mp2","wav"});
+	    	if (file.getName().toLowerCase().endsWith(".mp3")) {
+	    		//if there is already a mp3 file no additional audio encoding is necessary 
+	    		try {
+	    			getSoundStreamHead(file);
+	    			return;
+	    		} catch (Exception e) {
+	    			/*if the mp3 file header can not be retrieved the audio file was probably encoded to mpeg layer II format by an older ttt version 
+	    			 * still using JMF 2.1.1a. That's why rename the audio file to *.mp2 and encode it to mpeg layer III correctly via lame.
+	    			 */
+	    			file.renameTo(file = new File(file.getAbsolutePath() + ".mp2"));
+	    		}
+	    	}
+    		//try to encode audio file to mp3 format
+        	if (LameEncoder.convertAudioFile(file, recording.getFileBySuffix("mp3"), batch)) {
+        		if (!batch) {
+                    progressMonitor.setProgress(30);
+        		}
+        		System.out.println("    audio converted to mpeg layer 3");
+        		file = recording.getExistingFileBySuffix("mp3");
+        	} else {
+        		//canceled by user
+        		progressMonitor = null;
+        		return;
+        	}
+	        getSoundStreamHead(file);
     	} catch (Exception e) {
+    		if (file != null && file.getName().toLowerCase().endsWith("mp3.mp2")) {
+    			//if the audio file was renamed from *.mp3 to *.mp3.mp2 and the audio encoding failed undo renaming
+    			file.renameTo(new File(file.getAbsolutePath().substring(0,file.getAbsolutePath().length()-4)));
+    		}
             System.out.println("    audio failed - cannot create flash movie");
             throw new IOException("Cannot transcode audio to flash");
     	}
     }
 
+    protected void getSoundStreamHead(File file) throws IOException {
+    	System.out.println("    loading audio from " + file);
+        FileInputStream mp3 = new FileInputStream(file);
+        blocks = new ArrayList();
+        System.out.print("    transform audio to flash ... ");
+        head = MP3Helper.streamingBlocks(mp3, frameRate, blocks);
+        System.out.println("done");
+        mp3.close();
+    }
+    
     /*******************************************************************************************************************
      * main processing loop
      ******************************************************************************************************************/

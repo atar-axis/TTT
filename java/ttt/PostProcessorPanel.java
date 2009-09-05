@@ -107,20 +107,19 @@ public class PostProcessorPanel extends GradientPanel {
 
         ocrCheckBox
                 .setToolTipText("generate optimized input for optical character recognition (see full text search help)");        
-        //the conversion of a wav file to a mp3 file is only accessible if lame is found and if there exists a wav file for the recording 
-        if (LameEncoder.isLameAvailable() && recording.getExistingFileBySuffix("wav").exists()) {
-        	mp3CheckBox.setToolTipText("generate a mp3 audio file from wav file");
+        //the conversion of a audio file to a mp3 file is only accessible if lame is found and if there exists a wav or mp2 file of the recording 
+        if (LameEncoder.isLameAvailable() && recording.getExistingFileBySuffix(new String[] {"wav","mp2"}).exists()) {
+        	mp3CheckBox.setToolTipText("generate a mp3 audio file from wav or mp2 file");
         } else {
         	if (LameEncoder.isLameAvailable()) {
-        		mp3CheckBox.setToolTipText("wav file not found");
+        		mp3CheckBox.setToolTipText("audio file not found");
         	} else {
         		mp3CheckBox.setToolTipText("lame not found");
         	}
         	mp3CheckBox.setSelected(false);
         	mp3CheckBox.setEnabled(false);
-        }
-        //the creation of a flash movie is only accessible if there is a mp3 file or a mp3 file can be created via lame 
-        if (recording.getExistingFileBySuffix("mp3").exists() || LameEncoder.isLameAvailable() && recording.getExistingFileBySuffix("wav").exists()) {
+        } 
+        if (FlashContext.isCreationPossible(recording)) {
         	flashCheckBox.setToolTipText("generate a flash/swf version of this recording");
         	if (recording.getExistingFileBySuffix("mp3").exists() == false) {
         		flashCheckBox.addItemListener(new ItemListener() {
@@ -137,7 +136,7 @@ public class PostProcessorPanel extends GradientPanel {
         		});
         	}
         } else {
-        	flashCheckBox.setToolTipText("mp3 file not found");
+        	flashCheckBox.setToolTipText("audio file not found");
         	flashCheckBox.setSelected(false);
         	flashCheckBox.setEnabled(false);
         }
@@ -1372,10 +1371,10 @@ public class PostProcessorPanel extends GradientPanel {
                 // NOTE: store thumbnails now, because flash generation may fail due to insufficient memory
                 storeRecordingIfNeeded();
 
-                //convert wav file
+                //convert audio file
                 try {
                     if (mp3CheckBox.isSelected()) {
-                        LameEncoder.convertAudioFile(recording.getExistingFileBySuffix("wav"), recording.getFileBySuffix("mp3"), batch);
+                        LameEncoder.convertAudioFile(recording.getExistingFileBySuffix(new String[] {"wav","mp2"}), recording.getFileBySuffix("mp3"), batch);
                     }
                 } catch (Exception e) {
                     TTT.showMessage("MP3 creation failed: " + e);

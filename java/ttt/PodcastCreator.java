@@ -62,7 +62,7 @@ public class PodcastCreator {
 	 * @throws IOException
 	 */
 	public static boolean isCreationPossible(Recording recording) throws IOException {
-		return Exec.getCommand(FFMPEG) != null && Exec.getCommand(MP4BOX) != null && (recording.getExistingFileBySuffix("mp3").exists() || recording.getExistingFileBySuffix("wav").exists());
+		return Exec.getCommand(FFMPEG) != null && Exec.getCommand(MP4BOX) != null && (recording.getExistingFileBySuffix(new String[] {"wav","mp3","mp2"}).exists());
 	}
 
 	
@@ -74,8 +74,10 @@ public class PodcastCreator {
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, boolean batch) throws Exception {
-
-		long startTime = System.currentTimeMillis();
+		
+		System.out.println("----------------------------------------------");
+		System.out.println("PodcastCreator");
+		System.out.println("----------------------------------------------");
 		System.out.println("Creating mp4 podcast");
 		
 		//Check whether the necessary applications are available.
@@ -94,15 +96,13 @@ public class PodcastCreator {
 			}
 		}
 		//Get audio file
-		File audioFile = recording.getExistingFileBySuffix("wav");
+		File audioFile = recording.getExistingFileBySuffix(new String[] {"wav","mp3","mp2"});
 		if (audioFile.exists() == false) {
-			audioFile = recording.getExistingFileBySuffix("mp3");
-			if (audioFile.exists() == false) {
-				throw new IOException("No audio file found");
-			}
+			throw new IOException("No audio file found");
 		}
 		
 		//Initialization
+		long startTime = System.currentTimeMillis();
 		File outMovieFile = recording.getFileBySuffix("mp4");	//final output
 		outMovieFile.delete();
 		File outMovieTmpFile = recording.getFileBySuffix("tmp.mp4");	//temporary output for joined slide movies
@@ -227,6 +227,7 @@ public class PodcastCreator {
 			throw new IOException("unable to add audio stream using ffmpeg");
 		}
 		System.out.println("Podcast created in " + Constants.getStringFromTime((int)(System.currentTimeMillis()-startTime)));
+		System.out.println("----------------------------------------------");
 		return true;
 	}	
 }
