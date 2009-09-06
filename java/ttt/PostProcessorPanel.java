@@ -163,6 +163,8 @@ public class PostProcessorPanel extends GradientPanel {
         	mp4CheckBox.setSelected(false);
         	mp4CheckBox.setEnabled(false);
         }
+        camCheckBox.setToolTipText("generating a CamVid file");
+        camCheckBox.setSelected(true);
         createButton.setToolTipText("generate the selected components");
 
         searchFilenameField.setToolTipText("specify searchbase file (XML or ASCII)");
@@ -483,7 +485,7 @@ public class PostProcessorPanel extends GradientPanel {
         pdfStatusField = new javax.swing.JLabel();
         ocrStatusField = new javax.swing.JLabel();
         flashStatusField = new javax.swing.JLabel();
-        mp3CheckBox = new javax.swing.JCheckBox();       
+        mp3CheckBox = new javax.swing.JCheckBox();
         mp3StatusField = new javax.swing.JLabel();
         mp4CheckBox = new javax.swing.JCheckBox();
         mp4StatusField = new javax.swing.JLabel();
@@ -635,11 +637,6 @@ public class PostProcessorPanel extends GradientPanel {
         flashCheckBox.setText("Flash/SWF");
         flashCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        camCheckBox.setSelected(true);
-        camCheckBox.setText("Cam");
-        camCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-                
         createButton.setText("Create");
         createButton.setMargin(new java.awt.Insets(0, 8, 0, 8));
         createButton.addActionListener(new java.awt.event.ActionListener() {
@@ -678,6 +675,12 @@ public class PostProcessorPanel extends GradientPanel {
 
         mp4StatusField.setText("not found");
 
+        camCheckBox.setSelected(true);
+        camCheckBox.setText("Cam");
+        camCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        camStatusField.setText("not found");
+
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -692,8 +695,7 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(mp3CheckBox)
                     .add(flashCheckBox)
                     .add(mp4CheckBox)
-                    .add(camCheckBox)
-                    )
+                    .add(camCheckBox))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(ocrStatusField)
@@ -705,8 +707,7 @@ public class PostProcessorPanel extends GradientPanel {
                             .add(mp3StatusField)
                             .add(flashStatusField)
                             .add(mp4StatusField)
-                            .add(camStatusField)
-                            )                            
+                            .add(camStatusField))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 370, Short.MAX_VALUE)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(createHelpButton)
@@ -733,7 +734,7 @@ public class PostProcessorPanel extends GradientPanel {
                             .add(pdfCheckBox)
                             .add(pdfStatusField)))
                     .add(createHelpButton))
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -751,15 +752,15 @@ public class PostProcessorPanel extends GradientPanel {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(mp4CheckBox)
                             .add(mp4StatusField))
-                             .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(camCheckBox)
                             .add(camStatusField))
                         .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2Layout.createSequentialGroup()
+                    .add(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(createButton)
-                        .add(21, 21, 21))))
+                        .addContainerGap())))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Full Text Search"));
@@ -846,7 +847,7 @@ public class PostProcessorPanel extends GradientPanel {
                         .add(searchHelpButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(importSearchbaseButton)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(6, Short.MAX_VALUE))
         );
 
         jPanel3Layout.linkSize(new java.awt.Component[] {importSearchbaseButton, openSearchbaseFileDialogButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
@@ -945,31 +946,33 @@ public class PostProcessorPanel extends GradientPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
+                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                                .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addContainerGap())
+                        .add(layout.createSequentialGroup()
                             .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap())
+                            .addContainerGap()))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(doneButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(29, 29, 29))))
+                        .add(28, 28, 28))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap()
                 .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 99, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(doneButton)
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1523,13 +1526,14 @@ public class PostProcessorPanel extends GradientPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel audioField;
+    private javax.swing.JCheckBox camCheckBox;
+    private javax.swing.JLabel camStatusField;
     private javax.swing.JButton createButton;
     private javax.swing.JButton createHelpButton;
     private javax.swing.JLabel dateField;
     private javax.swing.JButton doneButton;
     private javax.swing.JLabel durationField;
     private javax.swing.JLabel filenameField;
-    private javax.swing.JCheckBox camCheckBox;
     private javax.swing.JCheckBox flashCheckBox;
     private javax.swing.JLabel flashStatusField;
     private javax.swing.JCheckBox htmlCheckBox;
@@ -1559,7 +1563,6 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JLabel mp4StatusField;
     private javax.swing.JCheckBox ocrCheckBox;
     private javax.swing.JLabel ocrStatusField;
-    private javax.swing.JLabel camStatusField;
     private javax.swing.JButton openSearchbaseFileDialogButton;
     private javax.swing.JTextField pathField;
     private javax.swing.JCheckBox pdfCheckBox;
