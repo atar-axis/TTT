@@ -1025,7 +1025,7 @@ public class TTT extends JFrame {
             setExtendedState(MAXIMIZED_BOTH);
             setVisible(true);
 
-            showMemoryMonitor(true);
+            showMemoryMonitor(false);
         }
     }
 
