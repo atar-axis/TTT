@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -44,6 +44,7 @@ import ttt.messages.FreehandAnnotation;
 import ttt.messages.HighlightAnnotation;
 import ttt.messages.LineAnnotation;
 import ttt.messages.RectangleAnnotation;
+import ttt.messages.TextAnnotation;
 import ttt.messages.WhiteboardMessage;
 
 public class PaintListener extends RFBKeyAndMouseListener {
@@ -62,7 +63,10 @@ public class PaintListener extends RFBKeyAndMouseListener {
 
     // temporary annotation
     private Annotation annotation;
-
+    
+    // true when text is edited
+	private boolean textMode = false;
+	
     // enable/disable painting
     private boolean activated;
 
@@ -123,6 +127,8 @@ public class PaintListener extends RFBKeyAndMouseListener {
     private int paintMode = Constants.AnnotationFreehand;
 
     public void setPaintMode(int paintMode) {
+    	// end text input if not yet finished
+    	if(textMode) finishPainting();
         if (paintMode == Constants.AnnotationDeleteAll)
             // delete all is no permanent mode
             writeMessage(new DeleteAllAnnotation(0));
@@ -133,6 +139,8 @@ public class PaintListener extends RFBKeyAndMouseListener {
 
     public int togglePaintMode() {
         // switch to next next mode
+        if (paintMode == Constants.AnnotationText)
+            paintMode = Constants.AnnotationFreehand;
         if (paintMode == Constants.AnnotationFreehand)
             paintMode = Constants.AnnotationHighlight;
         else if (paintMode == Constants.AnnotationHighlight)
@@ -142,7 +150,7 @@ public class PaintListener extends RFBKeyAndMouseListener {
         else if (paintMode == Constants.AnnotationRectangle)
             paintMode = Constants.AnnotationDelete;
         else if (paintMode == Constants.AnnotationDelete)
-            paintMode = Constants.AnnotationFreehand;
+            paintMode = Constants.AnnotationText;
 
         // update GUI
         if (paintControls != null)
@@ -240,25 +248,37 @@ public class PaintListener extends RFBKeyAndMouseListener {
             return;
 
         // create and write temporary annotation
-        if (activated && !alt_tab) {
+        if (textMode) {
+        	finishPainting();
+        } else if (activated && !alt_tab) {
             set(event.getX(), event.getY());
             writeMessage(annotation);
         } else
             super.mousePressed(event);
+      
     }
 
     public void mouseReleased(MouseEvent event) {
         if (!areCoordinatesValid(event))
             return;
-
+        
         // write final annotation
-        if (activated && !alt_tab)
+        if (!textMode && activated && !alt_tab)
             finishPainting();
         else
             super.mouseReleased(event);
     }
 
     private void finishPainting() {
+    	if(textMode) {
+    		textMode = false;
+    		// if text annotation is still empty, discard it
+    		if (((TextAnnotation)annotation).isEmpty()) {
+    			annotation = null;
+    		} else {
+    			((TextAnnotation)annotation).trim();
+    		}
+    	}
         if (annotation != null) {
             // NOTE: reset last coordinates not needed - same as last dragged event
             annotation.temporary = false;
@@ -322,6 +342,11 @@ public class PaintListener extends RFBKeyAndMouseListener {
     // initiates new temporary annotation
     private void set(int x, int y) {
         switch (paintMode) {
+        case Constants.AnnotationText:
+        	annotation = new TextAnnotation(0, color, x, y, 0, "");
+        	annotation.temporary = true;
+        	textMode = true;
+        	break;
         case Constants.AnnotationHighlight:
             annotation = new HighlightAnnotation(0, color + 3, x, y, x, y);
             annotation.temporary = true;
@@ -381,61 +406,87 @@ public class PaintListener extends RFBKeyAndMouseListener {
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent evt) {
+    	
+    	if (textMode) {
+			if(evt.getKeyChar() != KeyEvent.CHAR_UNDEFINED &&
+					(evt.getKeyChar() > 31 || evt.getKeyChar() == KeyEvent.VK_ENTER)) {
+				// add non special characters to text annotation
+				((TextAnnotation)annotation).addChar(evt.getKeyChar());
+				graphicsContext.refresh();
+				evt.consume();
+			}
+			if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE) {
+				// delete last character when backspace pressed
+				((TextAnnotation)annotation).deleteLastChar();
+				graphicsContext.refresh();
+				evt.consume();
+			}
+		}
+		super.keyTyped(evt);
+    }
+    
+    @Override
     public void keyPressed(KeyEvent evt) {
+
         // TODO: add option panel to set keys
-        switch (evt.getKeyCode()) {
-        case KeyEvent.VK_PAGE_UP:
-        case KeyEvent.VK_PAGE_DOWN:
-        case KeyEvent.VK_RIGHT:
-        case KeyEvent.VK_LEFT:
-        case KeyEvent.VK_UP:
-        case KeyEvent.VK_DOWN:
-            // Automatically delete annotations
-            writeMessage(new DeleteAllAnnotation(0));
-            break;
-
-        case KeyEvent.VK_F9:
-            // switch paint color (rotate)
-            if (!activated) {
-                setActivated(true);
-                paintControls.updateActivatedState(activated);
-            }
-            toggleColor();
-            // consume key
-            return;
-
-        case KeyEvent.VK_F10:
-            // switch paint mode (rotate)
-            if (!activated) {
-                setActivated(true);
-                paintControls.updateActivatedState(activated);
-            }
-            togglePaintMode();
-            // consume key
-            return;
-
-        case KeyEvent.VK_F12:
-            // activate / deactivte painting
-            setActivated(!activated);
-            paintControls.updateActivatedState(activated);
-            // consume key
-            return;
-        }
-
+    	if (!textMode) { 
+	        switch (evt.getKeyCode()) {
+	        case KeyEvent.VK_PAGE_UP:
+	        case KeyEvent.VK_PAGE_DOWN:
+	        case KeyEvent.VK_RIGHT:
+	        case KeyEvent.VK_LEFT:
+	        case KeyEvent.VK_UP:
+	        case KeyEvent.VK_DOWN:
+	            // Automatically delete annotations
+	            writeMessage(new DeleteAllAnnotation(0));
+	            break;
+	
+	        case KeyEvent.VK_F9:
+	            // switch paint color (rotate)
+	            if (!activated) {
+	                setActivated(true);
+	                paintControls.updateActivatedState(activated);
+	            }
+	            toggleColor();
+	            // consume key
+	            return;
+	
+	        case KeyEvent.VK_F10:
+	            // switch paint mode (rotate)
+	            if (!activated) {
+	                setActivated(true);
+	                paintControls.updateActivatedState(activated);
+	            }
+	            togglePaintMode();
+	            // consume key
+	            return;
+	
+	        case KeyEvent.VK_F12:
+	            // activate / deactivte painting
+	            setActivated(!activated);
+	            paintControls.updateActivatedState(activated);
+	            // consume key
+	            return;
+	        }
+    	}
         super.keyPressed(evt);
     }
 
+    @Override
     public void keyReleased(KeyEvent evt) {
         // filter paint control keys of ttt
         // TODO: option to set keys
-        switch (evt.getKeyCode()) {
-        case KeyEvent.VK_F9:
-        case KeyEvent.VK_F10:
-        case KeyEvent.VK_F12:
-            // consume key
-            return;
-        }
-
-        super.keyPressed(evt);
+    	if (!textMode) {
+	        switch (evt.getKeyCode()) {
+	        case KeyEvent.VK_F9:
+	        case KeyEvent.VK_F10:
+	        case KeyEvent.VK_F12:
+	            // consume key
+	            return;
+	        }
+    	}
+        super.keyReleased(evt);
     }
 }

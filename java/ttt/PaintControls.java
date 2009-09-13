@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -44,6 +44,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
+import com.sun.media.codec.video.cinepak.CineStore;
+
 import ttt.messages.Annotation;
 
 public class PaintControls extends GradientPanel {
@@ -51,6 +53,7 @@ public class PaintControls extends GradientPanel {
     private JCheckBox activateButton;
     private JRadioButton[] colorButtons;
 
+    private AbstractButton textButton;
     private AbstractButton highlightButton;
     private AbstractButton freeButton;
     private AbstractButton rectangleButton;
@@ -84,6 +87,9 @@ public class PaintControls extends GradientPanel {
     static final String DELETE_ALL = "delete all";
 
     private void jbInit() throws Exception {
+        URL urlText = this.getClass().getResource("/ttt/resources/text24.png");
+        URL urlActiveText = this.getClass().getResource("/ttt/resources/text_active24.png");
+        URL urlRolloverText = this.getClass().getResource("/ttt/resources/text_rollover24.png");
         URL urlRect = this.getClass().getResource("resources/Rectangle24_new.gif");
         URL urlActiveRect = this.getClass().getResource("resources/Rectangle_active24_new.gif");
         URL urlRolloverRect = this.getClass().getResource("resources/Rectangle_rollover24_new.gif");
@@ -171,6 +177,14 @@ public class PaintControls extends GradientPanel {
             colorGroup.add(colorButtons[i]);
 
         // paint modes
+        textButton = new JToggleButton();
+        textButton.setToolTipText("Text");
+        textButton.setBorder(BorderFactory.createEmptyBorder());
+        textButton.setIcon(new ImageIcon(urlText));
+        textButton.setSelectedIcon(new ImageIcon(urlActiveText));
+        textButton.setRolloverIcon(new ImageIcon(urlRolloverText));
+        textButton.setFocusable(false);
+        
         highlightButton = new JToggleButton();
         highlightButton.setToolTipText("Highlight");
         highlightButton.setBorder(BorderFactory.createEmptyBorder());
@@ -219,6 +233,7 @@ public class PaintControls extends GradientPanel {
         deleteAllButton.setFocusable(false);
 
         ButtonGroup modeButtons = new ButtonGroup();
+        modeButtons.add(textButton);
         modeButtons.add(lineButton);
         modeButtons.add(rectangleButton);
         modeButtons.add(freeButton);
@@ -252,6 +267,7 @@ public class PaintControls extends GradientPanel {
         add(colorButtons[3]);
         add(colorButtons[4]);
         add(Box.createRigidArea(new Dimension(20, 0)));
+        add(textButton);
         add(freeButton);
         add(highlightButton);
         add(lineButton);
@@ -279,32 +295,44 @@ public class PaintControls extends GradientPanel {
                 }
 
                 // set paint mode
-                if (event.getSource() == highlightButton) {
+                if (event.getSource() == textButton) {
+                	paintListener.setPaintMode(Constants.AnnotationText);
+                	highlightButton.setSelected(false);
+                    freeButton.setSelected(false);
+                    lineButton.setSelected(false);
+                    rectangleButton.setSelected(false);
+                    deleteButton.setSelected(false);
+                } else if (event.getSource() == highlightButton) {
                     paintListener.setPaintMode(Constants.AnnotationHighlight);
+                    textButton.setSelected(false);
                     freeButton.setSelected(false);
                     lineButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
                 } else if (event.getSource() == freeButton) {
                     paintListener.setPaintMode(Constants.AnnotationFreehand);
+                    textButton.setSelected(false);
                     highlightButton.setSelected(false);
                     lineButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
                 } else if (event.getSource() == rectangleButton) {
                     paintListener.setPaintMode(Constants.AnnotationRectangle);
+                    textButton.setSelected(false);
                     highlightButton.setSelected(false);
                     freeButton.setSelected(false);
                     lineButton.setSelected(false);
                     deleteButton.setSelected(false);
                 } else if (event.getSource() == lineButton) {
                     paintListener.setPaintMode(Constants.AnnotationLine);
+                    textButton.setSelected(false);
                     highlightButton.setSelected(false);
                     freeButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
                 } else if (event.getSource() == deleteButton) {
                     paintListener.setPaintMode(Constants.AnnotationDelete);
+                    textButton.setSelected(false);
                     highlightButton.setSelected(false);
                     freeButton.setSelected(false);
                     lineButton.setSelected(false);
@@ -335,6 +363,7 @@ public class PaintControls extends GradientPanel {
 
         activateButton.addActionListener(actionListener);
 
+        textButton.addActionListener(actionListener);
         highlightButton.addActionListener(actionListener);
         freeButton.addActionListener(actionListener);
         rectangleButton.addActionListener(actionListener);
@@ -386,6 +415,9 @@ public class PaintControls extends GradientPanel {
 
     public void selectPaintModeButton(int paintMode) {
         switch (paintMode) {
+        case Constants.AnnotationText:
+        	textButton.setSelected(true);
+        	break;
         case Constants.AnnotationFreehand:
             freeButton.setSelected(true);
             break;
