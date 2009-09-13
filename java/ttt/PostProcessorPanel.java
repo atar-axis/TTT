@@ -77,7 +77,7 @@ public class PostProcessorPanel extends GradientPanel {
 
         // create GUI
         initComponents();
-
+        
         // set previously used fields
         userField.setText(TTT.userPrefs.get("publish_user", "<enter user name>"));
         serverField.setText(TTT.userPrefs.get("publish_server", "ttt.in.tum.de"));
@@ -510,6 +510,8 @@ public class PostProcessorPanel extends GradientPanel {
         publishButton = new javax.swing.JButton();
         publishHelpButton = new javax.swing.JButton();
 
+        setOpaque(false);
+
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Info"));
         jPanel1.setOpaque(false);
 
@@ -620,22 +622,27 @@ public class PostProcessorPanel extends GradientPanel {
         thumbnailsCheckBox.setSelected(true);
         thumbnailsCheckBox.setText("Thumbnails");
         thumbnailsCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        thumbnailsCheckBox.setOpaque(false);
 
         htmlCheckBox.setSelected(true);
         htmlCheckBox.setText("HTML script");
         htmlCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        htmlCheckBox.setOpaque(false);
 
         pdfCheckBox.setSelected(true);
         pdfCheckBox.setText("PDF script");
         pdfCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        pdfCheckBox.setOpaque(false);
 
         ocrCheckBox.setSelected(true);
         ocrCheckBox.setText("OCR input");
         ocrCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        ocrCheckBox.setOpaque(false);
 
         flashCheckBox.setSelected(true);
         flashCheckBox.setText("Flash/SWF");
         flashCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        flashCheckBox.setOpaque(false);
 
         createButton.setText("Create");
         createButton.setMargin(new java.awt.Insets(0, 8, 0, 8));
@@ -666,19 +673,23 @@ public class PostProcessorPanel extends GradientPanel {
         mp3CheckBox.setSelected(true);
         mp3CheckBox.setText("MP3 audio");
         mp3CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        mp3CheckBox.setOpaque(false);
 
         mp3StatusField.setText("not found");
 
         mp4CheckBox.setSelected(true);
         mp4CheckBox.setText("MP4 podcast");
         mp4CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        mp4CheckBox.setOpaque(false);
 
         mp4StatusField.setText("not found");
 
         camCheckBox.setSelected(true);
         camCheckBox.setText("Cam");
         camCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        camCheckBox.setOpaque(false);
 
+        camStatusField.setBackground(new java.awt.Color(100, 208, 200));
         camStatusField.setText("not found");
 
         org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
@@ -708,7 +719,7 @@ public class PostProcessorPanel extends GradientPanel {
                             .add(flashStatusField)
                             .add(mp4StatusField)
                             .add(camStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 370, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 435, Short.MAX_VALUE)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                             .add(createHelpButton)
                             .add(createButton))))
@@ -756,7 +767,7 @@ public class PostProcessorPanel extends GradientPanel {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(camCheckBox)
                             .add(camStatusField))
-                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(22, Short.MAX_VALUE))
                     .add(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(createButton)
@@ -821,7 +832,7 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(searchStatusField))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(openSearchbaseFileDialogButton)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 85, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 117, Short.MAX_VALUE)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, importSearchbaseButton)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, searchHelpButton))
@@ -847,7 +858,7 @@ public class PostProcessorPanel extends GradientPanel {
                         .add(searchHelpButton)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(importSearchbaseButton)))
-                .addContainerGap(6, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         jPanel3Layout.linkSize(new java.awt.Component[] {importSearchbaseButton, openSearchbaseFileDialogButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
@@ -904,11 +915,11 @@ public class PostProcessorPanel extends GradientPanel {
                 .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel4Layout.createSequentialGroup()
                         .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 257, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 295, Short.MAX_VALUE)
                         .add(publishHelpButton))
                     .add(jPanel4Layout.createSequentialGroup()
                         .add(pathField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 257, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 295, Short.MAX_VALUE)
                         .add(publishButton))
                     .add(serverField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -946,16 +957,13 @@ public class PostProcessorPanel extends GradientPanel {
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                        .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                            .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                                .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addContainerGap())
-                        .add(layout.createSequentialGroup()
-                            .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addContainerGap()))
+                    .add(layout.createSequentialGroup()
+                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jPanel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
                         .add(doneButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 67, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .add(28, 28, 28))))
@@ -967,12 +975,12 @@ public class PostProcessorPanel extends GradientPanel {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 99, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                 .add(doneButton)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -41,7 +41,9 @@ public class GradientPanel extends JPanel {
     }
 
     public GradientPanel(int orientation) {
-        vertical = orientation == SwingConstants.VERTICAL;
+    	if (TTT.isEnabledNativeLookAndFeel() == false) {
+    		vertical = orientation == SwingConstants.VERTICAL;
+    	}
     }
 
      protected void paintComponent(Graphics g) {

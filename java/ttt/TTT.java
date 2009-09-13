@@ -26,6 +26,7 @@
 package ttt;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -108,13 +109,28 @@ public class TTT extends JFrame {
 
     private JDesktopPane desktop;
 
+    private static boolean enabledNativeLookAndFeel = true;
+    
     private TTT() {
+    	
+
         super("TeleTeachingTool - Version " + version);
 
         // TODO: handle CTRL-C
         // NOTE: Recorder uses its own handler
         // Runtime.getRuntime().addShutdownHook(new ShutDownHook(this));
-
+        
+        if (enabledNativeLookAndFeel) {
+        	//try to enable native look and feel
+        	try {
+        		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        		} catch(Exception e) {
+        			enabledNativeLookAndFeel = false;
+        			System.out.println("Error setting native look and feel: " + e);
+        		}	          
+        }
+    	fileChooser = new JFileChooser();
+          
         if (verbose)
             System.out.println(ABOUT);
 
@@ -1023,8 +1039,9 @@ public class TTT extends JFrame {
 
             setSize(width, height);
             setExtendedState(MAXIMIZED_BOTH);
+            
             setVisible(true);
-
+            getContentPane().setBackground(Color.WHITE);
             showMemoryMonitor(false);
         }
     }
@@ -1050,7 +1067,7 @@ public class TTT extends JFrame {
         memoryMonitorCheckbox.setSelected(visible);
     }
 
-    static private final JFileChooser fileChooser = new JFileChooser();
+    static private JFileChooser fileChooser;// = new JFileChooser();
 
     public static TTT getInstance() {
         if (ttt == null) {
@@ -1313,16 +1330,26 @@ public class TTT extends JFrame {
     }
 
     public static void main(String[] args) throws NumberFormatException, IOException {
-        if (args.length >= 1) {
-            for (int i = 0; i < args.length; i++) {
-                // new Recording(args[i]).store();
-                createFilePlayer(new File(args[0]));
-            }
-            return;
-        } else {
-            getInstance().showTTT();
-            // showWizard(true);
-        }
+    
+    	//parse command line options
+    	for (int i = 0; i < args.length; ++i) {
+    		if (args[i].length() == 2 && args[i].charAt(0) == '-') {
+    			switch (args[i].charAt(1)) {
+    			case 'n':
+    				enabledNativeLookAndFeel = false;
+    				break;
+    			default: 
+    				System.out.println("Usage: ttt [options] [recording]\n" + 
+    									(char)9 + "-n" + (char)9 + "Disable native look and feel\n" + 
+    									(char)9 + "-h" + (char)9 + "Show this message");
+    				System.exit(0);
+    			}
+    		} else {
+    			createFilePlayer(new File(args[i]));
+    			break;
+    		}	
+    	}
+    	getInstance().showTTT();
     }
     
     // MOD TD
@@ -1375,5 +1402,9 @@ public class TTT extends JFrame {
     			ttt.desktop.add(ipFrame, new Integer(1000));
     		}
     	}
+    }
+    
+    public static boolean isEnabledNativeLookAndFeel() {
+    	return enabledNativeLookAndFeel;
     }
 }
