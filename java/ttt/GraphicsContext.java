@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -141,7 +141,37 @@ public class GraphicsContext extends JComponent implements MessageConsumer {
         // does not allow getGraphics() :-(
         return memImage.getScaledInstance(prefs.framebufferWidth, prefs.framebufferHeight, Image.SCALE_FAST);
     }
-
+    
+    /**
+     * Creates screenshot of current graphics contect including annotations, whiteboard pages, and the cursor.
+     * 
+     * @see PodcastCreator#createPodcast
+     * @see GraphicsContext#getScreenshotWithoutAnnotations
+     */
+    public BufferedImage getScreenshot() {
+    	//Create a buffered image using the default color model
+    	BufferedImage screenshot = new BufferedImage(prefs.framebufferWidth, prefs.framebufferHeight, BufferedImage.TYPE_INT_RGB);
+    	Graphics g = screenshot.getGraphics();
+        if (isWhiteboardEnabled()) {
+        	//Create whiteboard page
+        	g.setColor(Color.WHITE);
+        	g.fillRect(0, 0, prefs.framebufferWidth, prefs.framebufferHeight);
+        } else {
+        	//Draw desktop
+        	g.drawImage(memImage, 0, 0, null);
+        }
+    	paintAnnotations((Graphics2D)g);	//Paint annotation
+        // display cursor
+        if (showSoftCursor) {
+            int x0 = cursorX - hotX, y0 = cursorY - hotY;
+            Rectangle r = new Rectangle(x0, y0, cursorWidth, cursorHeight);
+            if (r.intersects(new Rectangle(0,0,screenshot.getWidth(),screenshot.getHeight()))) {
+                g.drawImage(softCursor, x0, y0, null);
+            }
+        }
+    	return screenshot;
+    }
+    
     //MODMSG : changed return type to BufferedImage
     public BufferedImage getScreenshotWithoutAnnotations() {
         BufferedImage screenshot;

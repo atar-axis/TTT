@@ -51,16 +51,16 @@ public class LameEncoder {
 	}
 	
 	
-	/**Checks whether lame is available.
-	 * @return	True if lame is available.
+	/**Checks whether lame is available
+	 * @return	True if lame is available
 	 * */
 	public static boolean isLameAvailable() {
 		return Exec.getCommand(LAME) != null;
 	}
 	
 	
-	/**Allows converting audio files using lame.
-	 * @return True: Conversion succeeded.<br>False: Canceled by user. 
+	/**Allows converting audio files using lame
+	 * @return True: Conversion succeeded.<br>False: Canceled by user 
 	 */
 	public static boolean convertAudioFile(File inFile, File outFile, String options, boolean batch) throws Exception {
 		
@@ -129,8 +129,8 @@ public class LameEncoder {
 	}
 		
 	
-	/**Allows converting audio files using lame determining suitable options automatically.
-	 * @return True: Conversion succeeded.<br>False: Canceled by user.
+	/**Allows converting audio files using lame determining suitable options automatically
+	 * @return True: Conversion succeeded.<br>False: Canceled by user
 	 */
 	public static boolean convertAudioFile(File inFile, File outFile, boolean batch) throws Exception {
 		

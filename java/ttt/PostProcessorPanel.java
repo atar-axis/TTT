@@ -142,22 +142,6 @@ public class PostProcessorPanel extends GradientPanel {
         }
         if (PodcastCreator.isCreationPossible(recording)) {
         	mp4CheckBox.setToolTipText("generate a mp4 podcast of this recording");
-        	if (recording.getExistingFileBySuffix("html").isDirectory() == false) {
-        		mp4CheckBox.addItemListener(new ItemListener() {
-        			public void itemStateChanged(ItemEvent event) {
-        				try {
-        					//if there is no html script it must be created before creating the podcast
-        					if (mp4CheckBox.isSelected()) {
-        						if (PostProcessorPanel.this.recording.getExistingFileBySuffix("html").isDirectory() == false) {
-        							htmlCheckBox.setSelected(true);
-        						}
-        					}
-        				} catch (IOException e) {
-        					e.printStackTrace();
-        				}
-        			}
-        		});
-        	}
         } else {
         	mp4CheckBox.setToolTipText("generating a mp4 podcast requires ffmpeg, mp4box, and an audio file");
         	mp4CheckBox.setSelected(false);

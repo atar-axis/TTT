@@ -20,9 +20,10 @@
 
 package ttt;
 
+
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -39,10 +40,13 @@ import javax.swing.Timer;
  */
 public class PodcastCreator {
 
-	private static final String RESOLUTION = "480x320";	//ouput resolution.
+	private static final int RESOLUTION_WIDTH = 480;
+	private static final int RESOLUTION_HEIGTH = 320;
 	private static final String FFMPEG = "ffmpeg";
 	private static final String MP4BOX = "MP4Box";
 
+	private static final double FRAMES_PER_SEC = 1;
+	
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -56,31 +60,44 @@ public class PodcastCreator {
 	
 	
 	/**
-	 * Checks whether it is possible to create a podcast.
+	 * Checks whether it is possible to create a podcast
 	 * @param recording
-	 * @return True if ffmpeg, MP4Box, and an audio file is available for creating a podcast.
+	 * @return True if ffmpeg, MP4Box, and an audio file is available for creating a podcast
 	 * @throws IOException
 	 */
 	public static boolean isCreationPossible(Recording recording) throws IOException {
 		return Exec.getCommand(FFMPEG) != null && Exec.getCommand(MP4BOX) != null && (recording.getExistingFileBySuffix(new String[] {"wav","mp3","mp2"}).exists());
 	}
 
-	
 	/**
-	 * Creates podcast.
+	 * Creates podcast using default parameters
 	 * @param recording
 	 * @param batch
 	 * @return True: Podcast created successfully.<br>False: Canceled by user.
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, boolean batch) throws Exception {
+		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch);
+	}
+	
+	/**
+	 * Creates podcast
+	 * @param recording
+	 * @param resolutionWidth Podcast width
+	 * @param resolutionHeight Podcast heigth
+	 * @param framesPerSec Frames per second
+	 * @param batch
+	 * @return True: Podcast created successfully.<br>False: Canceled by user
+	 * @throws Exception
+	 */
+	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, double framesPerSec, boolean batch) throws Exception {
 		
 		System.out.println("----------------------------------------------");
 		System.out.println("PodcastCreator");
 		System.out.println("----------------------------------------------");
 		System.out.println("Creating mp4 podcast");
 		
-		//Check whether the necessary applications are available.
+		//check whether the necessary applications are available
 		String ffmpegCmd = Exec.getCommand(FFMPEG);
 		if (ffmpegCmd == null) {
 			throw new IOException("ffmpeg not found");
@@ -89,118 +106,132 @@ public class PodcastCreator {
 		if (mp4BoxCmd == null) {
 			throw new IOException("MP4Box not found");
 		}
-		//Create html script containing images for creating the podcast if not available.
-		if (new File(recording.getDirectory() + recording.getFileBase() + ".html" + File.separator).exists() == false) {
-			if (recording.createScript(ScriptCreator.HTML_SCRIPT, batch) == false) {
-				return false;
-			}
-		}
-		//Get audio file
+		//get audio file
 		File audioFile = recording.getExistingFileBySuffix(new String[] {"wav","mp3","mp2"});
 		if (audioFile.exists() == false) {
 			throw new IOException("No audio file found");
 		}
 		
-		//Initialization
+		//initialization
 		long startTime = System.currentTimeMillis();
-		File outMovieFile = recording.getFileBySuffix("mp4");	//final output
-		outMovieFile.delete();
-		File outMovieTmpFile = recording.getFileBySuffix("tmp.mp4");	//temporary output for joined slide movies
-		File slideMovieFile = File.createTempFile("tmpSlideMovie", ".mp4");	//slide movie created from png file
-		long slideMovieLength;	//length of the slide movie
-		Index index = recording.index;
-		final ProgressMonitor progressMonitor = new ProgressMonitor(TTT.getRootComponent(), null, "building podcast from screenshots", 0, recording.getDuration()/1000*2);	//time per frame is roughly the same for video and audio encoding
-		if (!batch) {
-			progressMonitor.setMillisToDecideToPopup(0);
-			progressMonitor.setMillisToPopup(0);
-		}
-		final Exec exec = new Exec();
+		File outMovieFile = File.createTempFile("tmpOutMovie",".mp4");	//final output
+		File outMovieTmpFile = File.createTempFile("tmpOutMovie",".mp4");	//temporary output for joined window movies
+		File windowMovieFile = File.createTempFile("tmpWindowMovie", ".mp4");	//window movie created from png file		
+		File windowImageFile = File.createTempFile("tmpWindowImage", ".png");	//image of window movie
+		double frameLength = (double)1000/framesPerSec;
+		double outMovieLength = 0;	//current length of outMovieFile
+		int vFrames;	//number of video frames of window movie
+		int i = 0;
 		int j;
 		
-		//Video encoding
-		for (int i = 0; i < index.size(); ++i) {	//loop through all slides
-			System.out.println("Creating slide movie (" + (i+1) + "/" + index.size() + ")");
-			if (!batch) {
-				progressMonitor.setProgress(index.get(i).getTimestamp()/1000);
+		final ProgressMonitor progressMonitor = new ProgressMonitor(TTT.getRootComponent(), null, "building podcast video stream", 0, recording.messages.size());	//time per frame is roughly the same for video and audio encoding
+		final Exec exec = new Exec();
+		System.out.println("Building podcast video stream from messages");
+		recording.whiteOut();
+		while (i < recording.messages.size()) {
+			
+			//draw all messages of the next frame
+			while (i < recording.messages.size() && recording.messages.get(i).getTimestamp() - outMovieLength <= frameLength) {
+				recording.deliverMessage(recording.messages.get(i++));
 			}
-			File imageFile = new File(recording.getDirectory() + recording.getFileBase() + ".html" + File.separator + "images" + File.separator + recording.getFileBase() + "." + ((i + 1) < 10 ? "0" : "") + (i + 1) + ".png");
-			if (imageFile.exists() == false) {	//create png file from recording object if not available
-				recording.setTime(index.get(i).getTimestamp());
-				BufferedImage image = recording.graphicsContext.getScreenshotWithoutAnnotations();
-				ImageIO.write(image, "png", imageFile);
-			}
-			//get length of the slide movie
-			if (i == index.size() - 1) {
-				slideMovieLength = recording.getDuration()-index.get(i).getTimestamp();
+			//the number of video frames depends on the timestamp of the succeeding message
+			//if the next message occurs in x frames relative to the current frame, the next window lasts x-1 frames because nothing happens   
+			if (i < recording.messages.size()) {
+				vFrames = (int)((recording.messages.get(i).getTimestamp() - outMovieLength) / frameLength); 
 			} else {
-				slideMovieLength = index.get(i + 1).getTimestamp()-index.get(i).getTimestamp();
+				vFrames = (int)((recording.getDuration() - outMovieLength) / frameLength);
+				if (vFrames == 0) {
+					vFrames = 1;
+				}
 			}
-			slideMovieLength = Math.round((double) slideMovieLength / 1000);
-			//create the slide movie using ffmpeg
-			slideMovieFile.delete();
+			outMovieLength += vFrames * frameLength;
+			
+			if (!batch && i < recording.messages.size()) {
+				progressMonitor.setProgress(i);
+			}
+			System.out.println("   Message (" + i + "/" + recording.messages.size() + ")");
+			
+			//create window movie using ffmpeg
+			//write scaled window image
+			ImageIO.write(ImageCreator.getScaledInstance(recording.getGraphicsContext().getScreenshot(), resolutionWidth, resolutionHeight, RenderingHints.VALUE_INTERPOLATION_BICUBIC, true), "png", windowImageFile);
+			windowMovieFile.delete();
 			exec.createListenerStream();
-			j = exec.exec(new String[] {"ffmpeg", "-loop_input", "-r", "1", "-i", imageFile.getPath(), "-pix_fmt", "rgb24", "-vcodec", "mpeg4", "-vframes", String.valueOf(slideMovieLength), "-s", RESOLUTION,"-y", slideMovieFile.getPath()});
-			if (j != 0 || slideMovieFile.length() == 0) {
-				//error while creating the slide movie
-				System.out.println("Unable to create slide movie using ffmpeg:");
-				System.out.println(exec.getListenerStream());
-				slideMovieFile.delete();
+			j = exec.exec(new String[] {"ffmpeg", "-loop_input", "-r", String.valueOf(framesPerSec), "-i", windowImageFile.getPath(), "-pix_fmt", "rgb24", "-vcodec", "mpeg4", "-vframes", String.valueOf(vFrames), "-s", resolutionWidth + "x" + resolutionHeight,"-y", windowMovieFile.getPath()});
+			if (j != 0 || windowMovieFile.length() == 0) {
+				//error while creating window movie
+				windowMovieFile.delete();
 				outMovieFile.delete();
-				throw new IOException("unable to create slide movie using ffmpeg");
+				outMovieTmpFile.delete();
+				windowImageFile.delete();
+				System.out.println("Unable to create window movie using ffmpeg:");
+				System.out.println(exec.getListenerStream());
+				throw new IOException("unable to create window movie using ffmpeg");
 			}
 			if (!batch && progressMonitor.isCanceled()) {
 				//canceled by user
-				slideMovieFile.delete();
+				windowMovieFile.delete();
 				outMovieFile.delete();
+				outMovieTmpFile.delete();
+				windowImageFile.delete();
 				progressMonitor.close();
 				System.out.println("Canceled by user");
-				slideMovieFile.delete();
+				windowMovieFile.delete();
 				outMovieFile.delete();
 				outMovieTmpFile.delete();
 				return false;
 			}
-			//append the created slide movie (slideMovieFile) to the output file (outMovieFile) using MP4Box
-			//appending slideMovieFile to outMovieFile directly via "MP4Box -cat slideMovieFile.getPath() outMovieFile.getPath()" causes renaming problems in some cases. Thus outMovieTmpFile is used.
-			exec.createListenerStream();
-			j = exec.exec(new String[] { MP4BOX, "-cat", slideMovieFile.getPath(), outMovieFile.getPath(), "-out", outMovieTmpFile.getPath()});
-			if (j != 0 || outMovieTmpFile.length() == 0) {
-				//error while appending the slideMovie to the output file
-				System.out.println("Unable join slide movies using MP4Box:");
-				System.out.println(exec.getListenerStream());
-				outMovieFile.delete();
-				throw new IOException("unable join slide movies using MP4Box");
+			if (outMovieFile.length() == 0) {
+				//the first window movie can renamed directly to output movie.
+				//NOTE: MP4Box uses fps=1 for the container format when vFrames=1 whereby the container frame rate and codec frame rate can differ when using frameRate != 1. That causes a wrong synchronized video and audio stream
+				windowMovieFile.renameTo(outMovieTmpFile);
+			} else {
+				//append the created window movie (windowMovieFile) to the output movie (outMovieFile) using MP4Box
+				//NOTE: appending slideMovieFile to outMovieFile directly via "MP4Box -cat slideMovieFile.getPath() outMovieFile.getPath()" causes renaming problems in some cases. Thus outMovieTmpFile is used
+				exec.createListenerStream();
+				j = exec.exec(new String[] { MP4BOX, "-cat", windowMovieFile.getPath(), outMovieFile.getPath(), "-out", outMovieTmpFile.getPath()});
+				if (j != 0 || outMovieTmpFile.length() == 0) {
+					//error while appending the slideMovie to the output file
+					windowMovieFile.delete();
+					outMovieFile.delete();
+					outMovieTmpFile.delete();
+					windowImageFile.delete();
+					System.out.println("Unable join slide movies using MP4Box:");
+					System.out.println(exec.getListenerStream());
+					throw new IOException("unable join slide movies using MP4Box");
+				}				
 			}
 			//replace outMovieFile by outMovieFileTmp
 			outMovieFile.delete();
-			if (i < index.size() - 1) {
+			if (i < recording.messages.size()) {
 				outMovieTmpFile.renameTo(outMovieFile);
 			}
 		}
-		slideMovieFile.delete();	//delete temporary file
+		windowMovieFile.delete();
+		outMovieFile.delete();
+		windowImageFile.delete();
 		
-		//Audio encoding with ffmpeg. The audio stream must be converted via aac to achieve ipod compatibility
+		//audio encoding with ffmpeg. The audio stream must be converted via aac to achieve ipod compatibility
 		System.out.println("Adding audio stream to podcast");
 		Timer timer = null;
 		if (!batch) {			
-			//The progress of the progress monitor is determined by the frame value ("frame= ") of the ffmpeg output
-			progressMonitor.setNote("adding audio stream to podcast");		
+			//the progress of the progress monitor is determined by the frame value ("frame= ") of the ffmpeg output
 			final int nFrames = recording.getDuration()/1000;
+			progressMonitor.setNote("adding audio stream to podcast");
+			progressMonitor.setMaximum(nFrames);
+			progressMonitor.setProgress(0);
 			timer = new Timer(1000, new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (progressMonitor.isCanceled()) {
 						exec.abort();
 					}
-					//Get the value after "frame=" of the last line
+					//get the value after "frame=" of the last line
 					String[] lines = exec.getListenerStream().toString().split("\n");
 					Scanner scanner = new Scanner(lines[lines.length-1]);
 					scanner.useDelimiter("[ ]+");
 					if (scanner.findInLine("frame=") != null && scanner.hasNextInt()){
 						int i = scanner.nextInt();
-						System.out.println("Adding audio stream on frame (" + i + "/" + nFrames + ")");
-						i+= nFrames;
-						if (i < progressMonitor.getMaximum()) {
-							progressMonitor.setProgress(i);
-						}
+						System.out.println("   Frame (" + i + "/" + nFrames + ")");
+						progressMonitor.setProgress(i);
 					}
 					exec.getListenerStream().reset();
 				}
@@ -208,12 +239,17 @@ public class PodcastCreator {
 			timer.start();
 		}
 		exec.createListenerStream();
-		j = exec.exec(new String[] {ffmpegCmd, "-i",audioFile.getPath(),"-i",outMovieTmpFile.getPath(),"-acodec","libfaac","-ab" ,"128" ,"-ar","44100","-vcodec","copy","-y", outMovieFile.getPath()});
-		outMovieTmpFile.delete();	//delete temporary file
+		outMovieFile = recording.getFileBySuffix("mp4");
+		j = exec.exec(new String[] {ffmpegCmd,"-i",audioFile.getPath(),"-i",outMovieTmpFile.getPath(),"-acodec","libfaac","-ab" ,"128" ,"-ar","44100","-vcodec","copy","-y", outMovieFile.getPath()});
+		outMovieTmpFile.delete();	
 		if (!batch) {
 			timer.stop();			
 			if (progressMonitor.isCanceled()) {
+				//canceled by user
+				windowMovieFile.delete();
 				outMovieFile.delete();
+				outMovieTmpFile.delete();
+				windowImageFile.delete();
 				System.out.println("Canceled by user");
 				return false;
 			}
@@ -230,4 +266,5 @@ public class PodcastCreator {
 		System.out.println("----------------------------------------------");
 		return true;
 	}	
-}
+	
+} 
