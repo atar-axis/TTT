@@ -77,7 +77,7 @@ public class PostProcessorPanel extends GradientPanel {
 
         // create GUI
         initComponents();
-        
+
         // set previously used fields
         userField.setText(TTT.userPrefs.get("publish_user", "<enter user name>"));
         serverField.setText(TTT.userPrefs.get("publish_server", "ttt.in.tum.de"));
@@ -147,10 +147,15 @@ public class PostProcessorPanel extends GradientPanel {
         	mp4CheckBox.setSelected(false);
         	mp4CheckBox.setEnabled(false);
         }
-        camCheckBox.setToolTipText("generating a CamVid file");
-        camCheckBox.setSelected(true);
+        if (recording.getExistingFileBySuffix("bjpg").exists()) {
+        	camCheckBox.setToolTipText("generating a CamVid file");
+        } else {
+        	camCheckBox.setToolTipText("bjpg file not found");
+        	camCheckBox.setSelected(false);
+        	camCheckBox.setEnabled(false);
+        }
         createButton.setToolTipText("generate the selected components");
-
+        
         searchFilenameField.setToolTipText("specify searchbase file (XML or ASCII)");
         openSearchbaseFileDialogButton.setToolTipText("open file dialog");
         importSearchbaseButton
@@ -556,7 +561,7 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(dateField)
                     .add(resolutionField)
                     .add(titleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 433, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -606,27 +611,22 @@ public class PostProcessorPanel extends GradientPanel {
         thumbnailsCheckBox.setSelected(true);
         thumbnailsCheckBox.setText("Thumbnails");
         thumbnailsCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        thumbnailsCheckBox.setOpaque(false);
 
         htmlCheckBox.setSelected(true);
         htmlCheckBox.setText("HTML script");
         htmlCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        htmlCheckBox.setOpaque(false);
 
         pdfCheckBox.setSelected(true);
         pdfCheckBox.setText("PDF script");
         pdfCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        pdfCheckBox.setOpaque(false);
 
         ocrCheckBox.setSelected(true);
         ocrCheckBox.setText("OCR input");
         ocrCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        ocrCheckBox.setOpaque(false);
 
         flashCheckBox.setSelected(true);
         flashCheckBox.setText("Flash/SWF");
         flashCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        flashCheckBox.setOpaque(false);
 
         createButton.setText("Create");
         createButton.setMargin(new java.awt.Insets(0, 8, 0, 8));
@@ -657,21 +657,18 @@ public class PostProcessorPanel extends GradientPanel {
         mp3CheckBox.setSelected(true);
         mp3CheckBox.setText("MP3 audio");
         mp3CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        mp3CheckBox.setOpaque(false);
 
         mp3StatusField.setText("not found");
 
         mp4CheckBox.setSelected(true);
         mp4CheckBox.setText("MP4 podcast");
         mp4CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        mp4CheckBox.setOpaque(false);
 
         mp4StatusField.setText("not found");
 
         camCheckBox.setSelected(true);
-        camCheckBox.setText("Cam");
+        camCheckBox.setText("Dozentenvideo");
         camCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        camCheckBox.setOpaque(false);
 
         camStatusField.setBackground(new java.awt.Color(100, 208, 200));
         camStatusField.setText("not found");
@@ -691,22 +688,20 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(flashCheckBox)
                     .add(mp4CheckBox)
                     .add(camCheckBox))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(28, 28, 28)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(ocrStatusField)
+                    .add(thumbnailsStatusField)
+                    .add(htmlStatusField)
                     .add(pdfStatusField)
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(thumbnailsStatusField)
-                            .add(htmlStatusField)
-                            .add(mp3StatusField)
-                            .add(flashStatusField)
-                            .add(mp4StatusField)
-                            .add(camStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 435, Short.MAX_VALUE)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(createHelpButton)
-                            .add(createButton))))
+                    .add(ocrStatusField)
+                    .add(mp3StatusField)
+                    .add(flashStatusField)
+                    .add(mp4StatusField)
+                    .add(camStatusField))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 405, Short.MAX_VALUE)
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(createHelpButton)
+                    .add(createButton))
                 .addContainerGap())
         );
 
@@ -751,7 +746,7 @@ public class PostProcessorPanel extends GradientPanel {
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(camCheckBox)
                             .add(camStatusField))
-                        .addContainerGap(22, Short.MAX_VALUE))
+                        .addContainerGap(24, Short.MAX_VALUE))
                     .add(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(createButton)
@@ -816,7 +811,7 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(searchStatusField))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(openSearchbaseFileDialogButton)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 117, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
                 .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, importSearchbaseButton)
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, searchHelpButton))
@@ -899,11 +894,11 @@ public class PostProcessorPanel extends GradientPanel {
                 .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel4Layout.createSequentialGroup()
                         .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 295, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 322, Short.MAX_VALUE)
                         .add(publishHelpButton))
                     .add(jPanel4Layout.createSequentialGroup()
                         .add(pathField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 295, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 322, Short.MAX_VALUE)
                         .add(publishButton))
                     .add(serverField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
@@ -1011,6 +1006,7 @@ public class PostProcessorPanel extends GradientPanel {
     		ctrlSatus.put(flashCheckBox, flashCheckBox.isEnabled());
     		ctrlSatus.put(mp3CheckBox, mp3CheckBox.isEnabled());
     		ctrlSatus.put(mp4CheckBox, mp4CheckBox.isEnabled());
+    		ctrlSatus.put(camCheckBox, camCheckBox.isEnabled());
     		ctrlSatus.put(userField, userField.isEnabled());
     		ctrlSatus.put(serverField, serverField.isEnabled());
     		ctrlSatus.put(pathField, pathField.isEnabled());
@@ -1018,26 +1014,26 @@ public class PostProcessorPanel extends GradientPanel {
     	}
         super.setEnabled(enabled);
         titleField.setEnabled(enabled);
-        thumbnailsCheckBox.setEnabled(enabled && ctrlSatus.get(thumbnailsCheckBox)); //---
+        thumbnailsCheckBox.setEnabled(enabled && ctrlSatus.get(thumbnailsCheckBox)); 
         htmlCheckBox.setEnabled(enabled);
-        pdfCheckBox.setEnabled(enabled && ctrlSatus.get(pdfCheckBox));	//---
+        pdfCheckBox.setEnabled(enabled && ctrlSatus.get(pdfCheckBox));
         ocrCheckBox.setEnabled(enabled);
 
-        flashCheckBox.setEnabled(enabled && ctrlSatus.get(flashCheckBox));	//---
-        camCheckBox.setEnabled(enabled);
-        mp3CheckBox.setEnabled(enabled && ctrlSatus.get(mp3CheckBox));	//---
-        mp4CheckBox.setEnabled(enabled && ctrlSatus.get(mp4CheckBox));	//---
+        flashCheckBox.setEnabled(enabled && ctrlSatus.get(flashCheckBox));	     
+        mp3CheckBox.setEnabled(enabled && ctrlSatus.get(mp3CheckBox));
+        mp4CheckBox.setEnabled(enabled && ctrlSatus.get(mp4CheckBox));	
+        camCheckBox.setEnabled(enabled && ctrlSatus.get(camCheckBox));
         createHelpButton.setEnabled(enabled);
         createButton.setEnabled(enabled);
         searchFilenameField.setEnabled(enabled);
         openSearchbaseFileDialogButton.setEnabled(enabled);
         searchHelpButton.setEnabled(enabled);
         importSearchbaseButton.setEnabled(enabled);
-        userField.setEnabled(enabled && ctrlSatus.get(userField));	//---
-        serverField.setEnabled(enabled && ctrlSatus.get(serverField));	//---
-        pathField.setEnabled(enabled && ctrlSatus.get(pathField));	//---
+        userField.setEnabled(enabled && ctrlSatus.get(userField));	
+        serverField.setEnabled(enabled && ctrlSatus.get(serverField));	
+        pathField.setEnabled(enabled && ctrlSatus.get(pathField));	
         publishHelpButton.setEnabled(enabled);
-        publishButton.setEnabled(enabled && ctrlSatus.get(publishButton));	//---
+        publishButton.setEnabled(enabled && ctrlSatus.get(publishButton));	
         doneButton.setEnabled(enabled);
     }
 

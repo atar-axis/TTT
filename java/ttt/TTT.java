@@ -46,6 +46,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
@@ -498,8 +499,8 @@ public class TTT extends JFrame {
                                 // internal frame
                                 frame.setContentPane(new PostProcessorPanel(recording));
                                 frame.pack();
-                                frame.setVisible(true);
-
+                                frame.setResizable(true);
+                                
                                 // post processing
                                 TTT ttt = getInstance();
                                 ttt.showTTT();
@@ -1039,7 +1040,7 @@ public class TTT extends JFrame {
 
             setSize(width, height);
             setExtendedState(MAXIMIZED_BOTH);
-            
+            setIconImage(Toolkit.getDefaultToolkit().getImage(ttt.getClass().getResource("resources/ttt16.png")));
             setVisible(true);
             getContentPane().setBackground(Color.WHITE);
             showMemoryMonitor(false);
@@ -1091,9 +1092,12 @@ public class TTT extends JFrame {
     private int position;
 
     void addInternalFrameCentered(JInternalFrame frame) {
-        frame.pack();
+    	frame.pack();
+        
+        
+        frame.setFrameIcon(new ImageIcon(getClass().getResource("resources/ttt16.png")));
         frame.setVisible(true);
-        Rectangle rect = TTT.getInstance().getBounds();
+        Rectangle rect = TTT.getInstance().desktop.getBounds();
         TTT.getInstance().addInternalFrame(frame, rect.width / 2 - frame.getWidth() / 2,
                 rect.height / 2 - frame.getHeight() / 2, 10);
         // TODO: think about layering
@@ -1118,7 +1122,7 @@ public class TTT extends JFrame {
             height = ttt.desktop.getHeight() - y;
         if (width != internalFrame.getWidth() || height != internalFrame.getHeight())
             internalFrame.setSize(width, height);
-
+        internalFrame.setFrameIcon(new ImageIcon(getClass().getResource("resources/ttt16.png")));
         ttt.desktop.add(internalFrame);
         try {
             internalFrame.setSelected(true);
