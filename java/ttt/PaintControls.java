@@ -132,6 +132,7 @@ public class PaintControls extends GradientPanel {
         }
 
         // color buttons
+        
         colorButtons[0].setBackground(Color.RED);
         colorButtons[0].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[0].setToolTipText("Choose Color");
@@ -139,6 +140,7 @@ public class PaintControls extends GradientPanel {
         colorButtons[0].setSelectedIcon(colorActiveIcon);
         colorButtons[0].setRolloverIcon(colorRolloverIcon);
         colorButtons[0].setFocusable(false);
+        colorButtons[0].setOpaque(true);
 
         colorButtons[1].setBackground(Color.BLUE);
         colorButtons[1].setBorder(BorderFactory.createEmptyBorder());
@@ -147,6 +149,7 @@ public class PaintControls extends GradientPanel {
         colorButtons[1].setSelectedIcon(colorActiveIcon);
         colorButtons[1].setRolloverIcon(colorRolloverIcon);
         colorButtons[1].setFocusable(false);
+        colorButtons[1].setOpaque(true);
 
         colorButtons[2].setBackground(Color.GREEN);
         colorButtons[2].setBorder(BorderFactory.createEmptyBorder());
@@ -155,6 +158,7 @@ public class PaintControls extends GradientPanel {
         colorButtons[2].setSelectedIcon(colorActiveIcon);
         colorButtons[2].setRolloverIcon(colorRolloverIcon);
         colorButtons[2].setFocusable(false);
+        colorButtons[2].setOpaque(true);
 
         colorButtons[3].setBackground(Color.YELLOW);
         colorButtons[3].setBorder(BorderFactory.createEmptyBorder());
@@ -163,6 +167,7 @@ public class PaintControls extends GradientPanel {
         colorButtons[3].setSelectedIcon(colorActiveIcon);
         colorButtons[3].setRolloverIcon(colorRolloverIcon);
         colorButtons[3].setFocusable(false);
+        colorButtons[3].setOpaque(true);
 
         colorButtons[4].setBackground(Color.BLACK);
         colorButtons[4].setBorder(BorderFactory.createEmptyBorder());
@@ -171,6 +176,7 @@ public class PaintControls extends GradientPanel {
         colorButtons[4].setSelectedIcon(colorActiveIcon);
         colorButtons[4].setRolloverIcon(colorRolloverIcon);
         colorButtons[4].setFocusable(false);
+        colorButtons[4].setOpaque(true);
 
         ButtonGroup colorGroup = new ButtonGroup();
         for (int i = 0; i < colorButtons.length; i++)

@@ -141,7 +141,7 @@ public class PaintListener extends RFBKeyAndMouseListener {
         // switch to next next mode
         if (paintMode == Constants.AnnotationText)
             paintMode = Constants.AnnotationFreehand;
-        if (paintMode == Constants.AnnotationFreehand)
+        else if (paintMode == Constants.AnnotationFreehand)
             paintMode = Constants.AnnotationHighlight;
         else if (paintMode == Constants.AnnotationHighlight)
             paintMode = Constants.AnnotationLine;
