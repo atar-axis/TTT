@@ -7,6 +7,7 @@ import java.util.logging.Logger;
  * @author ken lti-Civil
  * 
  */
+// detects the OS (linux/mac/windows)
 public final class OSUtils {
 	@SuppressWarnings("deprecation")
 	private static final Logger logger = Logger.global;
@@ -14,13 +15,14 @@ public final class OSUtils {
 	public static WebCamControl obtainWebcam() {
 		WebCamControl WBC = null;
 		String cam = null;
-		if (OSUtils.isWindows()) {
-			cam = "ttt.videoRecorder.WindowsCam";
-		} else
+		if (OSUtils.isLinux()) {
 			cam = "ttt.videoRecorder.LinuxCam";
+		} else {
+			cam = "ttt.videoRecorder.WindowsCam";
+		}
 		try {
-			Class clazz = Class.forName(cam);
-			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance(null);
+			Class<?> clazz = Class.forName(cam);
+			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -45,11 +45,13 @@ public class LectureProfile {
     private int port = 5900;
     private boolean record = true;
     private boolean recordVideo = true;
-    private boolean recordWebcam = true;
     private boolean recordLinearAudio = true; // linear = wav
     private boolean loopbackRecorder = false;
     private int colorDepth = Constants.defaultColorDepth;
-
+    private String RecordingCamera;
+    private ttt.videoRecorder.TTTVideoFormat Format;
+    private float VideoQuality;
+    
     // used whether to show info box or not
     // stored in profile because other profile might be used by other person
     //
@@ -101,7 +103,9 @@ public class LectureProfile {
                 profile.loopbackRecorder = preferences.getBoolean("loopback_recorder", false);
                 profile.showRecordControlsInfo = preferences.getBoolean("show_record_controls_info", true);
                 profile.showRecordPlayRecordWarning = preferences.getBoolean("show_record_play_record_warning", true);
-
+                profile.RecordingCamera = preferences.get("RecordingCamera", "");
+                profile.Format = new ttt.videoRecorder.TTTVideoFormat(preferences.getInt("FormatWidth", 160),  preferences.getInt("FormatHeight", 120));
+                profile.VideoQuality = preferences.getFloat("VideoQuality", 0.1f);
                 return profile;
             }
         } catch (Exception e) {
@@ -139,7 +143,10 @@ public class LectureProfile {
             preferences.putBoolean("loopback_recorder", loopbackRecorder);
             preferences.putBoolean("show_record_controls_info", showRecordControlsInfo);
             preferences.putBoolean("show_record_play_record_warning", showRecordPlayRecordWarning);
-
+            preferences.put("RecordingCamera", RecordingCamera);
+            preferences.putFloat("VideoQuality", VideoQuality);
+            preferences.putInt("FormatWidth", Format.getWidth());
+            preferences.putInt("FormatHeight", Format.getHeight());
             preferences.flush();
         } catch (Exception e) {
             System.out.println("failed to write Lecture Profile: " + e);
@@ -486,6 +493,34 @@ public class LectureProfile {
         return recordVideo;
     }
 
+
+    public void setRecordingFormat (ttt.videoRecorder.TTTVideoFormat format) {
+        this.Format = format;
+    }
+    
+    public String getRecordingCamera(){
+    	return RecordingCamera;
+    }
+    
+    public void setRecordingCamera(String recordCameraID) {
+        this.RecordingCamera = recordCameraID;
+    }
+    
+    
+    
+    public ttt.videoRecorder.TTTVideoFormat getVideoFormat(){
+    	return Format;
+    }
+    
+    public float getVideoQuality(){
+    	return VideoQuality;
+    }
+    
+    public void setVideoQualiy(float Quality){
+    	VideoQuality = Quality;
+    }
+    
+    
     public void setRecordVideoEnabled(boolean recordVideo) {
         this.recordVideo = recordVideo;
     }

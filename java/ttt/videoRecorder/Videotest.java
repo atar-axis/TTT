@@ -6,80 +6,132 @@
 
 package ttt.videoRecorder;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
-import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
-import javax.media.MediaLocator;
-
-
-
-public class Videotest {
-
-public static void main(String args[]) throws IOException {
+public class Videotest implements ActionListener {
 	
-	//VideoRecorder Test = new VideoRecorder();	Test.Start();
-	blub();
-	
-			}
-public static void blub() throws IOException{
-	try {
-		FileInputStream fis = new FileInputStream("C:\\imgbuff\\out5.bjpg");
-		InputStream fis2 = new  FileInputStream("C:\\imgbuff\\out5.bjpg");
-		int i;
-		String v;
-		Vector<byte[]> InFiles = new Vector<byte[]>();
-		byte[] buffer;
-		StringBuffer strContent = new StringBuffer("");
-
-				
-		int offset = 0;
-Boolean first = true;
-		while((i=  fis.read()) != -1){
-			
-			 strContent.append((char)i);
-			 v = strContent.toString();
-		
-		if(v.contains("FileEnd")){
-					buffer = new byte[v.length()-7];
-					if(!first){
-					fis2.read(buffer, offset, 7);}
-					fis2.read(buffer, offset, buffer.length);
-					first = false;
-					offset = 0;													
-					System.out.println(buffer.length);
-					//InFiles.add(v.substring(0,v.length()-7));
-					InFiles.add(buffer);
-					strContent = new StringBuffer("");									
-					}
-		}
-		
-		
-		
-		
-		
-		
-		 JpegImagesToMovie test;	 
-		 
-		 MediaLocator outML;
-		 
-		 String mediaFile = "file:C:\\imgbuff\\x4.mov";
-		outML = new MediaLocator(mediaFile);	 
-		 test = new JpegImagesToMovie();
-		 test.doIt(160, 120, 15, 			
-				InFiles
-				 , outML);
-		}
-	 catch (FileNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	public static void main(String args[]) throws IOException {
+		Videotest kf = new Videotest();
+		kf.gui();
 	}
 	
+	// testclass no real relevance
+	String path = System.getProperty("user.dir");
+	JFrame vidtest = new JFrame();
+	JPanel panelbuttons = new JPanel();
+	JButton butVideoCreator = new JButton("VideoCreator");
+	JButton butVideoRecorder = new JButton("VideoRecorder");
+	JButton butVideoSettings = new JButton("VideoSettings");
+
+	public void gui() {
+		butVideoCreator.addActionListener(this);
+		butVideoRecorder.addActionListener(this);
+		butVideoSettings.addActionListener(this);
+		panelbuttons.add(butVideoCreator);
+		panelbuttons.add(butVideoRecorder);
+		panelbuttons.add(butVideoSettings);
+		vidtest.add(panelbuttons);
+		vidtest.setEnabled(true);
+		vidtest.setVisible(true);
+		vidtest.setSize(1000, 700);
+		vidtest.setLayout(new GridBagLayout());
+		vidtest.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+		try {
+			// k.getFrame().setSelected(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public boolean recording = false;
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getSource() == (butVideoCreator)) {
+			try {
+				videocreator();
+			} catch (IOException e) {
+
+				e.printStackTrace();
+			}
+		}
+		if (arg0.getSource() == (butVideoSettings)) {
+			videosettings();
+		}
+		if (arg0.getSource() == (butVideoRecorder)) {
+			try {
+				videorecorder();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+	final VideoSettingPanel k = new VideoSettingPanel();
+
+	public void videosettings() {
+		if (!recording) {
+			k.show(true);
+			vidtest.add(k.getFrame());
+			System.out.println("cam found " + k.CamerasFound());
+		}
+	}
+
+	public TTTVideoFormat format = new TTTVideoFormat(160, 120);
+	public String recordCameraID = null;
+	public float Quality = 0.1f;
+	VideoRecorderPanel Test;
+
+	int cam = 0;
 	
-}
-}
+	public void videorecorder() throws IOException {
+		if (!recording) {
+			if (k != null) {
+				recordCameraID = k.getRecordingCamera();
+				format = k.getRecordingFormat();
+				Quality = k.getQuality();
+			}
 
+			Test = new VideoRecorderPanel();
+			System.out.println(path + ".bjpg");
+			File del = new File(path + ".bjpg");
+			System.out.println("Deletion: " + del.delete());
+			Test.setRecordpath(path);
+		
+			//Test.setRecordingCamera(recordCameraID);
+			Test.setRecordingFormat(format);
+			Test.setVideoQuality(Quality);
+			Test.Start();
+			//vidtest.add( Test.getFrame());
+			cam++;
+		//	recording = true;
+		}
+		if (recording) {
+			Test.Stop();
+			recording = false;
+		}
+	}
 
+	public void videocreator() throws IOException {
+		VideoCreator e = new VideoCreator();
+		vidtest.add(e.getFrame());
+
+		e.create(path + ".bjpg");
+	}
+
+}
