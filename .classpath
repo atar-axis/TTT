@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/jmf-2.1.1e.jar"/>
 	<classpathentry kind="lib" path="lib/mp3plugin.jar"/>
 	<classpathentry kind="lib" path="lib/v4l4j.jar"/>
+	<classpathentry kind="lib" path="lib/lti-civil.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
