@@ -1091,7 +1091,7 @@ public class TTT extends JFrame {
     // TODO: position management
     private int position;
 
-    public void addInternalFrameCentered(JInternalFrame frame) {
+    void addInternalFrameCentered(JInternalFrame frame) {
     	frame.pack();
         
         

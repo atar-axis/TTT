@@ -7,36 +7,22 @@ import java.util.logging.Logger;
  * @author ken lti-Civil
  * 
  */
-// detects the OS (linux/mac/windows)
 public final class OSUtils {
 	@SuppressWarnings("deprecation")
 	private static final Logger logger = Logger.global;
-	public static class CameraException extends Exception {
-		Exception internal;
-		public CameraException(Exception e){
-			internal=e;
-		}
-		@Override
-		public void printStackTrace() {
-			System.err.println("CameraException occured because of ");
-			internal.printStackTrace();
-		}
-	}
-	public static WebCamControl obtainWebcam() throws CameraException{
+
+	public static WebCamControl obtainWebcam() {
 		WebCamControl WBC = null;
 		String cam = null;
-		if (OSUtils.isLinux()) {
-			cam = "ttt.videoRecorder.LinuxCam";
-		} else {
+		if (OSUtils.isWindows()) {
 			cam = "ttt.videoRecorder.WindowsCam";
-		}
+		} else
+			cam = "ttt.videoRecorder.LinuxCam";
 		try {
-			Class<?> clazz = Class.forName(cam);
-			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance();
+			Class clazz = Class.forName(cam);
+			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance(null);
 		} catch (Exception e) {
-			//e.printStackTrace();
-			System.err.println("Exception "+e+" occured while trying to create a "+cam);
-			throw new CameraException(e);
+			e.printStackTrace();
 		}
 		return WBC;
 	}

@@ -37,9 +37,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
-
 import javax.imageio.ImageIO;
-
 
 public class ScriptCreator {
 
@@ -313,9 +311,6 @@ public class ScriptCreator {
         out.close();
     }
 
-      
-    
-    
     // css style sheet
     void writeStyleSheet() {
         try {

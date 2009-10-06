@@ -61,7 +61,7 @@ public class Recorder implements MessageConsumer, Closeable {
     private DataOutputStream out;
 
     private AudioRecorder audioVideoRecorder;
-    private   VideoRecorderPanel VideoRecorder;
+    private   VideoRecorder VideoRecorder;
     
     private LectureProfile lectureProfile;
 
@@ -330,17 +330,14 @@ public class Recorder implements MessageConsumer, Closeable {
         if (audioVideoRecorder != null)
             audioVideoRecorder.startRec(file.getCanonicalPath());
 
-        //VideoRec start
-        //TODO recording options
+        //VideoRecStuff start
+        // TODO VideoRecStart
     if(lectureProfile.isRecordVideoEnabled()){
-        VideoRecorder = new VideoRecorderPanel();          
-        VideoRecorder.setRecordingFormat(lectureProfile.getVideoFormat());
-        VideoRecorder.setRecordingCamera(lectureProfile.getRecordingCamera());
-        VideoRecorder.setVideoQuality(lectureProfile.getVideoQuality());
+        VideoRecorder = new VideoRecorder();    
         VideoRecorder.setRecordpath(file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));
         VideoRecorder.Start();
     }
-     
+        //VideoRecStuff end
         
         // startime
         long starttime = System.currentTimeMillis();
@@ -417,27 +414,27 @@ public class Recorder implements MessageConsumer, Closeable {
                     audioVideoRecorder.stopRec();
             }
 
-           
+            //TODO VideorecStop
+       
             if (VideoRecorder != null) {
-                if (closing) {                  	              	
+                if (closing) {   
                 	VideoRecorder.close();
-                	VideoRecorder = null;                	
-                } else{                	
+                	VideoRecorder = null;
+                	
+                } else
                     VideoRecorder.Stop();
-                    }
-            }            
-     
+            }
             
             
             out.flush();
             out.close();
             out = null;
-        }
+
             TTT.userPrefs.put("last_opened_recording", file.getCanonicalPath());
 
             System.out.println("Recorder stop.");
         }
-    
+    }
 
     // modified by Ziewer - 10.05.2007
     // NOTE: writes file header WITHOUT starttime
