@@ -11,8 +11,18 @@ import java.util.logging.Logger;
 public final class OSUtils {
 	@SuppressWarnings("deprecation")
 	private static final Logger logger = Logger.global;
-
-	public static WebCamControl obtainWebcam() {
+	public static class CameraException extends Exception {
+		Exception internal;
+		public CameraException(Exception e){
+			internal=e;
+		}
+		@Override
+		public void printStackTrace() {
+			System.err.println("CameraException occured because of ");
+			internal.printStackTrace();
+		}
+	}
+	public static WebCamControl obtainWebcam() throws CameraException{
 		WebCamControl WBC = null;
 		String cam = null;
 		if (OSUtils.isLinux()) {
@@ -24,7 +34,9 @@ public final class OSUtils {
 			Class<?> clazz = Class.forName(cam);
 			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.err.println("Exception "+e+" occured while trying to create a "+cam);
+			throw new CameraException(e);
 		}
 		return WBC;
 	}

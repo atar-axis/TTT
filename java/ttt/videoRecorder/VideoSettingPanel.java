@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import ttt.TTT;
+import ttt.videoRecorder.OSUtils.CameraException;
 
 public class VideoSettingPanel implements ActionListener {
 
@@ -78,11 +79,11 @@ public class VideoSettingPanel implements ActionListener {
 	}
 
 	@SuppressWarnings("unchecked")
-	public VideoSettingPanel() {
+	public VideoSettingPanel(WebCamControl webcam) {
 
 		TTT.getInstance().addInternalFrameCentered(frame);
 
-		WBC = OSUtils.obtainWebcam();
+		WBC=webcam;
 		//MySettings is a nested class within VideoSettingsPanel
 		WBC.setCaptureInterface(new MySettings());
 

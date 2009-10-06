@@ -41,6 +41,8 @@ import javax.swing.JWindow;
 
 import javax.swing.JPanel;
 
+import ttt.videoRecorder.OSUtils.CameraException;
+
 public class VideoRecorderPanel implements WindowListener, ActionListener {
 	//MyWindow is a nested class within VideoRecroderPanel
 	private MyWindow frame = new MyWindow();
@@ -63,7 +65,12 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 
 	public VideoRecorderPanel() {
 
-		WBC = OSUtils.obtainWebcam();
+		try {
+			WBC = OSUtils.obtainWebcam();
+		} catch (CameraException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		//MyCapture is a nested class within VideoRecroderPanel
 		WBC.setCaptureInterface(new MyCapture());

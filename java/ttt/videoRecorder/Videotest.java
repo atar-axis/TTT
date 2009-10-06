@@ -20,9 +20,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import ttt.videoRecorder.OSUtils.CameraException;
+
 public class Videotest implements ActionListener {
 	
-	public static void main(String args[]) throws IOException {
+	public static void main(String args[]) throws Exception {
 		Videotest kf = new Videotest();
 		kf.gui();
 	}
@@ -82,7 +84,10 @@ public class Videotest implements ActionListener {
 
 
 
-	final VideoSettingPanel k = new VideoSettingPanel();
+	final VideoSettingPanel k;
+	public Videotest() throws CameraException{
+		k= new VideoSettingPanel(OSUtils.obtainWebcam());
+	}
 
 	public void videosettings() {
 		if (!recording) {
