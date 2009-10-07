@@ -45,7 +45,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 
-import com.sun.org.apache.xalan.internal.xsltc.runtime.Hashtable;
 
 /**
  * 
