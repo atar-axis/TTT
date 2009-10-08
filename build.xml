@@ -1,6 +1,7 @@
 <project name="TTT" default ="all" basedir=".">
   <property name="java"       location="java" />
   <property name="lib"       location="lib" />
+  <property name="native"       location="native" />
   <property name="classes"   location="bin" />
   <property name="dist"      location="dist"/>
   <property name="etc" 	     location="etc" />
@@ -68,6 +69,8 @@
      </manifest>
      </jar>
     <copy todir="${dist}"><fileset dir="${lib}"></fileset></copy>
+    <copy todir="${dist}"><fileset dir="${native}"></fileset></copy>
+    <copy todir="${dist}" file="run.sh" />
     <zip destfile="./ttt.zip" basedir="${dist}" update="true"/> 
   </target>
 

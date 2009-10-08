@@ -45,7 +45,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ProgressMonitor;
 
-
 /**
  * 
  * @author ziewer

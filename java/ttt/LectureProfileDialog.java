@@ -50,6 +50,10 @@ import javax.swing.SpringLayout;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import ttt.videoRecorder.OSUtils;
+import ttt.videoRecorder.WebCamControl;
+import ttt.videoRecorder.OSUtils.CameraException;
+
 public class LectureProfileDialog {
     public static void showLectureProfileDialog() {
         new LectureProfileDialog().show();
@@ -210,24 +214,25 @@ public class LectureProfileDialog {
         recorderCheckBox.setSelected(true);
         recorderCheckBox.setEnabled(false);
 
-        // video recording
-        final JCheckBox recordVideoCheckBox = new JCheckBox("incl. video");
-        recordVideoCheckBox.setToolTipText("enable video recoding");
-        recordVideoCheckBox.setOpaque(false);
-        recordVideoCheckBox.setSelected(true);
-        recordVideoCheckBox.setEnabled(false);
+        // video recording   
+  
+        final ttt.videoRecorder.VideoSettingPanel CameraSettings;
+        JButton CameraSettingsButton = new JButton("Camera Setting");
+		CameraSettingsButton.setEnabled(false);
+		
+			CameraSettings = new ttt.videoRecorder.VideoSettingPanel();
+			CameraSettings.show(false);
+			CameraSettingsButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					CameraSettings.show(true);
+				}
+			});
+		
         
-        // cam recording
-        final JCheckBox camCheckBox = new JCheckBox("incl. Webcam");
-        camCheckBox.setToolTipText("enable Webcam recoding");
-        camCheckBox.setOpaque(false);
-        camCheckBox.setSelected(true);
-        camCheckBox.setEnabled(false);
-
+        
         // enable/disable according to recorder selection
         recorderCheckBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                recordVideoCheckBox.setVisible(recorderCheckBox.isSelected());
                 filenameField.setVisible(recorderCheckBox.isSelected());
                 filenameLabel.setVisible(recorderCheckBox.isSelected());
             }
@@ -308,8 +313,8 @@ public class LectureProfileDialog {
             panel.add(label);
             panel.add(recorderCheckBox);
             panel.add(new JLabel(" "));
-            panel.add(recordVideoCheckBox);
-
+          //  panel.add(recordVideoCheckBox);
+                      
             panel.add(filenameLabel);
             panel.add(filenameField);
         }
@@ -371,13 +376,12 @@ public class LectureProfileDialog {
 
         videoRecordingPanel.add(Box.createVerticalStrut(5));
 
-        label = new JLabel("Video Recording:");
-        label.setEnabled(false);
-        videoRecordingPanel.add(label);
+      final JLabel  videolabel = new JLabel("Video Recording:");
+      videolabel.setEnabled(false);
+        videoRecordingPanel.add(videolabel);
         videoRecordingPanel.add(videoRecordingOnCheckbox);
         videoRecordingPanel.add(videoRecordingOffCheckbox);
-
-        videoRecordingPanel.add(Box.createVerticalGlue());
+        videoRecordingPanel.add(CameraSettingsButton);
 
         videoRecordingPanel.add(audioFormatLabel);
         videoRecordingPanel.add(wavRadioButton);
@@ -430,8 +434,6 @@ public class LectureProfileDialog {
                     portField.setText("5900");
                     displayDesktopCheckBox.setSelected(false);
                     recorderCheckBox.setSelected(true);
-                    recordVideoCheckBox.setSelected(true);
-                    recordVideoCheckBox.setVisible(recorderCheckBox.isSelected());
                     videoRecordingOnCheckbox.setSelected(true);
                     filenameField.setVisible(recorderCheckBox.isSelected());
                     filenameLabel.setVisible(recorderCheckBox.isSelected());
@@ -459,11 +461,13 @@ public class LectureProfileDialog {
 
         // buttons
         final JButton okButton = new JButton("ok");
-        okButton.setEnabled(false);
-
+        okButton.setEnabled(false);        
+    
+                
         JButton cancelButton = new JButton("cancel");
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
+            	CameraSettings.release();
                 // close dialog
                 if (monitorPanel != null)
                     monitorPanel.close();
@@ -544,6 +548,10 @@ public class LectureProfileDialog {
 
                         // set values
                         if (profile != null) {
+                        	
+                        	// CameraSettings.getCameraIDs().contains(profile.getRecordingCamera());
+                        	
+                        	
                             lectureComboBox.setSelectedItem(profile.getLecture());
                             teacherComboBox.setSelectedItem(profile.getTeacher());
                             hostField.setText(profile.getHost());
@@ -562,10 +570,16 @@ public class LectureProfileDialog {
                             displayDesktopCheckBox.setSelected(!loopback);
 
                             recorderCheckBox.setSelected(profile.isRecordEnabled());                            
-                            recordVideoCheckBox.setSelected(profile.isRecordVideoEnabled());
-                            recordVideoCheckBox.setVisible(recorderCheckBox.isSelected());
-                            videoRecordingOnCheckbox.setSelected(profile.isRecordVideoEnabled());
-                            videoRecordingOffCheckbox.setSelected(!profile.isRecordVideoEnabled());
+                           // recordVideoCheckBox.setSelected(profile.isRecordVideoEnabled());
+                           // recordVideoCheckBox.setVisible(recorderCheckBox.isSelected());
+                            if (CameraSettings!=null) if(CameraSettings.CamerasFound()){
+                            	videoRecordingOnCheckbox.setSelected(profile.isRecordVideoEnabled());
+                            	videoRecordingOffCheckbox.setSelected(!profile.isRecordVideoEnabled());
+                            	if( CameraSettings.getCameraIDs().contains(profile.getRecordingCamera()))
+                            		CameraSettings.setRecordingCamera(profile.getRecordingCamera());
+                            	CameraSettings.setRecordingFormat(profile.getVideoFormat()); 
+                            	CameraSettings.setQuality(profile.getVideoQuality());
+                            }
                             //Always use wave encoding in order to set profile.isRecordLinearAudioEnabled() to true
                             wavRadioButton.setSelected(true);	
                             mp3RadioButton.setSelected(false);
@@ -579,12 +593,13 @@ public class LectureProfileDialog {
 
                     // else
 
+                    CameraSettings.release();
                     // store profile
                     LectureProfile lectureProfile = LectureProfile.getProfile((String) lectureComboBox
                             .getSelectedItem());
                     if (lectureProfile == null)
                         lectureProfile = new LectureProfile((String) lectureComboBox.getSelectedItem());
-
+                    
                     final LectureProfile profile = lectureProfile;
 
                     profile.setTeacher((String) teacherComboBox.getSelectedItem());
@@ -592,11 +607,17 @@ public class LectureProfileDialog {
                     profile.setPort(portField.getNumber() >= 100 ? portField.getNumber()
                             : (portField.getNumber() + 5900));
                     profile.setRecordEnabled(recorderCheckBox.isSelected());
-                    profile.setRecordVideoEnabled(recordVideoCheckBox.isSelected());
                     profile.setRecordVideoEnabled(videoRecordingOnCheckbox.isSelected());
                     profile.setRecordLinearAudioEnabled(wavRadioButton.isSelected());
                     profile.setLoopbackRecorder(!displayDesktopCheckBox.isSelected());
-
+                    
+                  
+                    	profile.setRecordingFormat(CameraSettings.getRecordingFormat());                    
+                    	profile.setRecordingCamera(CameraSettings.getRecordingCamera());
+                    	profile.setVideoQualiy(CameraSettings.getQuality());
+                    	CameraSettings.show(false);
+                    
+                    
                     profile.storeProfile();
                     TTT.userPrefs.put("last_used_lecture_profile", profile.getLecture());
 
@@ -648,11 +669,18 @@ public class LectureProfileDialog {
                         for (int i = 0; i < components.length; i++) {
                             components[i].setEnabled(true);
                         }
-                        components = videoRecordingPanel.getComponents();
-                        for (int i = 0; i < components.length; i++) {
-                            components[i].setEnabled(true);
+                        
+                        if(CameraSettings.CamerasFound()){
+                        	components = videoRecordingPanel.getComponents();
+                        	for (int i = 0; i < components.length; i++) {
+                        		components[i].setEnabled(true);
                         }
-
+                        }else{
+                        	videolabel.setText("No Camera available");                        	
+                        	videoRecordingOffCheckbox.setSelected(true);
+                        	
+                        }
+                        
                         avLabel.setEnabled(true);
                         audioVolumeLabel.setEnabled(true);
                         recordingPathButton.setEnabled(true);

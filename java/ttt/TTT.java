@@ -91,7 +91,7 @@ import ttt.messaging.gui.NetworkInterfaceDialog;
 import ttt.messaging.server.TTTMessaging;
 
 public class TTT extends JFrame {
-    static final String version = "05.10.2009";
+    static final String version = "22.05.2009";
 
     public static boolean debug =! true;
     static boolean verbose = true;
@@ -1091,7 +1091,7 @@ public class TTT extends JFrame {
     // TODO: position management
     private int position;
 
-    void addInternalFrameCentered(JInternalFrame frame) {
+    public void addInternalFrameCentered(JInternalFrame frame) {
     	frame.pack();
         
         
