@@ -53,11 +53,7 @@ public final class TextAnnotation extends Annotation {
 		this.posY = pY;
 		this.maxWidth = maxWidth;
 		this.text = txt;
-		try {
-		this.bText = txt.getBytes("UTF-8");
-		} catch (Exception e) {
-			this.bText = txt.getBytes();
-		}
+		getTextBytes();
 		
 		calculateBounds();
 	}
@@ -90,11 +86,7 @@ public final class TextAnnotation extends Annotation {
 			text += ((Element)nlLines.item(i)).getTextContent();
 			if (i+1 != nlLines.getLength()) text += "\n";
 		}
-		try {
-			bText = text.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException uee) {
-			bText = text.getBytes();
-		}
+		getTextBytes();
 
 		calculateBounds();
 	}
@@ -257,12 +249,14 @@ public final class TextAnnotation extends Annotation {
 	
 	public void addChar(char c) {
 		text += c;
+		getTextBytes();
 		calculateBounds();
 	}
 	
 	public void deleteLastChar() {
 		if (text.length() > 0) {
 			text = text.substring(0, text.length() - 1);
+			getTextBytes();
 			calculateBounds();
 		}
 	}
@@ -274,8 +268,10 @@ public final class TextAnnotation extends Annotation {
 	 * Called by {@link ttt.messaging.client.JAnnotationPanel}
 	 */
 	public void trim() {
-		String textNew = text.trim();
-		if(!textNew.equals(text)) calculateBounds();
+		if (text.trim().length() != text.length()) {
+			text = text.trim();
+			calculateBounds();
+		}
 	}
 
 	@Override
@@ -319,8 +315,16 @@ public final class TextAnnotation extends Annotation {
 		// wanted to use it for automatic word wrapping, but
 		// the text is not displayed in the flash file!?
 		
-//		EditField flashEdit = new EditField("foo", "ein etwas längerer Text zum Testen des Umbruchs", font, 16, 0, 0, 200, 200);
+//		EditField flashEdit = new EditField("foo", "ein etwas lï¿½ngerer Text zum Testen des Umbruchs", font, 16, 0, 0, 200, 200);
 //		flashEdit.setProperties(false, true, false, false, true, true, false, false);
 //		flashEdit.setTextColor(new AlphaColor(255,0,0,0));
+	}
+	
+	private void getTextBytes() {
+		try {
+			bText = text.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException uee) {
+			bText = text.getBytes();
+		}
 	}
 }
