@@ -424,9 +424,18 @@ public class HextileMessage extends FramebufferUpdateMessage {
             if (width > 0 && height > 0) {
                 BufferedImage bufImage = (BufferedImage) flashContext.recording.graphicsContext.memImage;
                 BufferedImage subImage = bufImage.getSubimage(x, y, width, height);
-                // create a Define Bit Lossless image for subImage
-                com.anotherbigidea.flash.movie.Image.Lossless img = ImageUtil.createLosslessImage(subImage, colorDepth,
-                        true);
+                
+                
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                javax.imageio.ImageIO.write(subImage,"jpeg",baos);
+
+                com.anotherbigidea.flash.movie.Image img = 
+                    new com.anotherbigidea.flash.movie.Image.JPEG(baos.toByteArray());
+                
+                // create a Define Bit Lossless image for subImage -- way to much memory consumation
+                //                com.anotherbigidea.flash.movie.Image.Lossless img = ImageUtil.createLosslessImage(subImage, colorDepth,
+                //                        true);
+                
                 // create a shape that uses the image as a fill
                 // (images cannot be placed directly. They can only be used as shape fills)
                 com.anotherbigidea.flash.movie.Shape shapeImage = ImageUtil.shapeForImage(img, (double) subImage

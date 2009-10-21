@@ -64,18 +64,20 @@ public class LinuxCam implements WebCamControl, Runnable {
 		Vector<String> sdev = new Vector<String>();
 		File dir = new File(v4lSysfsPath);
 		String[] files = dir.list();
+		if (files!=null)
+		{
+			for (String file : files)
 
-		for (String file : files)
 			// the following test the presence of "video" in
 			// each file name - not very portable - relying on HAL
 			// would be much better ...
 			if (file.indexOf("video") != -1)
 				sdev.add("/dev/" + file);
-		if (sdev.size() != 0) {
-			CamFound = true;
+			if (sdev.size() != 0) 
+				CamFound = true;
+			return sdev.toArray();
 		}
-
-		return sdev.toArray();
+		else return new Object[0];
 	}
 
 	private void initFrameGrabber(int std, int channel)

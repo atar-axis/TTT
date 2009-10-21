@@ -114,7 +114,7 @@ Section ""
 
 
   ; change for your purpose (-jar etc.)
-  StrCpy $0 '"$R0" -jar "$INSTDIR"/ttt.jar'
+  StrCpy $0 '"$R0" -Xmx1024M -jar "$INSTDIR"/ttt.jar'
  
   Exec $0
 
