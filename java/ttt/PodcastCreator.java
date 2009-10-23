@@ -183,6 +183,7 @@ public class PodcastCreator {
 			if (outMovieFile.length() == 0) {
 				//the first window movie can renamed directly to output movie.
 				//NOTE: MP4Box uses fps=1 for the container format when vFrames=1 whereby the container frame rate and codec frame rate can differ when using frameRate != 1. That causes a wrong synchronized video and audio stream
+				outMovieTmpFile.delete();	//For renaming files on a windows system, the destination file may not exist
 				windowMovieFile.renameTo(outMovieTmpFile);
 			} else {
 				//append the created window movie (windowMovieFile) to the output movie (outMovieFile) using MP4Box
