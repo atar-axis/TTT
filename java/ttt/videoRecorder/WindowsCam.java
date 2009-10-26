@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 import javax.imageio.ImageIO;
+
 import com.lti.civil.CaptureDeviceInfo;
 import com.lti.civil.CaptureException;
 import com.lti.civil.CaptureObserver;
@@ -23,16 +24,14 @@ import com.lti.civil.VideoFormat;
 import com.lti.civil.awt.AWTImageConverter;
 
 public class WindowsCam implements WebCamControl {
-
-	private CaptureInterface CI;
+	private CaptureHandler CI;
 	private boolean isRecording = false;
-	public String RecordPath;
-	private String SelectedCamID; // Remembers the currently selected cam
-	public int SelectedFormat; // Remembers the currently selected format
-	CaptureStream StartcaptureStream; // The recording stream
-	CaptureSystemFactory factory = DefaultCaptureSystemFactorySingleton
-			.instance();
-	CaptureSystem system = factory.createCaptureSystem();
+	private String RecordPath;
+	private String selectedCameraID; // Remembers the currently selected cam
+	private int SelectedFormat; // Remembers the currently selected format
+	private CaptureStream StartcaptureStream; // The recording stream
+	private CaptureSystemFactory factory = DefaultCaptureSystemFactorySingleton.instance();
+    private	CaptureSystem system = factory.createCaptureSystem();
 	private boolean CamFound = false;
 	private float CompressionQuality = 0.1f;
 
@@ -47,7 +46,8 @@ public class WindowsCam implements WebCamControl {
 		for (int i = 0; i < list.size(); ++i) {
 			CaptureDeviceInfo info = (CaptureDeviceInfo) list.get(i);
 
-			SelectedCamID = info.getDeviceID();
+		
+			selectedCameraID = info.getDeviceID();
 		}
 	}
 
@@ -56,7 +56,7 @@ public class WindowsCam implements WebCamControl {
 		if (CamFound)
 			try {
 				StartcaptureStream = system
-						.openCaptureDeviceStream(getDeviceID(Device));
+						.openCaptureDeviceStream(getDeviceName(Device));
 				for (VideoFormat format : StartcaptureStream.enumVideoFormats()) {
 					// check if formats are valid
 					if (format.getWidth() > 0 && format.getHeight() > 0)
@@ -78,7 +78,7 @@ public class WindowsCam implements WebCamControl {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String getDeviceID(int Device) {
+	public String getDeviceName(int Device) {
 		if (CamFound)
 			try {
 				List<CaptureDeviceInfo> z = (List<CaptureDeviceInfo>) system
@@ -92,7 +92,8 @@ public class WindowsCam implements WebCamControl {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List getDeviceList() {
+	@Override
+	public List getDeviceNames() {
 		if (CamFound)
 			try {
 				List<CaptureDeviceInfo> z = (List<CaptureDeviceInfo>) system
@@ -113,7 +114,7 @@ public class WindowsCam implements WebCamControl {
 	}
 
 	public String getSelectedCam() {
-		return SelectedCamID;
+		return selectedCameraID;
 	}
 
 	@Override
@@ -124,7 +125,7 @@ public class WindowsCam implements WebCamControl {
 					system.init();
 
 					StartcaptureStream = system
-							.openCaptureDeviceStream(SelectedCamID);
+							.openCaptureDeviceStream(selectedCameraID);
 
 					StartcaptureStream.setObserver(new MyCaptureObserver());
 
@@ -159,7 +160,7 @@ public class WindowsCam implements WebCamControl {
 
 	@Override
 	public void setSelectedCam(String DeviceID) {
-		SelectedCamID = DeviceID;
+		selectedCameraID = DeviceID;
 	}
 
 	@Override
@@ -168,7 +169,7 @@ public class WindowsCam implements WebCamControl {
 		if (CamFound)
 			try {
 				CaptureStream captureStream;
-				captureStream = system.openCaptureDeviceStream(SelectedCamID);
+				captureStream = system.openCaptureDeviceStream(selectedCameraID);
 
 				for (VideoFormat format : captureStream.enumVideoFormats()) {
 					if (format.getWidth() == Width
@@ -191,13 +192,13 @@ public class WindowsCam implements WebCamControl {
 	}
 
 	@Override
-	public void setCaptureInterface(CaptureInterface OnPic) {
+	public void setCaptureInterface(CaptureHandler OnPic) {
 		CI = OnPic;
 	}
 
 	@Override
 	public void release() {
-	} // not necessary for windowscam
+	} // not necessary for WindowsCam
 
 	@Override
 	public boolean CameraFound() {

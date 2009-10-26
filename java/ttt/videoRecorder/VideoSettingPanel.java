@@ -5,26 +5,10 @@ import java.awt.GridBagLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
-import javax.imageio.stream.ImageOutputStream;
-import javax.imageio.stream.MemoryCacheImageInputStream;
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
@@ -93,19 +77,20 @@ public class VideoSettingPanel implements ActionListener {
 			//MySettings is a nested class within VideoSettingsPanel
 			WBC.setCaptureInterface(new MySettings());
 		
-		
-
 		if (WBC.CameraFound()) {
 			CamFound = true;
-			list = WBC.getDeviceList();
+			list = WBC.getDeviceNames();
 
-			WBC.setSelectedCam(WBC.getDeviceID(0));
+			WBC.setSelectedCam(WBC.getDeviceName(0));
 			CurrentCameraformat(0);
+			if(list != null)
 			for (int i = 0; i < list.size(); ++i) {
 				boxCameras.addItem(list.get(i));
 			}
-			for (int i = 1; i < 11; i++)
+			
+			for (int i = 1; i < 11; i++){
 				boxQuality.addItem(i);
+			}
 
 			boxCameras.addActionListener(this);
 
@@ -137,8 +122,9 @@ public class VideoSettingPanel implements ActionListener {
 		}
 		}catch(CameraException e){
 			lblnotice.setText("No Camera Found");
+		}catch(SetCameraException e){
+			
 		}
-		
 		
 		butClose.addActionListener(this);
 
@@ -150,22 +136,15 @@ public class VideoSettingPanel implements ActionListener {
 		addPanel(panelstartstop);
 		addPanel(panelquality);
 		addPanel(panelControll);
-
-		c.gridy = c.gridy + 1;
-		c.anchor = GridBagConstraints.PAGE_START;
+		c.gridy = c.gridy + 1;	
 		frame.add(lblnotice, c);
-
-		c.gridy = c.gridy + 1;
+		c.gridy = c.gridy + 1;		
 		frame.add(myLabel, c);
-
-		
-		frame.pack();
-	//	frame.setSize(320, 200);
-
-		frame.setVisible(true);
+		c.anchor = GridBagConstraints.CENTER;
+		frame.pack();	
+	frame.setVisible(false);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.setEnabled(true);
-
 	}// End Constructor
 
 	GridBagConstraints c = new GridBagConstraints();
@@ -185,9 +164,14 @@ public class VideoSettingPanel implements ActionListener {
 	public void CurrentCameraformat(int DeviceID) {
 		// updates the CameraModeBox
 		boxFormat.removeAllItems();
-		formats = WBC.getSupportedFormats(DeviceID);
+		try {
+			formats = WBC.getSupportedFormats(DeviceID);
+		} catch (CameragetFormatsException e) {			
+			e.printStackTrace();
+		}
 
-		if (formats.isEmpty()) {
+		if (formats == null) {
+			formats = new LinkedList<TTTVideoFormat>();
 			lblnotice
 					.setText("No supported Formats found. Setting Resolution to 160x120.");
 			formats.add(new TTTVideoFormat(160, 120));
@@ -207,11 +191,11 @@ public class VideoSettingPanel implements ActionListener {
 	public TTTVideoFormat getRecordingFormat() {
 		return AppliedFormat;
 	}
-
+	
 	public List<String> getCameraIDs() {
 		List<String> IDs = new LinkedList<String>();
 		for (int i = 0; i < list.size(); i++) {
-			IDs.add(WBC.getDeviceID(i));
+			IDs.add(WBC.getDeviceName(i));
 		}
 		return IDs;
 	}
@@ -257,8 +241,12 @@ public class VideoSettingPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == boxCameras) {
-			WBC.setSelectedCam(WBC.getDeviceID(boxCameras.getSelectedIndex()));
+			try {
+				WBC.setSelectedCam(WBC.getDeviceName(boxCameras.getSelectedIndex()));
 			CurrentCameraformat(boxCameras.getSelectedIndex());
+			} catch (SetCameraException e1) {
+				e1.printStackTrace();
+			}			
 		}
 		if (e.getSource() == boxQuality) {
 			float x = ((float) boxQuality.getSelectedIndex() + 1) / 10;
@@ -274,66 +262,59 @@ public class VideoSettingPanel implements ActionListener {
 		}
 
 		if (e.getSource() == butStop) {
-			WBC.Stop();
+			try {
+				WBC.Stop();
+			} catch (CameraStopException e1) {				
+				e1.printStackTrace();
+			}
 			setEnabled(true);
 		}
-		if (e.getSource() == butStart) {
-			setEnabled(false);
-			frame.pack();
-			WBC.Start();
+		
+		if (e.getSource() == butStart) {	
+			try {
+				if(WBC.Start()){
+					setEnabled(false);
+					frame.pack();
+				}		
+				else{
+					lblnotice.setText("Something went wrong. Couldn't start Preview.");
+				}
+			} catch (CameraStartException e1) {				
+				e1.printStackTrace();
+			}
 		}
+		
 		if (e.getSource() == butClose) {
 			show(false);
 			setEnabled(true);
-			WBC.Stop();
+			try {
+				WBC.Stop();
+			} catch (CameraStopException e1) {				
+				e1.printStackTrace();
+			}
 		}
+		
 		if (e.getSource() == butApply) {
 			setEnabled(true);
-			WBC.Stop();
-			AppliedCamera = WBC.getDeviceID(boxCameras.getSelectedIndex());
+			try {
+				WBC.Stop();
+			} catch (CameraStopException e1) {				
+				e1.printStackTrace();
+			}
+			AppliedCamera = WBC.getDeviceName(boxCameras.getSelectedIndex());
 			AppliedFormat = formats.get(boxFormat.getSelectedIndex());
 			AppliedQuality = WBC.getQuality();
 			show(false);
 		}
 	}
 	
-	class MySettings implements CaptureInterface {
-
+	class MySettings extends CaptureHandler {
 		@Override
 		public void onNewImage(byte[] image, String RecordPath, float Quality) {
 			myLabel.setIcon(new ImageIcon(compressJpegFile(image, Quality)));
 			frame.pack();
 		}
-		public byte[] compressJpegFile(byte[] inbytes,
-				float compressionQuality) {
-			//1.0f means no compression
-			if (Float.compare(compressionQuality, 1.0f) != 0) { 
-				try {
-
-					BufferedImage bimg = ImageIO.read(new ByteArrayInputStream(inbytes));
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					JPEGImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());
-					iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-					iwparam.setCompressionQuality(compressionQuality);
-					ImageWriter writer = null;
-					Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpg");
-					if (iter.hasNext()) {
-						writer = iter.next();
-					}
-					MemoryCacheImageOutputStream mciis= new MemoryCacheImageOutputStream(baos);
-					writer.setOutput(mciis);
-					writer.write(null,new IIOImage(bimg,null,null),iwparam);
-
-					byte[] bytesOut = baos.toByteArray();
-
-					baos.close();
-					return bytesOut;
-				} catch (IOException ioe) {
-					System.out.println("write error: " + ioe.getMessage());
-					return null;
-				}
-			}
-			return inbytes;
-		}
+		
+		
 	}
 }

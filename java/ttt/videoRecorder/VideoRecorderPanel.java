@@ -14,26 +14,13 @@ import java.awt.event.MouseMotionAdapter;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 
 import java.io.File;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Locale;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
-import javax.imageio.stream.ImageOutputStream;
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 import javax.swing.JButton;
 
 import javax.swing.ImageIcon;
@@ -64,12 +51,11 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 
 	private TTTVideoFormat tttFormat = new TTTVideoFormat(160, 120);
 
-	public VideoRecorderPanel() {
+	public VideoRecorderPanel(String RecordingCamera, TTTVideoFormat Format, float Quality, String RecordPath) {
 
 		try {
 			WBC = OSUtils.obtainWebcam();
 		} catch (CameraException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -77,6 +63,10 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 		WBC.setCaptureInterface(new MyCapture());
 
 		if (WBC.CameraFound()) {
+			setRecordingCamera(RecordingCamera);
+			setRecordingFormat(Format);
+			setRecordpath(RecordPath);
+			setVideoQuality(Quality);
 			butHide.setSize(20, 15);
 			butHide.addActionListener(this);
 
@@ -105,7 +95,11 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 			if (!isRecording) {
 				WBC.setFormat(tttFormat.getWidth(), tttFormat.getHeight());
 				setSize();
-				WBC.Start();
+				try {
+					WBC.Start();
+				} catch (CameraStartException e) {				
+					e.printStackTrace();
+				}
 				startTime = System.nanoTime();
 				isRecording = true;
 			}
@@ -113,7 +107,11 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 
 	public void Stop() {
 		if (isRecording) {
-			WBC.Stop();
+			try {
+				WBC.Stop();
+			} catch (CameraStopException e) {	
+				e.printStackTrace();
+			}
 			WBC.release();
 			isRecording = false;
 			saveelapsedTime();
@@ -141,10 +139,15 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 	}
 
 	public void setRecordingCamera(String recordCameraID) {
+		try{
 		if (recordCameraID != null) {
 			WBC.setSelectedCam(recordCameraID);
 		} else {
-			WBC.setSelectedCam(WBC.getDeviceID(0));
+			WBC.setSelectedCam(WBC.getDeviceName(0));
+		}}
+		catch(SetCameraException e)	{
+			System.out.println("Couldn't select Camera. Closing Record Window.");
+			this.close();
 		}
 	}
 
@@ -208,7 +211,7 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 		}
 	}
 
-	class MyCapture implements CaptureInterface {
+	class MyCapture extends CaptureHandler {
 
 		@Override
 		public void onNewImage(byte[] image, String RecordPath, float Quality) {
@@ -229,38 +232,7 @@ public class VideoRecorderPanel implements WindowListener, ActionListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		public byte[] compressJpegFile(byte[] inbytes,
-				float compressionQuality) {
-			//1.0f means no compression
-			if (Float.compare(compressionQuality, 1.0f) != 0) { 
-				try {
-
-					BufferedImage bimg = ImageIO.read(new ByteArrayInputStream(inbytes));
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					JPEGImageWriteParam iwparam = new JPEGImageWriteParam(Locale.getDefault());
-					iwparam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-					iwparam.setCompressionQuality(compressionQuality);
-					ImageWriter writer = null;
-					Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpg");
-					if (iter.hasNext()) {
-						writer = iter.next();
-					}
-					MemoryCacheImageOutputStream mciis= new MemoryCacheImageOutputStream(baos);
-					writer.setOutput(mciis);
-					writer.write(null,new IIOImage(bimg,null,null),iwparam);
-
-					byte[] bytesOut = baos.toByteArray();
-
-					baos.close();
-					return bytesOut;
-				} catch (IOException ioe) {
-					System.out.println("write error: " + ioe.getMessage());
-					return null;
-				}
-			}
-			return inbytes;
-		}
+		}		
 
 	}
 	

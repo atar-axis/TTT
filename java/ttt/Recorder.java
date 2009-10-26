@@ -333,11 +333,7 @@ public class Recorder implements MessageConsumer, Closeable {
         //VideoRec start
         //TODO recording options
     if(lectureProfile.isRecordVideoEnabled()){
-        VideoRecorder = new VideoRecorderPanel();          
-        VideoRecorder.setRecordingFormat(lectureProfile.getVideoFormat());
-        VideoRecorder.setRecordingCamera(lectureProfile.getRecordingCamera());
-        VideoRecorder.setVideoQuality(lectureProfile.getVideoQuality());
-        VideoRecorder.setRecordpath(file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));
+        VideoRecorder = new VideoRecorderPanel(lectureProfile.getRecordingCamera(), lectureProfile.getVideoFormat(),lectureProfile.getVideoQuality(),file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));          
         VideoRecorder.Start();
     }
      

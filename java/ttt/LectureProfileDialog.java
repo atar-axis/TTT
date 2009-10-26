@@ -221,7 +221,6 @@ public class LectureProfileDialog {
 		CameraSettingsButton.setEnabled(false);
 		
 			CameraSettings = new ttt.videoRecorder.VideoSettingPanel();
-			CameraSettings.show(false);
 			CameraSettingsButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					CameraSettings.show(true);
@@ -468,6 +467,7 @@ public class LectureProfileDialog {
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
             	CameraSettings.release();
+            	CameraSettings.show(false);
                 // close dialog
                 if (monitorPanel != null)
                     monitorPanel.close();
@@ -593,7 +593,8 @@ public class LectureProfileDialog {
 
                     // else
 
-                    CameraSettings.release();
+                    CameraSettings.release();                   
+                    
                     // store profile
                     LectureProfile lectureProfile = LectureProfile.getProfile((String) lectureComboBox
                             .getSelectedItem());

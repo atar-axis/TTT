@@ -283,18 +283,7 @@ public class PostProcessorPanel extends GradientPanel {
                 audioField.setForeground(Color.RED);
                 audioField.setText("not found");
             }
-            // video available
-            try {
-                if (recording.getVideoFilename() != null) {
-                    videoField.setForeground(Color.GREEN);
-                    videoField.setText("found");
-                } else
-                    throw new FileNotFoundException();
-            } catch (Exception e) {
-                videoField.setForeground(Color.RED);
-                videoField.setText("not found");
-            }
-
+          
             // init thumbs and script panel
             if (recording.thumbnailsAvailable()) {
                 thumbnailsStatusField.setForeground(Color.GREEN);
@@ -328,13 +317,17 @@ public class PostProcessorPanel extends GradientPanel {
                 ocrStatusField.setText("not found");
                 ocrStatusField.setToolTipText(null);
             }
-            if (recording.getExistingFileBySuffix("zip").exists()) {
+            if (recording.getExistingFileBySuffix("bjpg").exists()) {
+            	videoField.setForeground(Color.GREEN);
+            	videoField.setText("found");
                camStatusField.setForeground(Color.GREEN);
                camStatusField.setText("folder found");
                camStatusField.setToolTipText("folder exists - content not confirmed");
             } else {
             	camStatusField.setForeground(Color.RED);
             	camStatusField.setText("not found");
+            	videoField.setForeground(Color.RED);
+            	videoField.setText("not found");
             	camStatusField.setToolTipText(null);
             }
             if (recording.getExistingFileBySuffix("mp3").exists()) {
@@ -1240,8 +1233,7 @@ public class PostProcessorPanel extends GradientPanel {
                     String audio_filename = recording.getAudioFilename();
                     if (!session.publish(audio_filename + ".orig", basePath, batch) && audio_filename.length() > 4)
                         // try if original is wav file
-                        if (!session.publish(audio_filename.substring(0, audio_filename.length() - 4) + ".wav",
-                                basePath, batch))
+                       // if (!session.publish(audio_filename.substring(0, audio_filename.length() - 4) + ".wav", basePath, batch))
                             // try if original is mp2 file
                             session.publish(audio_filename.substring(0, audio_filename.length() - 4) + ".mp2",
                                     basePath, batch);
