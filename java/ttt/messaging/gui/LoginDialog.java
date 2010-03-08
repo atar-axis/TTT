@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ttt.NumberField;
+import ttt.gui.NumberField;
 
 /**
  * GUI for a login dialog. Asks for host name and port and for an optional user name.

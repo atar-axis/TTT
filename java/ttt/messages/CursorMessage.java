@@ -35,9 +35,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ttt.Constants;
-import ttt.FlashContext;
-import ttt.GraphicsContext;
 import ttt.TTT;
+import ttt.gui.GraphicsContext;
+import ttt.postprocessing.flash.FlashContext;
 
 import com.anotherbigidea.flash.SWFConstants;
 import com.anotherbigidea.flash.movie.ImageUtil;

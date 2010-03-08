@@ -29,13 +29,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLDecoder;
 
 public class Constants {
 
-    static final String VersionMessageTTT = "TTT 001.001\n";
-    static final String VersionMessageRFB = "RFB 003.003\n";
+    public static final String VersionMessageTTT = "TTT 001.001\n";
+    public static final String VersionMessageRFB = "RFB 003.003\n";
 
     // TODO: check values of defer variables - allow user preferences
     // Fine tuning options. Copied defaults from UltraVNC Viewer
@@ -113,26 +111,26 @@ public class Constants {
     public static final int EncodingNewFBSize = 0xFFFFFF21;
 
     // initialisation
-    static final int ConnectionFailed = 0;
-    static final int ConnectionOK = 1;
+    public static final int ConnectionFailed = 0;
+    public static final int ConnectionOK = 1;
     static final int ViewOnly = 0;
     static final int FullAccess = 1;
     static final int Multicast = 2;
-    static final int Unicast = 3;
-    static final int NoAuthentication = 1;
-    static final int Authentication = 2;
-    static final int AuthenticationOK = 0;
-    static final int AuthenticationFailed = 1;
-    static final int AuthenticationTooManny = 2;
+    public static final int Unicast = 3;
+    public static final int NoAuthentication = 1;
+    public static final int Authentication = 2;
+    public static final int AuthenticationOK = 0;
+    public static final int AuthenticationFailed = 1;
+    public static final int AuthenticationTooManny = 2;
 
     // client init
     static final int NonShared = 0;
-    static final int Shared = 1;
+    public static final int Shared = 1;
 
-    static int[] encodings = { /* EncodingCopyRect, */EncodingHextile, EncodingPointerPos, EncodingRichCursor,
+    public static int[] encodings = { /* EncodingCopyRect, */EncodingHextile, EncodingPointerPos, EncodingRichCursor,
             EncodingXCursor };
-    static int[] encodingsWithoutCursorEncodings = { /* EncodingCopyRect, */EncodingHextile };
-    static int defaultColorDepth = 16; // 24;
+    public static int[] encodingsWithoutCursorEncodings = { /* EncodingCopyRect, */EncodingHextile };
+    public static int defaultColorDepth = 16; // 24;
     static Dimension defaultVideoRecordingSize = new Dimension(176, 144);
     static Dimension defaultVideoTransmissionSize = new Dimension(176, 144);
 
@@ -207,20 +205,20 @@ public class Constants {
     // /////////////////////////////////////////
 
     // TODO: set as option
-    static int default_thumbnail_scale_factor = 6;
+    public static int default_thumbnail_scale_factor = 6;
 
     // /////////////////////////////////////////
     // handling of file endings
     // /////////////////////////////////////////
-    static String[] desktopEndings = { ".ttt", ".TTT" }; // TODO: support/convert old recordings: , ".vnc", ".VNC" };
-    static String[] videoEndings = { ".mov", ".MOV", ".avi", ".AVI" };
-    static String[] audioEndings = { ".mp3", ".MP3", ".mp2", ".MP2", ".wav", ".WAV" };
-    static String[] searchbaseEndings = { ".xml", ".XML", ".txt", ".TXT" };
+    public static String[] desktopEndings = { ".ttt", ".TTT" }; // TODO: support/convert old recordings: , ".vnc", ".VNC" };
+    public static String[] videoEndings = { ".mov", ".MOV", ".avi", ".AVI" };
+    public static String[] audioEndings = { ".mp3", ".MP3", ".mp2", ".MP2", ".wav", ".WAV" };
+    public static String[] searchbaseEndings = { ".xml", ".XML", ".txt", ".TXT" };
 
-    static final int DESKTOP_FILE = 1;
-    static final int AUDIO_FILE = 2;
-    static final int VIDEO_FILE = 3;
-    static final int SEARCHBASE_FILE = 4;
+    public static final int DESKTOP_FILE = 1;
+    public static final int AUDIO_FILE = 2;
+    public static final int VIDEO_FILE = 3;
+    public static final int SEARCHBASE_FILE = 4;
 
     public static File getExistingFile(String filename, int fileType) throws FileNotFoundException {
         if (filename == null)

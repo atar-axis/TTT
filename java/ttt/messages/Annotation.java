@@ -29,7 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import ttt.Constants;
-import ttt.GraphicsContext;
+import ttt.gui.GraphicsContext;
 
 public abstract class Annotation extends Message {
 

@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import ttt.FlashContext;
+import ttt.postprocessing.flash.FlashContext;
 
 import com.anotherbigidea.flash.SWFConstants;
 import com.anotherbigidea.flash.interfaces.SWFActions;

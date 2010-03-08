@@ -32,7 +32,7 @@ import java.io.OutputStream;
 import java.util.zip.DeflaterOutputStream;
 
 import ttt.Constants;
-import ttt.GraphicsContext;
+import ttt.gui.GraphicsContext;
 
 public class InterlacedRawMessage extends FramebufferUpdateMessage {
 

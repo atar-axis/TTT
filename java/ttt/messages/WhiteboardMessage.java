@@ -28,9 +28,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ttt.Constants;
-import ttt.FlashContext;
-import ttt.GraphicsContext;
 import ttt.ProtocolPreferences;
+import ttt.gui.GraphicsContext;
+import ttt.postprocessing.flash.FlashContext;
 
 // must extend FramebufferUpdate or index generation will not detect Whiteboard pages
 public class WhiteboardMessage extends FramebufferUpdateMessage {

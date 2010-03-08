@@ -29,7 +29,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ttt.Constants;
-import ttt.GraphicsContext;
+import ttt.gui.GraphicsContext;
 
 public class CopyRectMessage extends FramebufferUpdateMessage {
 

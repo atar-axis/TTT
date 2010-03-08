@@ -28,7 +28,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import ttt.GraphicsContext;
+import ttt.gui.GraphicsContext;
 
 public abstract class UserInputMessage extends Message {
     // these user input messages are RFB/VNC input messages

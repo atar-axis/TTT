@@ -46,12 +46,16 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import ttt.audio.AudioRecorder;
+import ttt.gui.GradientPanel;
+import ttt.gui.RollOverButton;
 import ttt.messages.Annotation;
 import ttt.messages.DeleteAllAnnotation;
 import ttt.messages.Message;
 import ttt.messages.MessageConsumer;
 import ttt.messages.WhiteboardMessage;
-import ttt.videoRecorder.*;
+import ttt.record.LectureProfile;
+import ttt.video.*;
 
 
 public class Recorder implements MessageConsumer, Closeable {
@@ -61,7 +65,7 @@ public class Recorder implements MessageConsumer, Closeable {
     private DataOutputStream out;
 
     private AudioRecorder audioVideoRecorder;
-    private   VideoRecorderPanel VideoRecorder;
+    private VideoRecorderPanel VideoRecorder;
     
     private LectureProfile lectureProfile;
 
@@ -101,7 +105,7 @@ public class Recorder implements MessageConsumer, Closeable {
     }
 
     // create recorder control elements
-    public Component getControls() {
+    public Component getControls() {    	
         return getControls_3Buttons();
     }
 
@@ -114,12 +118,12 @@ public class Recorder implements MessageConsumer, Closeable {
         final String STOP = "stop";
         final String PLAY = "play";
 
-        final Icon record_icon = new ImageIcon(this.getClass().getResource("resources/Record24.gif"));
-        final Icon stop_icon = new ImageIcon(this.getClass().getResource("resources/Stop24.gif"));
+        final Icon record_icon = new ImageIcon(this.getClass().getResource("../resources/Record24.gif"));
+        final Icon stop_icon = new ImageIcon(this.getClass().getResource("../resources/Stop24.gif"));
 
         final JButton recordButton = new RollOverButton(record_icon, RECORD);
         final JButton playButton = new RollOverButton(
-                new ImageIcon(this.getClass().getResource("resources/Play24.gif")), PLAY);
+                new ImageIcon(this.getClass().getResource("../resources/Play24.gif")), PLAY);
 
         recordButton.setEnabled(out == null);
         playButton.setEnabled(false);
@@ -176,21 +180,21 @@ public class Recorder implements MessageConsumer, Closeable {
         final String PLAY = "play";
 
         final JButton recordButton = new RollOverButton(new ImageIcon(this.getClass().getResource(
-                "resources/Record24.gif")), RECORD);
+        		"../resources/Record24.gif")), RECORD);
         final JButton stopButton = new RollOverButton(
-                new ImageIcon(this.getClass().getResource("resources/Stop24.gif")), STOP);
+                new ImageIcon(this.getClass().getResource("../resources/Stop24.gif")), STOP);
         final JButton playButton = new RollOverButton(
-                new ImageIcon(this.getClass().getResource("resources/Play24.gif")), PLAY);
-
+                new ImageIcon(this.getClass().getResource("../resources/Play24.gif")), PLAY);
+              
         recordButton.setEnabled(out == null);
         stopButton.setEnabled(out != null);
-        playButton.setEnabled(false);
-
+        playButton.setEnabled(false);     
+        
         // avoid focus loss (of main component) in java 1.6
         recordButton.setFocusable(false);
         stopButton.setFocusable(false);
-        playButton.setFocusable(false);
-
+        playButton.setFocusable(false);      
+        
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 try {
@@ -233,9 +237,31 @@ public class Recorder implements MessageConsumer, Closeable {
         controlPanel.add(recordButton);
         controlPanel.add(stopButton);
         controlPanel.add(playButton);
+      
         return controlPanel;
     }
 
+    
+	public Component getVideoControls() {
+		
+		  final JButton hideButton = new RollOverButton("HideVideo");
+		  hideButton.setEnabled(true);
+		  hideButton.setEnabled(true);		  
+		  JPanel controlPanel = (JPanel) getControls_3Buttons();
+		  
+		  ActionListener actionListener = new ActionListener() {
+			  Boolean x= false;
+	            public void actionPerformed(ActionEvent event) {
+	               VideoRecorder.setVisible(x);
+	               x = !x;
+	            }
+	        };
+	        hideButton.addActionListener(actionListener);
+		  controlPanel.add(hideButton);
+		  
+		return controlPanel;
+	}
+    
     // create controls for loopback recorder (recorder runs on recorder desktop)
     public Component getLoopbackControls() {
         // create control panel
@@ -244,8 +270,8 @@ public class Recorder implements MessageConsumer, Closeable {
         final String RECORD = "record";
         final String STOP = "stop";
 
-        final Icon record_icon = new ImageIcon(this.getClass().getResource("resources/Record24.gif"));
-        final Icon stop_icon = new ImageIcon(this.getClass().getResource("resources/Stop24.gif"));
+        final Icon record_icon = new ImageIcon(this.getClass().getResource("../resources/Record24.gif"));
+        final Icon stop_icon = new ImageIcon(this.getClass().getResource("../resources/Stop24.gif"));
 
         final JButton recordButton = new RollOverButton(record_icon, RECORD);
 
@@ -274,8 +300,8 @@ public class Recorder implements MessageConsumer, Closeable {
         final String ZOOM_OUT = "minimize";
         final String ZOOM_IN = "maximize";
 
-        final Icon zoom_in_icon = new ImageIcon(this.getClass().getResource("resources/ZoomIn24.gif"));
-        final Icon zoom_out_icon = new ImageIcon(this.getClass().getResource("resources/ZoomOut24.gif"));
+        final Icon zoom_in_icon = new ImageIcon(this.getClass().getResource("../resources/ZoomIn24.gif"));
+        final Icon zoom_out_icon = new ImageIcon(this.getClass().getResource("../resources/ZoomOut24.gif"));
 
         final JButton zoomButton = new RollOverButton(zoom_in_icon, ZOOM_IN);
         zoomButton.addActionListener(new ActionListener() {
@@ -330,8 +356,7 @@ public class Recorder implements MessageConsumer, Closeable {
         if (audioVideoRecorder != null)
             audioVideoRecorder.startRec(file.getCanonicalPath());
 
-        //VideoRec start
-        //TODO recording options
+        //VideoRec start       
     if(lectureProfile.isRecordVideoEnabled()){
         VideoRecorder = new VideoRecorderPanel(lectureProfile.getRecordingCamera(), lectureProfile.getVideoFormat(),lectureProfile.getVideoQuality(),file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));          
         VideoRecorder.Start();
@@ -753,4 +778,6 @@ public class Recorder implements MessageConsumer, Closeable {
         }
         return true;
     }
+
+
 }

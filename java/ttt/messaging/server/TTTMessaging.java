@@ -40,13 +40,13 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		super("Messaging");
 		
 		// load icons
-		URL urlMessages = this.getClass().getResource("/ttt/resources/msg_messages.png");
-		URL urlPolls = this.getClass().getResource("/ttt/resources/msg_polls.png");
-		URL urlPollNewFull = this.getClass().getResource("/ttt/resources/msg_fullpoll.png");
-		URL urlPollNewQuick = this.getClass().getResource("/ttt/resources/msg_quickpoll.png");
-		URL urlMsgDelAll = this.getClass().getResource("/ttt/resources/msg_messagedelall.png");
-		URL urlMsgDelNonDef = this.getClass().getResource("/ttt/resources/msg_messagedelnondefer.png");
-		URL urlMsgBlockUser = this.getClass().getResource("/ttt/resources/msg_userblock.png");
+		URL urlMessages = this.getClass().getResource("../../resources/msg_messages.png");
+		URL urlPolls = this.getClass().getResource("../../resources/msg_polls.png");
+		URL urlPollNewFull = this.getClass().getResource("../../resources/msg_fullpoll.png");
+		URL urlPollNewQuick = this.getClass().getResource("../../resources/msg_quickpoll.png");
+		URL urlMsgDelAll = this.getClass().getResource("../../resources/msg_messagedelall.png");
+		URL urlMsgDelNonDef = this.getClass().getResource("../../resources/msg_messagedelnondefer.png");
+		URL urlMsgBlockUser = this.getClass().getResource("../../resources/msg_userblock.png");
 
 		JTabbedPane tabPane = new JTabbedPane();
 		

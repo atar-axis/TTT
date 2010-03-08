@@ -14,9 +14,9 @@ import com.anotherbigidea.flash.movie.Instance;
 import com.anotherbigidea.flash.movie.Shape;
 
 import ttt.Constants;
-import ttt.FlashContext;
 import ttt.helper.Base64Codec;
 import ttt.helper.ImageHelper;
+import ttt.postprocessing.flash.FlashContext;
 
 /**
  * Annotation which displays an image.

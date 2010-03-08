@@ -41,9 +41,9 @@ public abstract class MessageListPanel extends JPanel {
     protected static BufferedImage IMG_LEFT = null;
     static {
 		try {
-			IMG_DEFER = ImageIO.read(MessageListPanel.class.getResource("/ttt/resources/msg_defer.png"));
-			IMG_TRASH = ImageIO.read(MessageListPanel.class.getResource("/ttt/resources/msg_messagedelete.png"));
-			IMG_LEFT = ImageIO.read(MessageListPanel.class.getResource("/ttt/resources/msg_left.png"));
+			IMG_DEFER = ImageIO.read(MessageListPanel.class.getResource("../../../resources/msg_defer.png"));
+			IMG_TRASH = ImageIO.read(MessageListPanel.class.getResource("../../../resources/msg_messagedelete.png"));
+			IMG_LEFT = ImageIO.read(MessageListPanel.class.getResource("../../../resources/msg_left.png"));
 		} catch (IOException ioe) { /* ignore */ }
     }
 

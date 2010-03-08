@@ -28,8 +28,6 @@ import java.net.InetAddress;
 import java.util.Date;
 
 public class ProtocolPreferences {
-    // TODO: public is unsafe, but useful to avoid getter;
-
     public String versionMsg = Constants.VersionMessageRFB;
     public String name;
     public int framebufferWidth;

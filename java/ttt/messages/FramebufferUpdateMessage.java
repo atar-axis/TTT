@@ -48,7 +48,7 @@ public abstract class FramebufferUpdateMessage extends Message {
 
     abstract public int getEncoding();
 
-    // TODO: not that importent - can be reduced to getBounds()
+    // TODO: not that important - can be reduced to getBounds()
     public int getCoveredArea() {
         return width * height;
     }

@@ -32,7 +32,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ttt.Constants;
-import ttt.GraphicsContext;
+import ttt.gui.GraphicsContext;
 
 public class RawMessage extends FramebufferUpdateMessage {
     // TODO: this is untested

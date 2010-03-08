@@ -58,6 +58,8 @@ public final class JAnnotationPanel extends JComponent {
 		sheetAnnotations = null;
 		userAnnotations = new ArrayList<Annotation>();
 		
+		setVisible(true);
+		setEnabled(true);
 		setFocusable(true);
 		
 		// process mouse and keyboard events in this class
@@ -139,7 +141,7 @@ public final class JAnnotationPanel extends JComponent {
 	}
 	
 	@Override
-	protected void processKeyEvent(KeyEvent e) {
+	protected void processKeyEvent(KeyEvent e) {			
 		if (textMode && e.getID() == KeyEvent.KEY_TYPED) {
 			if(e.getKeyChar() != KeyEvent.CHAR_UNDEFINED &&
 					(e.getKeyChar() > 31 || e.getKeyChar() == KeyEvent.VK_ENTER)) {
@@ -185,6 +187,7 @@ public final class JAnnotationPanel extends JComponent {
         case Constants.AnnotationText:
         	annotation = new TextAnnotation(0, color, x, y, 0, "");
         	annotation.temporary = true;
+        	this.requestFocusInWindow();
         	textMode = true;
         	break;
         }

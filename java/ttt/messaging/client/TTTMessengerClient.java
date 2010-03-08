@@ -49,9 +49,9 @@ public class TTTMessengerClient extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// get resources
-        URL urlSendText = this.getClass().getResource("/ttt/resources/msgclient_sendtext.png");
-        URL urlSendSheet = this.getClass().getResource("/ttt/resources/msgclient_sendsheet.png");
-        URL urlSendTextSheet = this.getClass().getResource("/ttt/resources/msgclient_sendtextsheet.png");
+        URL urlSendText = this.getClass().getResource("../../../resources/msgclient_sendtext.png");
+        URL urlSendSheet = this.getClass().getResource("../../../resources/msgclient_sendsheet.png");
+        URL urlSendTextSheet = this.getClass().getResource("../../../resources/msgclient_sendtextsheet.png");
 
         // create annotation drawing panel
 		JAnnotationPanel drawPanel = new JAnnotationPanel();

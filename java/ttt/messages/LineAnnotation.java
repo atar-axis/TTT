@@ -32,7 +32,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import ttt.Constants;
-import ttt.FlashContext;
+import ttt.postprocessing.flash.FlashContext;
 
 import com.anotherbigidea.flash.movie.Instance;
 import com.anotherbigidea.flash.structs.AlphaColor;

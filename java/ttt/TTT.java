@@ -46,7 +46,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
@@ -86,18 +85,32 @@ import javax.swing.event.InternalFrameEvent;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import ttt.audio.AudioRecorder;
+import ttt.connections.TTTConnection;
+import ttt.editor.tttEditor.TTTEditor;
+import ttt.gui.GradientPanel;
+import ttt.gui.NumberField;
+import ttt.gui.XMLHandler;
+import ttt.helper.LibraryChecker;
 import ttt.messaging.client.TTTMessengerClient;
 import ttt.messaging.gui.NetworkInterfaceDialog;
 import ttt.messaging.server.TTTMessaging;
+import ttt.player.Player;
+import ttt.postprocessing.KeyGen;
+import ttt.postprocessing.PostProcessorPanel;
+import ttt.record.LectureProfile;
+import ttt.record.LectureProfileDialog;
+import ttt.record.Recording;
+
 
 public class TTT extends JFrame {
     static final String version = "21.10.2009";
 
     public static boolean debug =! true;
-    static boolean verbose = true;
+    public static boolean verbose = true;
 
     // user preferences
-    static Preferences userPrefs = Preferences.userRoot().node("/TTT");
+    public static Preferences userPrefs = Preferences.userRoot().node("/TTT");
     static {
         // show tool tips after 500 msec
         ToolTipManager.sharedInstance().setInitialDelay(500);
@@ -106,11 +119,11 @@ public class TTT extends JFrame {
         ToolTipManager.sharedInstance().setDismissDelay(10000);
     }
 
-    static TTT ttt;
+    public static TTT ttt;
 
     private JDesktopPane desktop;
 
-    private static boolean enabledNativeLookAndFeel = true;
+    public static boolean enabledNativeLookAndFeel = true;
     
     private TTT() {
     	
@@ -124,6 +137,7 @@ public class TTT extends JFrame {
         if (enabledNativeLookAndFeel) {
         	//try to enable native look and feel
         	try {
+        		// The Editor has problems with look and Feel //TODO fix editor (class controlPanel) problems with this.
         		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         		} catch(Exception e) {
         			enabledNativeLookAndFeel = false;
@@ -662,6 +676,35 @@ public class TTT extends JFrame {
         // });
         // menu.add(menuItem);
 
+        
+        // ////////////////////////////////////////////////////////////////////////
+        //Editor
+        // ////////////////////////////////////////////////////////////////////////
+        
+     JMenu  menu2 = new JMenu("Editor");
+  
+     
+        menuBar.add(menu2);
+
+        menuItem = new JMenuItem("Open Editor");
+        //Open Editor 
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	if(enabledNativeLookAndFeel){
+            try {
+				UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName());
+			} catch (Exception e) {				
+				e.printStackTrace();
+			} 
+            	}
+         TTTEditor.OpenEditorAndShowFileDialog();        
+         
+            }});
+        menuItem.setToolTipText("run TTT Editor to edit recorded lectures");
+        menuItem.setIcon(getIcon("16x16/configure.png"));
+       menuItem.setMnemonic(KeyEvent.VK_F);
+        menu2.add(menuItem);
+        
         // ////////////////////////////////////////////////////////////////////////
         // Extras
         // ////////////////////////////////////////////////////////////////////////
@@ -670,27 +713,7 @@ public class TTT extends JFrame {
         menu.setMnemonic(KeyEvent.VK_E);
         menuBar.add(menu);
 
-        memoryMonitorCheckbox = new JCheckBoxMenuItem("Memory Monitor");
-        memoryMonitorCheckbox.setSelected(true);
-        memoryMonitorCheckbox.setMnemonic(KeyEvent.VK_M);
-        memoryMonitorCheckbox.setIcon(getIcon("16x16/ksysguard.png"));
-        menu.add(memoryMonitorCheckbox);
-        memoryMonitorCheckbox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                showMemoryMonitor(((JCheckBoxMenuItem) event.getSource()).isSelected());
-            }
-        });
 
-        menuItem = new JMenuItem("free memory");
-        menuItem.setToolTipText("run Java Garbage Collector to free memory");
-        menuItem.setIcon(getIcon("16x16/eraser.png"));
-        menuItem.setMnemonic(KeyEvent.VK_F);
-        menu.add(menuItem);
-        menuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                Runtime.getRuntime().gc();
-            }
-        });
 
         menuItem = new JMenuItem("reset all options");
         menuItem.setToolTipText("remove any user settings");
@@ -727,6 +750,10 @@ public class TTT extends JFrame {
         	}
         });
 
+
+  
+        
+        
         menuBar.add(Box.createHorizontalGlue());
 
         menu = new JMenu("Help");
@@ -752,6 +779,8 @@ public class TTT extends JFrame {
             }
         });
 
+        
+        
         return menuBar;
     }
 
@@ -781,7 +810,7 @@ public class TTT extends JFrame {
         return null;
     }
 
-    static File showFileDialog() {
+    public static File showFileDialog() {
         // set last used file/directory
         // TODO: set path and filter only once (filechoosercreator)
         File lastRec = new File(userPrefs.get("last_opened_recording", ""));
@@ -1000,7 +1029,8 @@ public class TTT extends JFrame {
             + "You should have received a copy of the GNU General Public License\n"
             + "along with TeleTeachingTool.  If not, see <http://www.gnu.org/licenses/>.\n";
 
-    static String getJMFVersion() {
+    @SuppressWarnings("unchecked")
+	public static String getJMFVersion() {
         try {
              Class c = Class.forName("javax.media.Manager");
              Method m = c.getMethod("getVersion");
@@ -1055,33 +1085,16 @@ public class TTT extends JFrame {
 
             setSize(width, height);
             setExtendedState(MAXIMIZED_BOTH);
-            setIconImage(Toolkit.getDefaultToolkit().getImage(ttt.getClass().getResource("resources/ttt16.png")));
+           
+            setIconImage(new ImageIcon(getClass().getResource("../resources/ttt16.png")).getImage());
             setVisible(true);
             getContentPane().setBackground(Color.WHITE);
-            showMemoryMonitor(false);
+          
         }
     }
 
-    private MemoryMonitor memoryMonitor;
-    private JCheckBoxMenuItem memoryMonitorCheckbox;
 
-    void showMemoryMonitor(boolean visible) {
-        if (visible && memoryMonitor == null) {
-            memoryMonitor = new MemoryMonitor();
-
-            // maximizing frame add startup is sometimes slow causing bad location of memory monitor
-            if (ttt.desktop.getWidth() < 150)
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {}
-            memoryMonitor.setLocation(Math.max(0, ttt.desktop.getWidth() - memoryMonitor.getWidth()), 0);
-            ttt.desktop.add(memoryMonitor);
-        } else if (!visible && memoryMonitor != null) {
-            memoryMonitor.dispose();
-            memoryMonitor = null;
-        }
-        memoryMonitorCheckbox.setSelected(visible);
-    }
+   
 
     static private JFileChooser fileChooser;// = new JFileChooser();
 
@@ -1107,10 +1120,10 @@ public class TTT extends JFrame {
     private int position;
 
     public void addInternalFrameCentered(JInternalFrame frame) {
-    	frame.pack();
+    	frame.pack();        
+
+        frame.setFrameIcon(new ImageIcon(getClass().getResource("../resources/ttt16.png")));
         
-        
-        frame.setFrameIcon(new ImageIcon(getClass().getResource("resources/ttt16.png")));
         frame.setVisible(true);
         Rectangle rect = TTT.getInstance().desktop.getBounds();
         TTT.getInstance().addInternalFrame(frame, rect.width / 2 - frame.getWidth() / 2,
@@ -1137,7 +1150,7 @@ public class TTT extends JFrame {
             height = ttt.desktop.getHeight() - y;
         if (width != internalFrame.getWidth() || height != internalFrame.getHeight())
             internalFrame.setSize(width, height);
-        internalFrame.setFrameIcon(new ImageIcon(getClass().getResource("resources/ttt16.png")));
+        internalFrame.setFrameIcon(new ImageIcon(getClass().getResource("../resources/ttt16.png")));
         ttt.desktop.add(internalFrame);
         try {
             internalFrame.setSelected(true);
@@ -1145,7 +1158,7 @@ public class TTT extends JFrame {
     }
 
     // TODO: visibility
-    /* private */void addInternalFrame(JInternalFrame internalFrame) {
+    void addInternalFrame(JInternalFrame internalFrame) {
         addInternalFrame(internalFrame, position, 0);
     }
 
@@ -1155,11 +1168,11 @@ public class TTT extends JFrame {
         return gs.getFullScreenWindow() != null;
     }
 
-    static void leaveFfullscreen() {
+    public static void leaveFfullscreen() {
         fullscreen(null);
     }
 
-    static void fullscreen(Container panel) {
+    public static void fullscreen(Container panel) {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gs = ge.getDefaultScreenDevice();
 
@@ -1173,9 +1186,6 @@ public class TTT extends JFrame {
         }
 
         else {
-            // disable memory monitor to avoid buggy behaviour under MS Windows
-            getInstance().showMemoryMonitor(false);
-
             // Create a window for full-screen mode; add a button to leave full-screen mode
             JFrame frame = new JFrame(gs.getDefaultConfiguration());
             frame.setUndecorated(true);
@@ -1200,13 +1210,13 @@ public class TTT extends JFrame {
     // ///////////////////////////////////////////////////////
     // Creators
     // ///////////////////////////////////////////////////////
-
+    public static Player presenter;
     public static void createPresenter(LectureProfile lectureProfile) {
         try {
             TTT ttt = getInstance();
             ttt.showTTT();
 
-            Player presenter = new Player(lectureProfile);
+            presenter = new Player(lectureProfile);
             //MOD TD
             ttt.runningPlayer = presenter;
 
@@ -1275,13 +1285,13 @@ public class TTT extends JFrame {
                     infoPanel.add(new JLabel("but can be dragged to any other position on screen."));
                     infoPanel.add(new JLabel(" "));
                     infoPanel.add(new JLabel("record", new ImageIcon(ttt.getClass().getResource(
-                            "resources/Record24.gif")), JLabel.LEFT));
+                            "../resources/Record24.gif")), JLabel.LEFT));
                     infoPanel.add(new JLabel("stop recording", new ImageIcon(ttt.getClass().getResource(
-                            "resources/Stop24.gif")), JLabel.LEFT));
+                            "../resources/Stop24.gif")), JLabel.LEFT));
                     infoPanel.add(new JLabel("display TTT main window", new ImageIcon(ttt.getClass().getResource(
-                            "resources/ZoomIn24.gif")), JLabel.LEFT));
+                            "../resources/ZoomIn24.gif")), JLabel.LEFT));
                     infoPanel.add(new JLabel("turn off TTT main window", new ImageIcon(ttt.getClass().getResource(
-                            "resources/ZoomOut24.gif")), JLabel.LEFT));
+                            "../resources/ZoomOut24.gif")), JLabel.LEFT));
 
                     infoPanel.add(new JLabel(" "));
                     JCheckBox showAgainCheckBox = new JCheckBox("Don't show this message again.");
@@ -1427,8 +1437,8 @@ public class TTT extends JFrame {
     	return enabledNativeLookAndFeel;
     }
     
-    public static ImageIcon getIcon(String filename) {
-    	return new ImageIcon(TTT.class.getResource("/ttt/resources/" + filename));
+    public static ImageIcon getIcon(String filename) {    	
+    	return new ImageIcon( TTT.class.getResource("../resources/" + filename));    	
     }
 }
 

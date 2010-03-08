@@ -29,9 +29,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import ttt.Constants;
-import ttt.FlashContext;
-import ttt.GraphicsContext;
 import ttt.ProtocolPreferences;
+import ttt.gui.GraphicsContext;
+import ttt.postprocessing.flash.FlashContext;
 
 public abstract class Message {
 
@@ -45,8 +45,16 @@ public abstract class Message {
     // /////////////////////////////////////////////////
     // timestamp
     // /////////////////////////////////////////////////
-    int timestamp;
+    public int timestamp;
 
+    //editor reimport code
+    public int area = 0;
+    public int getTimestampWithoutSync() {
+        return timestamp;
+    }
+    
+    //editor reimport code end
+    
     public int getTimestamp() {
         return timestamp;
     }

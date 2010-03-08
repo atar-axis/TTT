@@ -9,7 +9,7 @@ import java.net.URL;
 import javax.swing.*;
 
 import ttt.Constants;
-import ttt.GradientPanel;
+import ttt.gui.GradientPanel;
 import ttt.messages.Annotation;
 
 /**
@@ -40,7 +40,7 @@ public class JClientPaintControls extends GradientPanel {
     public JClientPaintControls(JAnnotationPanel pnl, ClientController cc) {
      	anotPanel = pnl;
      	this.cc = cc;
-     	
+     	this.setFocusable(true);
      	try {
 			jbInit();
 		} catch (Exception e) {
@@ -49,34 +49,34 @@ public class JClientPaintControls extends GradientPanel {
     }
 
     private void jbInit() throws Exception {
-        URL urlRect = this.getClass().getResource("/ttt/resources/Rectangle24_new.gif");
-        URL urlActiveRect = this.getClass().getResource("/ttt/resources/Rectangle_active24_new.gif");
-        URL urlRolloverRect = this.getClass().getResource("/ttt/resources/Rectangle_rollover24_new.gif");
-        URL urlLine = this.getClass().getResource("/ttt/resources/Line24.gif");
-        URL urlActiveLine = this.getClass().getResource("/ttt/resources/Line_active24.gif");
-        URL urlRolloverLine = this.getClass().getResource("/ttt/resources/Line_rollover24.gif");
-        URL urlFree = this.getClass().getResource("/ttt/resources/Freehand24_new.gif");
-        URL urlActiveFree = this.getClass().getResource("/ttt/resources/Freehand_active24_new.gif");
-        URL urlRolloverFree = this.getClass().getResource("/ttt/resources/Freehand_rollover24_new.gif");
-        URL urlHighlight = this.getClass().getResource("/ttt/resources/Highlight24_new.gif");
-        URL urlActiveHighlight = this.getClass().getResource("/ttt/resources/Highlight_active24_new.gif");
-        URL urlRolloverHighlight = this.getClass().getResource("/ttt/resources/Highlight_rollover24_new.gif");
-        URL urlDel = this.getClass().getResource("/ttt/resources/Delete24.gif");
-        URL urlActiveDel = this.getClass().getResource("/ttt/resources/Delete_active24.gif");
-        URL urlRolloverDel = this.getClass().getResource("/ttt/resources/Delete_rollover24.gif");
+        URL urlRect = this.getClass().getResource("../../../resources/Rectangle24_new.gif");
+        URL urlActiveRect = this.getClass().getResource("../../../resources/Rectangle_active24_new.gif");
+        URL urlRolloverRect = this.getClass().getResource("../../../resources/Rectangle_rollover24_new.gif");
+        URL urlLine = this.getClass().getResource("../../../resources/Line24.gif");
+        URL urlActiveLine = this.getClass().getResource("../../../resources/Line_active24.gif");
+        URL urlRolloverLine = this.getClass().getResource("../../../resources/Line_rollover24.gif");
+        URL urlFree = this.getClass().getResource("../../../resources/Freehand24_new.gif");
+        URL urlActiveFree = this.getClass().getResource("../../../resources/Freehand_active24_new.gif");
+        URL urlRolloverFree = this.getClass().getResource("../../../resources/Freehand_rollover24_new.gif");
+        URL urlHighlight = this.getClass().getResource("../../../resources/Highlight24_new.gif");
+        URL urlActiveHighlight = this.getClass().getResource("../../../resources/Highlight_active24_new.gif");
+        URL urlRolloverHighlight = this.getClass().getResource("../../../resources/Highlight_rollover24_new.gif");
+        URL urlDel = this.getClass().getResource("../../../resources/Delete24.gif");
+        URL urlActiveDel = this.getClass().getResource("../../../resources/Delete_active24.gif");
+        URL urlRolloverDel = this.getClass().getResource("../../../resources/Delete_rollover24.gif");
 
-        URL urlText = this.getClass().getResource("/ttt/resources/text24.png");
-        URL urlActiveText = this.getClass().getResource("/ttt/resources/text_active24.png");
-        URL urlRolloverText = this.getClass().getResource("/ttt/resources/text_rollover24.png");
+        URL urlText = this.getClass().getResource("../../../resources/text24.png");
+        URL urlActiveText = this.getClass().getResource("../../../resources/text_active24.png");
+        URL urlRolloverText = this.getClass().getResource("../../../resources/text_rollover24.png");
         
-        URL urlDelAll = this.getClass().getResource("/ttt/resources/Delete_all16.gif");
-        URL urlActiveDelAll = this.getClass().getResource("/ttt/resources/Delete_all_active16.gif");
+        URL urlDelAll = this.getClass().getResource("../../../resources/Delete_all16.gif");
+        URL urlActiveDelAll = this.getClass().getResource("../../../resources/Delete_all_active16.gif");
 
-        URL urldelSheetAnn = this.getClass().getResource("/ttt/resources/msgclient_delsheetann.png");
-        URL urlWB = this.getClass().getResource("/ttt/resources/msgclient_wb.png");
-        URL urlgetSheet = this.getClass().getResource("/ttt/resources/msgclient_getsheet.png");
-        URL urlgetSheetAnn = this.getClass().getResource("/ttt/resources/msgclient_getsheetann2.png");
-        URL urlVote = this.getClass().getResource("/ttt/resources/msgclient_vote.png");
+        URL urldelSheetAnn = this.getClass().getResource("../../../resources/msgclient_delsheetann.png");
+        URL urlWB = this.getClass().getResource("../../../resources/msgclient_wb.png");
+        URL urlgetSheet = this.getClass().getResource("../../../resources/msgclient_getsheet.png");
+        URL urlgetSheetAnn = this.getClass().getResource("../../../resources/msgclient_getsheetann2.png");
+        URL urlVote = this.getClass().getResource("../../../resources/msgclient_vote.png");
 
         colorButtons = new JRadioButton[5];
         for (int i = 0; i < colorButtons.length; i++) {
@@ -88,33 +88,33 @@ public class JClientPaintControls extends GradientPanel {
         // separate image files for each button
         colorButtons[0].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[0].setToolTipText("Choose Color");
-        colorButtons[0].setIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button24_red.png")));
-        colorButtons[0].setSelectedIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_active24_red.png")));
-        colorButtons[0].setRolloverIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_rollover24_red.png")));
+        colorButtons[0].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_red.png")));
+        colorButtons[0].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_red.png")));
+        colorButtons[0].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_red.png")));
 
         colorButtons[1].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[1].setToolTipText("Choose Color");
-        colorButtons[1].setIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button24_blue.png")));
-        colorButtons[1].setSelectedIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_active24_blue.png")));
-        colorButtons[1].setRolloverIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_rollover24_blue.png")));
+        colorButtons[1].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_blue.png")));
+        colorButtons[1].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_blue.png")));
+        colorButtons[1].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_blue.png")));
 
         colorButtons[2].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[2].setToolTipText("Choose Color");
-        colorButtons[2].setIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button24_green.png")));
-        colorButtons[2].setSelectedIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_active24_green.png")));
-        colorButtons[2].setRolloverIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_rollover24_green.png")));
+        colorButtons[2].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_green.png")));
+        colorButtons[2].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_green.png")));
+        colorButtons[2].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_green.png")));
 
         colorButtons[3].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[3].setToolTipText("Choose Color");
-        colorButtons[3].setIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button24_yellow.png")));
-        colorButtons[3].setSelectedIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_active24_yellow.png")));
-        colorButtons[3].setRolloverIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_rollover24_yellow.png")));
+        colorButtons[3].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_yellow.png")));
+        colorButtons[3].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_yellow.png")));
+        colorButtons[3].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_yellow.png")));
 
         colorButtons[4].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[4].setToolTipText("Choose Color");
-        colorButtons[4].setIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button24_black.png")));
-        colorButtons[4].setSelectedIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_active24_black.png")));
-        colorButtons[4].setRolloverIcon(new ImageIcon(this.getClass().getResource("/ttt/resources/color_button_rollover24_black.png")));
+        colorButtons[4].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_black.png")));
+        colorButtons[4].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_black.png")));
+        colorButtons[4].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_black.png")));
         colorButtons[4].setSelected(true);
 
         ButtonGroup colorGroup = new ButtonGroup();

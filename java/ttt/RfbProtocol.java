@@ -32,6 +32,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import ttt.connections.Connection;
+import ttt.gui.GraphicsContext;
 import ttt.messages.Annotation;
 import ttt.messages.CopyRectMessage;
 import ttt.messages.CursorMessage;
@@ -45,6 +47,7 @@ import ttt.messages.MessageProducer;
 import ttt.messages.RawMessage;
 import ttt.messages.UserInputMessage;
 import ttt.messages.WhiteboardMessage;
+import ttt.player.PaintListener;
 
 public class RfbProtocol extends GraphicsContext implements Runnable, MessageProducer, MessageConsumer {
 
@@ -54,8 +57,9 @@ public class RfbProtocol extends GraphicsContext implements Runnable, MessagePro
     private OutputStream os;
 
     // The constructor
-    public RfbProtocol(Connection connection) {
+    public RfbProtocol(Connection connection) {    	
         super(connection.getProtocolPreferences());
+       
         this.connection = connection;
 
         if (prefs.framebufferWidth > 1024 || prefs.framebufferHeight > 768) {

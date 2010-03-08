@@ -32,8 +32,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import ttt.Constants;
-import ttt.FlashContext;
-import ttt.GraphicsContext;
+import ttt.gui.GraphicsContext;
+import ttt.postprocessing.flash.FlashContext;
 
 public class DeleteAnnotation extends Annotation {
 

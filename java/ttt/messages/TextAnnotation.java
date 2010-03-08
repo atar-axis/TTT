@@ -1,6 +1,8 @@
 package ttt.messages;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -14,6 +16,9 @@ import java.io.UnsupportedEncodingException;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -24,14 +29,14 @@ import com.anotherbigidea.flash.movie.Text;
 import com.anotherbigidea.flash.movie.Font.NoGlyphException;
 
 import ttt.Constants;
-import ttt.FlashContext;
+import ttt.postprocessing.flash.FlashContext;
 
 /**
  * Annotation which displays a text string.
  * 
  * @author Thomas Doehring
  */
-public final class TextAnnotation extends Annotation {
+public final class TextAnnotation extends Annotation{
 
 	private String text = "";
 	private byte[] bText;
@@ -57,6 +62,8 @@ public final class TextAnnotation extends Annotation {
 		
 		calculateBounds();
 	}
+	
+	
 	
 	public TextAnnotation(int timestamp, DataInputStream in) throws IOException {
 		this.timestamp = timestamp;
@@ -196,6 +203,7 @@ public final class TextAnnotation extends Annotation {
 	public void write(DataOutputStream out, int writeTimestamp)
 			throws IOException {
 		writeHeader(out, writeTimestamp);
+			
 		out.writeByte(color);
 		out.writeShort(posX);
 		out.writeShort(posY);
@@ -278,7 +286,7 @@ public final class TextAnnotation extends Annotation {
 	public void writeToFlash(FlashContext flashContext) throws IOException {
 		flashContext.checkNextFrame(this.timestamp);
 		
-		FontDefinition fontDef = FontLoader.loadFont(this.getClass().getResourceAsStream("/ttt/resources/VerdanaFont.swf"));
+		FontDefinition fontDef = FontLoader.loadFont(this.getClass().getResourceAsStream("../../resources/VerdanaFont.swf"));
 		Color txtColor = annotationColors[color];
 		com.anotherbigidea.flash.structs.Color flashColor = new com.anotherbigidea.flash.structs.Color(txtColor.getRed(), txtColor.getGreen(), txtColor.getBlue());
 		com.anotherbigidea.flash.movie.Font font = new com.anotherbigidea.flash.movie.Font(fontDef);
@@ -327,4 +335,5 @@ public final class TextAnnotation extends Annotation {
 			bText = text.getBytes();
 		}
 	}
+
 }
