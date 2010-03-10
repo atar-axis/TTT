@@ -33,6 +33,7 @@ import javax.swing.event.ListDataListener;
 
 import ttt.editor.processors.Concat;
 import ttt.editor.processors.Cut;
+import ttt.editor.processors.WavConcat;
 
 /**
  * Class used to process TTT files and also their associated media files.
@@ -405,10 +406,10 @@ public class TTTProcessor {
             TTTFileUtilities.renameForBackup(videoOutput);
         MediaLocator videoOutputLocator = new MediaLocator("file:/" + videoOutput.getAbsolutePath());
 
-        File audioOutput = new File(TTTFileUtilities.getBasicFileName(outputFile) + Parameters.audioEndings[0]);
+		File audioOutput = new File(TTTFileUtilities.getBasicFileName(outputFile) + Parameters.audioEndings[1]);
         if (audioOutput.exists() && Parameters.createBackups)
             TTTFileUtilities.renameForBackup(audioOutput);
-        MediaLocator audioOutputLocator = new MediaLocator("file:/" + audioOutput.getAbsolutePath());
+
 
         boolean audioSuccess = false;
         boolean videoSuccess = false;
@@ -416,7 +417,7 @@ public class TTTProcessor {
         long audioDurations[] = null;
         long videoDurations[] = null;
 
-        Concat audioConcat = new Concat();
+		WavConcat audioConcat = new WavConcat(audioFiles, audioOutput);
         Concat videoConcat = new Concat();
         if (!cannotConcatVideo) {
             System.out.println("Concatenating video");
@@ -425,8 +426,10 @@ public class TTTProcessor {
         }
         if (!cannotConcatAudio) {
             System.out.println("Concatenating audio");
-            if (audioConcat.createProcessors(audioLocators, audioOutputLocator))
+			if (audioConcat.doIt()) {
                 audioDurations = audioConcat.getDurationNanoSeconds();
+				audioSuccess = true;
+			}
         }
 
         long[] durations = null;
@@ -440,9 +443,9 @@ public class TTTProcessor {
         else if (videoDurations != null)
             durations = videoDurations;
 
-        if (!cannotConcatAudio) {
-            audioSuccess = audioConcat.doIt();
-        }
+		//        if (!cannotConcatAudio) {
+		//            audioSuccess = audioConcat.doIt();
+		//        }
 
         if (!cannotConcatVideo) {
             videoSuccess = videoConcat.doIt();

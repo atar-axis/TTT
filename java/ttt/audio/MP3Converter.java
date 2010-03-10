@@ -398,7 +398,7 @@ public class MP3Converter implements ControllerListener, DataSinkListener {
         AudioFormat format = new AudioFormat(AudioFormat.MPEGLAYER3);
         System.out.println("- set track format to: " + format);
 
-        if (!setEachTrackFormat(p, tcs, format)) {
+        if (!setEachTrackFormat(tcs, format)) {
             System.out.println("Cannot transcode any track to: " + format);
             return false;
         }
@@ -409,7 +409,7 @@ public class MP3Converter implements ControllerListener, DataSinkListener {
     /**
      * We'll loop through the tracks and try to find a track that can be converted to the given format.
      */
-    boolean setEachTrackFormat(Processor p, TrackControl tcs[], Format fmt) {
+    boolean setEachTrackFormat(TrackControl tcs[], Format fmt) {
 
         Format supported[];
         Format f;

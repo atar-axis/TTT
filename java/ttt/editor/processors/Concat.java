@@ -90,69 +90,6 @@ public class Concat implements ControllerListener, DataSinkListener {
     String TRANSCODE_MSG = "The given inputs require transcoding to have a common format for concatenation.";
 
 
-    /**
-     * Main program
-     */
-/*    public static void main(String [] args) {
-
-	Vector inputURL = new Vector();
-	String outputURL = null;
-
-	if (args.length == 0)
-	    prUsage();
-
-	// Parse the arguments.
-	int i = 0;
-	while (i < args.length) {
-
-	    if (args[i].equals("-o")) {
-		i++;
-		if (i >= args.length)
-		    prUsage();
-		outputURL = args[i];
-	    } else {
-		inputURL.addElement(args[i]);
-	    }
-	    i++;
-	}
-
-	if (inputURL.size() == 0) {
-	    System.err.println("No input url is specified");
-	    prUsage();
-	}
-
-	if (outputURL == null) {
-	    System.err.println("No output url is specified");
-	    prUsage();
-	}
-
-	// Generate the input and output media locators.
-	MediaLocator iml[] = new MediaLocator[inputURL.size()];
-	MediaLocator oml;
-
-	for (i = 0; i < inputURL.size(); i++) {
-	    if ((iml[i] = createMediaLocator((String)inputURL.elementAt(i))) == null) {
-		System.err.println("Cannot build media locator from: " + inputURL);
-		System.exit(0);
-	    }
-	}
-
-	if ((oml = createMediaLocator(outputURL)) == null) {
-	    System.err.println("Cannot build media locator from: " + outputURL);
-	    System.exit(0);
-	}
-
-	Concat concat  = new Concat();
-
-	if (!concat.doIt(iml, oml)) {
-	    System.err.println("Failed to concatenate the inputs");
-	}
-
-	System.exit(0);
-    }
- */
-    
-
 
     ContentDescriptor cd;
     ProcInfo pInfo[];
@@ -251,6 +188,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	}
 
 	// Set the output content descriptor on the final processor.
+	
 	System.err.println("- Set output content descriptor to: " + cd);
 	if ((p.setContentDescriptor(cd)) == null) {
 	    System.err.println("Failed to set the output content descriptor on the processor.");
@@ -483,7 +421,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 	Format origFmt = tc.getFormat();
 	Format newFmt, oldFmt;
 	Format supported[] = tc.getSupportedFormats(); 
-
+	
+	
 	for (int i = 0; i < supported.length; i++) {
 
 	    if (supported[i] instanceof AudioFormat) {

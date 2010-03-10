@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 
 import ttt.Constants;
 import ttt.TTT;
-import ttt.record.LectureProfile;
 
 public class AudioRecorder  {
     static public int WAV_RECORD_MODE = 2;
@@ -40,7 +39,7 @@ public class AudioRecorder  {
     private IAudioRecorder wavAudioRecorder;
     private AudioMonitorPanel volumeLevelComponent;
 
-    public AudioRecorder(LectureProfile lectureProfile) throws IOException {
+    public AudioRecorder() throws IOException {
         // public AudioVideoRecorder(boolean video_recording, int audioMode) throws IOException {
 
         audioMode = WAV_RECORD_MODE;

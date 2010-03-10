@@ -112,7 +112,7 @@ public class FileConnector {
      */
     private int result; // placed here to be accessable in anonymous Runnable (see below)
 
- ;
+ 
  public SelectionPanel selectionPanel; 
  
     public boolean connectFiles() {

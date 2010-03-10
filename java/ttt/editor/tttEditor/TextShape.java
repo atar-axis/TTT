@@ -5,19 +5,22 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Stroke;
+
 import ttt.messages.Annotation;
 
 public class TextShape extends ColoredShape{
 
 
 	private Color borderC;
-
+	final static Color COL_BACKGROUND = new Color(240, 240, 255, 160);
+	final static Font FONT = new Font("SansSerif", Font.BOLD, 16);
 	private String text;
 	private int TextColor;
 	int x;
 	int y;
 	int x2;
 	int y2;
+
 	/**
 	 * Constructor.
 	 * <p>
@@ -41,19 +44,9 @@ public class TextShape extends ColoredShape{
 		this.y2 = y2;
 		this.TextColor = TextColor;
 		borderC = borderColor;
-		
-		
 	}
-
-
-
-	 final static Font FONT = new Font("SansSerif", Font.BOLD, 16);
-		final static Color COL_BACKGROUND = new Color(240,240,255,160);
 		
-		
-	
-		
-		
+	@Override
 	public void paintShape(Graphics g, Stroke pen) {
 
 		FontMetrics fm = g.getFontMetrics(FONT);
@@ -84,13 +77,11 @@ public class TextShape extends ColoredShape{
 			}
 		}
 	}
-	
-	
+
 	private void fillRect(Graphics g,int startx, int starty, int endx, int endy) {
 		g.fillRect(startx, starty, endx - startx, starty - endy );		
 	}
-	
-	
+
 	/**
 	 * @return The border's color.
 	 */
@@ -104,8 +95,4 @@ public class TextShape extends ColoredShape{
 	public void setBorderColor(Color color) {
 		borderC = color;
 	}
-
-
-	
-	
 }

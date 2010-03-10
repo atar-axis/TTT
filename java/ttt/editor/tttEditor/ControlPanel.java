@@ -187,7 +187,7 @@ public class ControlPanel extends JPanel implements PlaybackEventListener {
         timeSlider.setPaintTicks(true);
         timeSlider.setValue(0);
 
-        timeSlider.setUI(new TimeSliderUI(timeSlider, markers, index));
+        timeSlider.setUI(new TimeSliderUI(markers, index));
         timeSlider.setPreferredSize(new Dimension(60, 60));
 
         timeSlider.addChangeListener(new ChangeListener() {
@@ -292,7 +292,7 @@ public class ControlPanel extends JPanel implements PlaybackEventListener {
             volumePanel.add(volumeButton);
             volumePanel.add(muteBox);
             return volumePanel;
-        } else
+        } 
             return null;
     }
 
@@ -412,7 +412,7 @@ public class ControlPanel extends JPanel implements PlaybackEventListener {
         private MarkerList markers;
         private Index index;
 
-        public TimeSliderUI(JSlider slider, MarkerList markers, Index index) {
+        public TimeSliderUI(MarkerList markers, Index index) {
             this.markers = markers;
             this.index = index;
             index.addIndexListener(this);

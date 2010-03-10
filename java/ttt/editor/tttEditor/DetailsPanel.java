@@ -141,7 +141,7 @@ public class DetailsPanel extends JPanel {
                 if (extension[0] == ProtocolConstants.EXTENSION_INDEX_TABLE) {
                     int ch1 = extension[1];
                     int ch2 = extension[2];
-                    entries = (ch1 << 8) + (ch2 << 0);;
+                    entries = (ch1 << 8) + (ch2 << 0);
                     break;
                 }
             }

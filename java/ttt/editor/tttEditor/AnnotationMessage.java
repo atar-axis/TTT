@@ -1,13 +1,13 @@
 package ttt.editor.tttEditor;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Stroke;
-import java.awt.BasicStroke;
-import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -78,10 +78,9 @@ public class AnnotationMessage extends Message {
 	 final static Font FONT = new Font("SansSerif", Font.BOLD, 16);
 	 
 	 
-		public void writeTextAnnotaion(DataOutputStream out, boolean writeTimestamp)
+		public void writeTextAnnotaion(DataOutputStream out)
 				throws IOException {
-			//writeHeader(out, writeTimestamp);
-				
+							
 			out.writeByte(c);
 			out.writeShort(x);
 			out.writeShort(y);
@@ -102,7 +101,6 @@ public class AnnotationMessage extends Message {
 		
 	this.maxWidth = maxWidth;
 		 text = txt;
-		 System.out.println("TextAnnotation: " + text);
 		try {
 			bText = txt.getBytes("UTF-8");
 		} catch (UnsupportedEncodingException uee) {
@@ -216,9 +214,9 @@ public class AnnotationMessage extends Message {
      * encoding is not REMOVE
      */
     public Point getRemoveCoordinates() {
-        if (isRemove())
-            return new Point(x,y);
-        else
+        if (isRemove()) {
+            return new Point(x,y);}
+        
             return null;
     }
     
@@ -334,7 +332,7 @@ public class AnnotationMessage extends Message {
         if (t.size() > 0) {
             ret = new AnnotationMessage[t.size()];
             for (int i = 0; i < t.size(); i++)
-                ret[i] = (AnnotationMessage) t.get(i);
+                ret[i] = t.get(i);
         }
 
         return ret;
@@ -347,7 +345,8 @@ public class AnnotationMessage extends Message {
      * of the message.
      * @return string representation of <code>AnnotationMessage</code>
      */
-    public String toString() {
+    @Override
+	public String toString() {
         switch(encoding) {
             case ProtocolConstants.LINE:
                 return ("Line:\t  " + TTTEditor.getStringFromTime(timestamp,true));

@@ -72,9 +72,10 @@ public abstract class Message {
      * <code>Parameters</code> is set to <code>true</code>
      */
     public int getTimestamp() {
-        if (Parameters.synchronize)
+        if (Parameters.synchronize) {
             return (int)(timestamp * header.synchRatio);
-        else
+            }
+        
             return timestamp;
     }
     
@@ -145,7 +146,7 @@ public abstract class Message {
         
         //special treatment for text Annotations
         if(this.getEncoding() == ProtocolConstants.TEXT){
-        	((AnnotationMessage)this).writeTextAnnotaion(out, true);        	
+        	((AnnotationMessage)this).writeTextAnnotaion(out);        	
         }else{
         out.write(data);}
     }

@@ -423,7 +423,7 @@ public class TTTEditor extends JFrame {
                 System.out.println("Attempt to select file vetoed: " + e);
                 e.printStackTrace();
             }
-            ;
+            
             return frame;
         }
         if (desktopPane.getAllFramesInLayer(DESKTOP_LAYER).length > 0) {

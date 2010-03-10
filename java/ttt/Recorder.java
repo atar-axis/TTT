@@ -77,7 +77,7 @@ public class Recorder implements MessageConsumer, Closeable {
 
         // initialize audio and video
         if (lectureProfile != null)
-            audioVideoRecorder = new AudioRecorder(lectureProfile);
+            audioVideoRecorder = new AudioRecorder();
 
         // register for shutdown
         register(this);
@@ -663,17 +663,17 @@ public class Recorder implements MessageConsumer, Closeable {
     }
 
     static String[] checkFileName(String path, String name) {
-        return checkFileName(path, name, true, true, true, null);
+        return checkFileName(path, name, true, null);
     }
 
     static String[] checkFileName(String path, String name, String ending) {
         if (ending != null)
-            return checkFileName(path, name, false, false, false, ending);
+            return checkFileName(path, name, false, ending);
         else
-            return checkFileName(path, name, true, true, true, null);
+            return checkFileName(path, name, true,  null);
     }
 
-    static String[] checkFileName(String path, String name, boolean desktop, boolean audio, boolean video, String ending) {
+    static String[] checkFileName(String path, String name, boolean desktop, String ending) {
         File ttt = new File(path, name + Constants.desktopEndings[0]);
         File custom = null;
         if (ending != null)

@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.InflaterInputStream;
-import javax.swing.ProgressMonitorInputStream;
 
-import ttt.messages.Annotation;
+import javax.swing.ProgressMonitorInputStream;
 
 
 
@@ -188,7 +187,7 @@ public class TTTFileReader {
         
         //parse extensions
         for (int i = 0; i < fileData.extensions.size(); i++) {
-            byte[] extension = (byte[]) fileData.extensions.get(i);
+            byte[] extension = fileData.extensions.get(i);
             DataInputStream ext_in = new DataInputStream(new ByteArrayInputStream(extension));
             int tag = ext_in.readByte();
             switch (tag) {
@@ -281,7 +280,7 @@ public class TTTFileReader {
                             msg = getHextileMessageBytes(in, header, msgArea);
                             
                             message = new HextileMessage(timestamp, encoding, area, msg, header);
-                            messages.add((HextileMessage)message);
+                            messages.add(message);
                             
                             size -= msg.length;
                             break;
@@ -304,7 +303,7 @@ public class TTTFileReader {
                                 message.area = 0;
                             }
                             message = new RawMessage(timestamp, encoding, area, msg, header);
-                            messages.add((RawMessage)message);
+                            messages.add(message);
                             
                             size -= msg.length;
                             break;
@@ -325,7 +324,7 @@ public class TTTFileReader {
                                 message.area = 0;
                             }
                             message = new CopyRectMessage(timestamp, encoding, area, msg, header);
-                            messages.add((CopyRectMessage)message);
+                            messages.add(message);
                             
                             size -= msg.length;
                             break;
@@ -340,7 +339,7 @@ public class TTTFileReader {
                             i = updateNRects;
                             
                             message = new UnknownMessage(timestamp, encoding, msg, header);
-                            messages.add((UnknownMessage)message);
+                            messages.add(message);
                             break;
                     }
                     count++;
@@ -420,27 +419,27 @@ public class TTTFileReader {
                             message.area = 0;
                         }
                         message = new HextileMessage(timestamp, encoding, area, msg, header);
-                        messages.add((HextileMessage)message);
+                        messages.add(message);
                         break;
                     case ProtocolConstants.EncodingRaw:                    	 
                         msg = new byte[size];                
                         in.readFully(msg);                    	
                         message = new RawMessage(timestamp, encoding, area, msg, header);                    
-                        messages.add((RawMessage)message);                       
+                        messages.add(message);                       
                         break;
                     case ProtocolConstants.EncodingCopyRect:
                         msg = new byte[size];
                         in.readFully(msg);
                         message = new CopyRectMessage(timestamp, encoding, area, msg, header);
-                        messages.add((CopyRectMessage)message);
+                        messages.add(message);
                         break;
-                    case ProtocolConstants.EncodingTTTCursorPosition: ;
+                    case ProtocolConstants.EncodingTTTCursorPosition: 
                     int x = in.readUnsignedShort();
                     int y = in.readUnsignedShort();
                     message = new CursorMoveMessage(timestamp, encoding, x, y, header);
-                    messages.add((CursorMoveMessage)message);
+                    messages.add(message);
                     break;
-                    case ProtocolConstants.EncodingTTTXCursor: ;
+                    case ProtocolConstants.EncodingTTTXCursor: 
                     case ProtocolConstants.EncodingTTTRichCursor:
                         msg = new byte[size];
                         in.readFully(msg);
@@ -458,25 +457,25 @@ public class TTTFileReader {
 //however this is less important, as when the cursor is relevant it will be moved anyway (but the shape not necessarily changed).
 //In that respect, initializing the shape matters more than initializing the position.
                                 CursorShapeMessage messageCopy = new CursorShapeMessage(0, encoding, msgCopy, header);
-                                messages.add(0, (CursorShapeMessage)messageCopy);
+                                messages.add(0, messageCopy);
                                 System.out.println("Cursor shape message added at beginning.");
                             }
                         }
                         //add message as normal
                         //not strictly necessary as shape already set to same, but perhaps in the future
                         //shape would be changed at an earlier point
-                        messages.add((CursorShapeMessage)message);
+                        messages.add(message);
                         break;
-                    case ProtocolConstants.LINE: ;
-                    case ProtocolConstants.RECT: ;
-                    case ProtocolConstants.HIGHLIGHT: ;
-                    case ProtocolConstants.REMOVE_ALL: ;
-                    case ProtocolConstants.REMOVE: ;                    
+                    case ProtocolConstants.LINE: 
+                    case ProtocolConstants.RECT: 
+                    case ProtocolConstants.HIGHLIGHT: 
+                    case ProtocolConstants.REMOVE_ALL: 
+                    case ProtocolConstants.REMOVE:                    
                     case ProtocolConstants.FREE:                    	
                         msg = new byte[size];                     	
                         in.readFully(msg);
                         message = new AnnotationMessage(timestamp, encoding, msg, header);
-                        messages.add((AnnotationMessage)message);
+                        messages.add(message);
                         break;
                     case ProtocolConstants.TEXT: 
                     	
@@ -509,19 +508,17 @@ public class TTTFileReader {
                 		for(int i = 5; i < length;i++){
                 			data[i] = bText[i];
                 		}
+
                 		
-                	
-                		
-                		String decodeString = new String (bText);
-                		System.out.println("Color: " + Annotation.annotationColors[color] + " posX " + posX + " decode " + decodeString);
+                		String decodeString = new String(bText);
                 		 message = new AnnotationMessage(timestamp, color, posX, posY, maxWidth, decodeString, encoding, data, header);
-                         messages.add((AnnotationMessage)message);
+                         messages.add(message);
                     	break;
                         
                         
                     case ProtocolConstants.EncodingBlankPage:
                         message = new BlankPageMessage(timestamp, encoding, in.readByte(), header);
-                        messages.add((BlankPageMessage)message);
+                        messages.add(message);
                         break;
                    
                     case ProtocolConstants.EncodingRecording: break;
@@ -530,7 +527,7 @@ public class TTTFileReader {
                         msg = new byte[size];
                         in.readFully(msg);
                         message = new UnknownMessage(timestamp, encoding, msg, header);
-                        messages.add((UnknownMessage)message);
+                        messages.add(message);
                         break;
                 }
                 count++;       
