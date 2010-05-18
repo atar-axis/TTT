@@ -1086,7 +1086,7 @@ public class TTT extends JFrame {
             setSize(width, height);
             setExtendedState(MAXIMIZED_BOTH);
            
-            setIconImage(new ImageIcon(getClass().getResource("../resources/ttt16.png")).getImage());
+            setIconImage(getIcon("ttt16.png").getImage());
             setVisible(true);
             getContentPane().setBackground(Color.WHITE);
           
@@ -1437,8 +1437,12 @@ public class TTT extends JFrame {
     	return enabledNativeLookAndFeel;
     }
     
-    public static ImageIcon getIcon(String filename) {    	
-    	return new ImageIcon( TTT.class.getResource("../resources/" + filename));    	
+    public static ImageIcon getIcon(String filename) {   
+    	System.out.println("TTT.class.getResource(Constants.class): " + TTT.class.getResource("Constants.class").toString());
+    	String workaround =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
+    	System.out.println(workaround + filename);
+    	
+    	return new ImageIcon( workaround + filename);    	
     }
 }
 

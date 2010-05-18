@@ -47,16 +47,16 @@ public class SimpleSearch {
 			if (Character.isLetterOrDigit(ch)) {
 				if (umlaut_reduction) {
 					switch (ch) {
-						case 'ä' :
+						case 'Ã¤' :
 							stringBuffer.append("ae");
 							break;
-						case 'ö' :
+						case 'Ã¶' :
 							stringBuffer.append("oe");
 							break;
-						case 'ü' :
+						case 'Ã¼' :
 							stringBuffer.append("ue");
 							break;
-						case 'ß' :
+						case 'ÃŸ' :
 							stringBuffer.append("ss");
 							break;
 						default :

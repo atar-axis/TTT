@@ -56,13 +56,13 @@
       source="6"  debug="on" encoding="Cp1252" >
       <classpath refid="libraries"/>
     </javac>
-    <copy todir="${classes}/ttt/resources"><fileset dir="${java}/ttt/resources"></fileset></copy>
+    
   </target>
 
   <!-- Packs the classes into single .jar files -->
   <target name="pack" depends="classes">
-    <jar jarfile="${dist}/ttt.jar" basedir="${classes}"> 
-      <fileset dir="${classes}/ttt/resources"/>
+    <jar jarfile="${dist}/ttt.jar" basedir="${classes}">   
+    	<fileset dir="${java}/resources"/> 
       <manifest>
        <attribute name="Main-Class" value="ttt/TTT" />
        <attribute name="Class-Path" value="itext-1.4.8.jar jsch-0.1.32-patched.jar swing-layout-1.0.2.jar jmf-2.1.1e.jar mp3plugin.jar lti-civil.jar v4l4j.jar" />
@@ -70,6 +70,7 @@
      </jar>
     <copy todir="${dist}"><fileset dir="${lib}"></fileset></copy>
     <copy todir="${dist}"><fileset dir="${native}"></fileset></copy>
+  	<copy todir="${dist}"><fileset dir="${java}/resources"></fileset></copy> 
     <copy todir="${dist}" file="run.sh" />
     <zip destfile="./ttt.zip" basedir="${dist}" update="true"/> 
   </target>

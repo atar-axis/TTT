@@ -47,7 +47,7 @@ public class EditorDisplayPanel extends JPanel {
                 new MarkerDisplayComponent(markers, playbackController);
         tabbedPane.add("Marker", markerDisplay);
         tabbedPane.setToolTipTextAt(3, "View/edit file processing divisions");
-        tabbedPane.setBackgroundAt(3, Color.LIGHT_GRAY);
+        tabbedPane.setBackgroundAt(3, Color.RED);
         
         setLayout(new BorderLayout());
         add(tabbedPane, BorderLayout.CENTER);
