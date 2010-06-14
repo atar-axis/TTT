@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -32,20 +32,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.net.URL;
+
 
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import ttt.Constants;
 import ttt.gui.GradientPanel;
-import ttt.gui.NegatedImageIcon;
 import ttt.gui.RollOverButton;
 import ttt.record.Recording;
 import ttt.record.TimeChangedListener;
@@ -202,8 +201,7 @@ public class PlaybackControls extends GradientPanel implements TimeChangedListen
         indexAndVideoButton.setSelected(true);
         indexAndVideoButton.setFocusable(false);
 
-        fullscreenButton = new RollOverToggleButton(new ImageIcon(this.getClass().getResource(
-                "../../resources/Fullscreen2_24.png")));
+        fullscreenButton = new RollOverToggleButton(Constants.getIcon("Fullscreen2_24.png"));
         fullscreenButton.setActionCommand(Recording.FULLSCREEN);
         fullscreenButton.setToolTipText("enable/disable fullscreen mode");
         fullscreenButton.setFocusable(false);
@@ -309,28 +307,18 @@ public class PlaybackControls extends GradientPanel implements TimeChangedListen
     private void createIcons() {
         // TODO: maybe: should be moved to constants
 
-        // load icons
-        URL urlPlay = this.getClass().getResource("../../resources/Play24.gif");
-        URL urlPause = this.getClass().getResource("../../resources/Pause24.gif");
-        URL urlStop = this.getClass().getResource("../../resources/Stop24.gif");
-        URL urlNext = this.getClass().getResource("../../resources/StepForward24.gif");
-        URL urlPrevious = this.getClass().getResource("../../resources/StepBack24.gif");
-        URL urlVolume = this.getClass().getResource("../../resources/Volume24.gif");
-        URL urlSave = this.getClass().getResource("../../resources/Save24.gif");
-        URL urlFind = this.getClass().getResource("../../resources/Find16.gif");
-        URL urlMovie = this.getClass().getResource("../../resources/Movie24.gif");
-
+ 
         // create icons
-        playIcon = new ImageIcon(urlPlay);
-        pauseIcon = new ImageIcon(urlPause);
-        stopIcon = new ImageIcon(urlStop);
-        nextIcon = new ImageIcon(urlNext);
-        previousIcon = new ImageIcon(urlPrevious);
-        volumeOnIcon = new ImageIcon(urlVolume);
-        volumeOffIcon = new NegatedImageIcon(urlVolume);
-        saveIcon = new ImageIcon(urlSave);
-        findIcon = new ImageIcon(urlFind);
-        movieIcon = new ImageIcon(urlMovie);
+        playIcon = Constants.getIcon("Play24.gif");
+        pauseIcon = Constants.getIcon("Pause24.gif");
+        stopIcon = Constants.getIcon("Stop24.gif");
+        nextIcon = Constants.getIcon("StepForward24.gif");
+        previousIcon = Constants.getIcon("StepBack24.gif");
+        volumeOnIcon = Constants.getIcon("Volume24.gif");
+        volumeOffIcon = Constants.getIcon("Volume24.gif");
+        saveIcon = Constants.getIcon("Save24.gif");
+        findIcon = Constants.getIcon("Find16.gif");
+        movieIcon = Constants.getIcon("Movie24.gif");
     }
 
     // /////////////////////////////////////

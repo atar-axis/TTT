@@ -4,12 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Closeable;
-import java.net.URL;
 
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import ttt.Constants;
 import ttt.RfbProtocol;
 import ttt.messaging.gui.FullPollCreateDialog;
 import ttt.messaging.gui.JPollList;
@@ -39,15 +39,6 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 	public TTTMessaging(RfbProtocol tttL, java.net.InetAddress ip, boolean startWebMessaging) {		
 		super("Messaging");
 		
-		// load icons
-		URL urlMessages = this.getClass().getResource("../../resources/msg_messages.png");
-		URL urlPolls = this.getClass().getResource("../../resources/msg_polls.png");
-		URL urlPollNewFull = this.getClass().getResource("../../resources/msg_fullpoll.png");
-		URL urlPollNewQuick = this.getClass().getResource("../../resources/msg_quickpoll.png");
-		URL urlMsgDelAll = this.getClass().getResource("../../resources/msg_messagedelall.png");
-		URL urlMsgDelNonDef = this.getClass().getResource("../../resources/msg_messagedelnondefer.png");
-		URL urlMsgBlockUser = this.getClass().getResource("../../resources/msg_userblock.png");
-
 		JTabbedPane tabPane = new JTabbedPane();
 		
 		// ------------------ MESSAGING PANEL ------------------------- //
@@ -55,7 +46,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		
 		JToolBar toolbar = new JToolBar("Messaging Bar");
 		
-		JButton btnDelAll = new JButton(new ImageIcon(urlMsgDelAll));
+		JButton btnDelAll = new JButton(Constants.getIcon("msg_messagedelall.png"));
 		btnDelAll.setBorderPainted(false);
 		btnDelAll.setToolTipText("delete all message");
 		btnDelAll.addActionListener(new ActionListener() {
@@ -65,7 +56,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		});
 		toolbar.add(btnDelAll);
 		
-		JButton btnDelNonDef = new JButton(new ImageIcon(urlMsgDelNonDef));
+		JButton btnDelNonDef = new JButton(Constants.getIcon("msg_messagedelnondefer.png"));
 		btnDelNonDef.setBorderPainted(false);
 		btnDelNonDef.setToolTipText("delete all non deferred messages");
 		btnDelNonDef.addActionListener(new ActionListener() {
@@ -75,7 +66,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		});
 		toolbar.add(btnDelNonDef);
 		
-		JButton btnBlock = new JButton(new ImageIcon(urlMsgBlockUser));
+		JButton btnBlock = new JButton(Constants.getIcon("msg_userblock.png"));
 		btnBlock.setBorderPainted(false);
 		btnBlock.setToolTipText("block user");
 		btnBlock.addActionListener(new ActionListener() {
@@ -95,7 +86,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		msgPane.add(toolbar, BorderLayout.NORTH);
 		msgPane.add(scroll, BorderLayout.CENTER);
 
-		tabPane.addTab(null, new ImageIcon(urlMessages), msgPane, "Messages");
+		tabPane.addTab(null, Constants.getIcon("msg_messages.png"), msgPane, "Messages");
 		
 		// ------------------------- POLL GUI ---------------------------- //
 		
@@ -103,7 +94,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		
 		JToolBar pollTools = new JToolBar();
 		
-		JButton btnNewFullPoll = new JButton(new ImageIcon(urlPollNewFull));
+		JButton btnNewFullPoll = new JButton(Constants.getIcon("msg_fullpoll.png"));
 		btnNewFullPoll.setBorderPainted(false);
 		btnNewFullPoll.setToolTipText("create new full poll");
 		btnNewFullPoll.addActionListener(new ActionListener() {
@@ -122,7 +113,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		});
 		pollTools.add(btnNewFullPoll);
 		
-		JButton btnNewQuickPoll = new JButton(new ImageIcon(urlPollNewQuick));
+		JButton btnNewQuickPoll = new JButton(Constants.getIcon("msg_quickpoll.png"));
 		btnNewQuickPoll.setBorderPainted(false);
 		btnNewQuickPoll.setToolTipText("create new quick poll");
 		btnNewQuickPoll.addActionListener(new ActionListener() {
@@ -141,7 +132,7 @@ public class TTTMessaging extends JInternalFrame implements Closeable {
 		JPollList pollList = new JPollList();
 		pollPane.add(pollList, BorderLayout.CENTER);
 		
-		tabPane.addTab(null, new ImageIcon(urlPolls), pollPane, "Polls");
+		tabPane.addTab(null, Constants.getIcon("msg_polls.png"), pollPane, "Polls");
 
 		
 		

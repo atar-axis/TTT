@@ -286,7 +286,7 @@ public final class TextAnnotation extends Annotation{
 	public void writeToFlash(FlashContext flashContext) throws IOException {
 		flashContext.checkNextFrame(this.timestamp);
 		
-		FontDefinition fontDef = FontLoader.loadFont(this.getClass().getResourceAsStream("../../resources/VerdanaFont.swf"));
+		FontDefinition fontDef = FontLoader.loadFont(this.getClass().getResourceAsStream(Constants.getResourceUrl("VerdanaFont.swf").toString()));
 		Color txtColor = annotationColors[color];
 		com.anotherbigidea.flash.structs.Color flashColor = new com.anotherbigidea.flash.structs.Color(txtColor.getRed(), txtColor.getGreen(), txtColor.getBlue());
 		com.anotherbigidea.flash.movie.Font font = new com.anotherbigidea.flash.movie.Font(fontDef);

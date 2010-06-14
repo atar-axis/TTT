@@ -83,8 +83,9 @@ public class PaintListener extends RFBKeyAndMouseListener implements KeyEventDis
     // set cursor shapes
     static Cursor paintCursor;
     static {
-        Image cursorImage = new ImageIcon( TTT.ttt.getClass().getResource("../resources/PaintCursor24.png")).getImage();
-
+    	
+        Image cursorImage = Constants.getIcon("PaintCursor24.png").getImage();
+       
         // compare sizes of image and system default
         Dimension pngDimension = new Dimension(cursorImage.getWidth(null), cursorImage.getHeight(null));
         Dimension dimension = Toolkit.getDefaultToolkit().getBestCursorSize(pngDimension.width, pngDimension.height);
@@ -92,11 +93,14 @@ public class PaintListener extends RFBKeyAndMouseListener implements KeyEventDis
         // adjust cursor size if needed
         if (dimension.equals(pngDimension) || dimension.width == 0 || dimension.height == 0) {
             // no adjustment needed
+        
         } else {
             // adjust cursor size
+        	/*
             BufferedImage image = new BufferedImage(dimension.width, dimension.height, BufferedImage.TYPE_4BYTE_ABGR);
             image.createGraphics().drawImage(cursorImage, 0, 0, null);
             cursorImage = image;
+            */
         }
 
         // set cursor shape

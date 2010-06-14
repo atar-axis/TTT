@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -48,6 +48,7 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import ttt.Constants;
 import ttt.record.Recording;
 import ttt.record.TimeChangedListener;
 
@@ -70,11 +71,11 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
 
         // search fields and buttons
         // NOTE: there are to synchronized searchfields, one for each tab, because it looks better this way
-        JButton searchButton = new JButton(new ImageIcon(getClass().getResource("../../resources/FindAgain24.gif")));
+        JButton searchButton = new JButton(Constants.getIcon("FindAgain24.gif"));
         searchButton.setMargin(new Insets(0, 0, 0, 0));
         searchField = new JTextField();
 
-        JButton searchButton2 = new JButton(new ImageIcon(getClass().getResource("../../resources/FindAgain24.gif")));
+        JButton searchButton2 = new JButton(Constants.getIcon("FindAgain24.gif"));
         searchButton2.setMargin(new Insets(0, 0, 0, 0));
         searchField2 = new JTextField();
 
@@ -112,12 +113,10 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
         annotationsOn.setMargin(new Insets(0, 0, 0, 0));
 
         annotationsOn.setToolTipText("enable/disable annotations");
-        annotationsOn.setIcon(new NegatedImageIcon(this.getClass().getResource("../../resources/Freehand24_new.gif")));
-        annotationsOn.setSelectedIcon(new ImageIcon(this.getClass().getResource("../../resources/Freehand24_new.gif")));
-        annotationsOn.setRolloverIcon(new NegatedImageIcon(this.getClass().getResource(
-                "../../resources/Freehand_rollover24_new.gif")));
-        annotationsOn.setRolloverSelectedIcon(new ImageIcon(this.getClass().getResource(
-                "../../resources/Freehand_rollover24_new.gif")));
+        annotationsOn.setIcon(Constants.getIcon("Freehand24_new.gif"));
+        annotationsOn.setSelectedIcon(Constants.getIcon("Freehand24_new.gif"));
+        annotationsOn.setRolloverIcon(Constants.getIcon("Freehand_rollover24_new.gif"));
+        annotationsOn.setRolloverSelectedIcon(Constants.getIcon("Freehand_rollover24_new.gif"));
         annotationsOn.setSelected(true);
 
         final JCheckBox annotationsHighlightsOn = new JCheckBox();
@@ -128,14 +127,10 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
         annotationsHighlightsOn.setMargin(new Insets(0, 0, 0, 0));
 
         annotationsHighlightsOn.setToolTipText("enable/disable textmarker");
-        annotationsHighlightsOn.setIcon(new NegatedImageIcon(this.getClass().getResource(
-                "../../resources/Highlight24_new.gif")));
-        annotationsHighlightsOn.setSelectedIcon(new ImageIcon(this.getClass().getResource(
-                "../../resources/Highlight24_new.gif")));
-        annotationsHighlightsOn.setRolloverIcon(new NegatedImageIcon(this.getClass().getResource(
-                "../../resources/Highlight_rollover24_new.gif")));
-        annotationsHighlightsOn.setRolloverSelectedIcon(new ImageIcon(this.getClass().getResource(
-                "../../resources/Highlight_rollover24_new.gif")));
+        annotationsHighlightsOn.setIcon(Constants.getIcon("Highlight24_new.gif"));
+        annotationsHighlightsOn.setSelectedIcon(Constants.getIcon("Highlight24_new.gif"));
+        annotationsHighlightsOn.setRolloverIcon(Constants.getIcon("Highlight_rollover24_new.gif"));
+        annotationsHighlightsOn.setRolloverSelectedIcon(Constants.getIcon("Highlight_rollover24_new.gif"));
 
         annotationsHighlightsOn.setSelected(true);
 

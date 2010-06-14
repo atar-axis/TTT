@@ -44,7 +44,6 @@ import java.beans.PropertyVetoException;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.AbstractButton;
@@ -53,7 +52,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JInternalFrame;
@@ -67,6 +65,7 @@ import javax.swing.JSplitPane;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import ttt.Constants;
 import ttt.Recorder;
 import ttt.RfbProtocol;
 import ttt.TTT;
@@ -146,8 +145,7 @@ public class Player extends JInternalFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
         pane = panel;
 
-        final AbstractButton videoButton = new RollOverToggleButton(new ImageIcon(this.getClass().getResource(
-                "../../resources/Movie24.gif")));
+        final AbstractButton videoButton = new RollOverToggleButton(Constants.getIcon("Movie24.gif"));
         if (video != null) {
             final JPanel videoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
             videoPanel.add(video);
@@ -225,8 +223,7 @@ public class Player extends JInternalFrame {
         });
 
         // fullscreen
-        final AbstractButton fullscreenButton = new RollOverToggleButton(new ImageIcon(this.getClass().getResource(
-                "../../resources/Fullscreen2_24.png")));
+        final AbstractButton fullscreenButton = new RollOverToggleButton(Constants.getIcon("Fullscreen2_24.png"));
         fullscreenButton.setActionCommand(Recording.FULLSCREEN);
         fullscreenButton.setToolTipText("enable/disable fullscreen mode");
         fullscreenButton.addActionListener(new ActionListener() {
@@ -236,8 +233,7 @@ public class Player extends JInternalFrame {
         });
 
         // volume control
-        URL urlVolume = this.getClass().getResource("../../resources/Volume24.gif");
-        Icon volumeOnIcon = new ImageIcon(urlVolume);
+        Icon volumeOnIcon = Constants.getIcon("Volume24.gif");
 
         final AbstractButton volumeButton = new RollOverButton(volumeOnIcon, null);
 
@@ -544,8 +540,7 @@ public class Player extends JInternalFrame {
         if (fullscreenButton != null)
             return fullscreenButton;
 
-        final AbstractButton button = new RollOverToggleButton(new ImageIcon(this.getClass().getResource(
-                "../../resources/Fullscreen2_24.png")));
+        final AbstractButton button = new RollOverToggleButton(Constants.getIcon("Fullscreen2_24.png"));
         fullscreenButton = button;
         button.setMargin(new Insets(0, 0, 0, 0));
         button.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -563,8 +558,7 @@ public class Player extends JInternalFrame {
     }
 
     private Component getReconnectButton(final Connection connection) {
-        final AbstractButton button = new RollOverButton(new ImageIcon(this.getClass().getResource(
-                "../../resources/Refresh24.gif")));
+        final AbstractButton button = new RollOverButton(Constants.getIcon("Refresh24.gif"));
         button.setMargin(new Insets(0, 0, 0, 0));
         button.setBorder(BorderFactory.createLoweredBevelBorder());
         button.setToolTipText("reconnect");

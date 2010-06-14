@@ -4,7 +4,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
+
 
 import javax.swing.*;
 
@@ -49,72 +49,44 @@ public class JClientPaintControls extends GradientPanel {
     }
 
     private void jbInit() throws Exception {
-        URL urlRect = this.getClass().getResource("../../../resources/Rectangle24_new.gif");
-        URL urlActiveRect = this.getClass().getResource("../../../resources/Rectangle_active24_new.gif");
-        URL urlRolloverRect = this.getClass().getResource("../../../resources/Rectangle_rollover24_new.gif");
-        URL urlLine = this.getClass().getResource("../../../resources/Line24.gif");
-        URL urlActiveLine = this.getClass().getResource("../../../resources/Line_active24.gif");
-        URL urlRolloverLine = this.getClass().getResource("../../../resources/Line_rollover24.gif");
-        URL urlFree = this.getClass().getResource("../../../resources/Freehand24_new.gif");
-        URL urlActiveFree = this.getClass().getResource("../../../resources/Freehand_active24_new.gif");
-        URL urlRolloverFree = this.getClass().getResource("../../../resources/Freehand_rollover24_new.gif");
-        URL urlHighlight = this.getClass().getResource("../../../resources/Highlight24_new.gif");
-        URL urlActiveHighlight = this.getClass().getResource("../../../resources/Highlight_active24_new.gif");
-        URL urlRolloverHighlight = this.getClass().getResource("../../../resources/Highlight_rollover24_new.gif");
-        URL urlDel = this.getClass().getResource("../../../resources/Delete24.gif");
-        URL urlActiveDel = this.getClass().getResource("../../../resources/Delete_active24.gif");
-        URL urlRolloverDel = this.getClass().getResource("../../../resources/Delete_rollover24.gif");
-
-        URL urlText = this.getClass().getResource("../../../resources/text24.png");
-        URL urlActiveText = this.getClass().getResource("../../../resources/text_active24.png");
-        URL urlRolloverText = this.getClass().getResource("../../../resources/text_rollover24.png");
-        
-        URL urlDelAll = this.getClass().getResource("../../../resources/Delete_all16.gif");
-        URL urlActiveDelAll = this.getClass().getResource("../../../resources/Delete_all_active16.gif");
-
-        URL urldelSheetAnn = this.getClass().getResource("../../../resources/msgclient_delsheetann.png");
-        URL urlWB = this.getClass().getResource("../../../resources/msgclient_wb.png");
-        URL urlgetSheet = this.getClass().getResource("../../../resources/msgclient_getsheet.png");
-        URL urlgetSheetAnn = this.getClass().getResource("../../../resources/msgclient_getsheetann2.png");
-        URL urlVote = this.getClass().getResource("../../../resources/msgclient_vote.png");
-
+       
         colorButtons = new JRadioButton[5];
         for (int i = 0; i < colorButtons.length; i++) {
             colorButtons[i] = new JRadioButton();
         }
 
         // color buttons
-        // setBackground() does not work in MAC OS Look-and-Feel, so must use
+        // setBackground() does not work in MAC OS Look-andnew ImageIcon(urlRolloverDel)-Feel, so must use
         // separate image files for each button
         colorButtons[0].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[0].setToolTipText("Choose Color");
-        colorButtons[0].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_red.png")));
-        colorButtons[0].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_red.png")));
-        colorButtons[0].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_red.png")));
+        colorButtons[0].setIcon(Constants.getIcon("color_button24_red.png"));
+        colorButtons[0].setSelectedIcon(Constants.getIcon("color_button_active24_red.png"));
+        colorButtons[0].setRolloverIcon(Constants.getIcon("color_button_rollover24_red.png"));
 
         colorButtons[1].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[1].setToolTipText("Choose Color");
-        colorButtons[1].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_blue.png")));
-        colorButtons[1].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_blue.png")));
-        colorButtons[1].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_blue.png")));
+        colorButtons[1].setIcon(Constants.getIcon("color_button24_blue.png"));
+        colorButtons[1].setSelectedIcon(Constants.getIcon("color_button_active24_blue.png"));
+        colorButtons[1].setRolloverIcon(Constants.getIcon("color_button_rollover24_blue.png"));
 
         colorButtons[2].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[2].setToolTipText("Choose Color");
-        colorButtons[2].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_green.png")));
-        colorButtons[2].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_green.png")));
-        colorButtons[2].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_green.png")));
+        colorButtons[2].setIcon(Constants.getIcon("color_button24_green.png"));
+        colorButtons[2].setSelectedIcon(Constants.getIcon("color_button_active24_green.png"));
+        colorButtons[2].setRolloverIcon(Constants.getIcon("color_button_rollover24_green.png"));
 
         colorButtons[3].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[3].setToolTipText("Choose Color");
-        colorButtons[3].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_yellow.png")));
-        colorButtons[3].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_yellow.png")));
-        colorButtons[3].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_yellow.png")));
+        colorButtons[3].setIcon(Constants.getIcon("color_button24_yellow.png"));
+        colorButtons[3].setSelectedIcon(Constants.getIcon("color_button_active24_yellow.png"));
+        colorButtons[3].setRolloverIcon(Constants.getIcon("color_button_rollover24_yellow.png"));
 
         colorButtons[4].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[4].setToolTipText("Choose Color");
-        colorButtons[4].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_black.png")));
-        colorButtons[4].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_black.png")));
-        colorButtons[4].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_black.png")));
+        colorButtons[4].setIcon(Constants.getIcon("color_button24_black.png"));
+        colorButtons[4].setSelectedIcon(Constants.getIcon("color_button_active24_black.png"));
+        colorButtons[4].setRolloverIcon(Constants.getIcon("color_button_rollover24_black.png"));
         colorButtons[4].setSelected(true);
 
         ButtonGroup colorGroup = new ButtonGroup();
@@ -125,50 +97,50 @@ public class JClientPaintControls extends GradientPanel {
         textButton = new JToggleButton();
         textButton.setToolTipText("Text");
         textButton.setBorder(BorderFactory.createEmptyBorder());
-        textButton.setIcon(new ImageIcon(urlText));
-        textButton.setSelectedIcon(new ImageIcon(urlActiveText));
-        textButton.setRolloverIcon(new ImageIcon(urlRolloverText));
+        textButton.setIcon(Constants.getIcon("text24.png"));
+        textButton.setSelectedIcon(Constants.getIcon("text_active24.png"));
+        textButton.setRolloverIcon(Constants.getIcon("text_rollover24.png"));
         
         highlightButton = new JToggleButton();
         highlightButton.setToolTipText("Highlight");
         highlightButton.setBorder(BorderFactory.createEmptyBorder());
-        highlightButton.setIcon(new ImageIcon(urlHighlight));
-        highlightButton.setSelectedIcon(new ImageIcon(urlActiveHighlight));
-        highlightButton.setRolloverIcon(new ImageIcon(urlRolloverHighlight));
+        highlightButton.setIcon(Constants.getIcon("Highlight24_new.gif"));
+        highlightButton.setSelectedIcon(Constants.getIcon("Highlight_active24_new.gif"));
+        highlightButton.setRolloverIcon(Constants.getIcon("Highlight_rollover24_new.gif"));
 
         freeButton = new JToggleButton();
         freeButton.setToolTipText("Freehand");
         freeButton.setBorder(BorderFactory.createEmptyBorder());
-        freeButton.setIcon(new ImageIcon(urlFree));
-        freeButton.setSelectedIcon(new ImageIcon(urlActiveFree));
-        freeButton.setRolloverIcon(new ImageIcon(urlRolloverFree));
+        freeButton.setIcon(Constants.getIcon("Freehand24_new.gif"));
+        freeButton.setSelectedIcon(Constants.getIcon("Freehand_active24_new.gif"));
+        freeButton.setRolloverIcon(Constants.getIcon("Freehand_rollover24_new.gif"));
 
         rectangleButton = new JToggleButton();
         rectangleButton.setToolTipText("Rectangle");
         rectangleButton.setBorder(BorderFactory.createEmptyBorder());
-        rectangleButton.setIcon(new ImageIcon(urlRect));
-        rectangleButton.setSelectedIcon(new ImageIcon(urlActiveRect));
-        rectangleButton.setRolloverIcon(new ImageIcon(urlRolloverRect));
+        rectangleButton.setIcon(Constants.getIcon("Rectangle24_new.gif"));
+        rectangleButton.setSelectedIcon(Constants.getIcon("Rectangle_active24_new.gif"));
+        rectangleButton.setRolloverIcon(Constants.getIcon("Rectangle_rollover24_new.gif"));
 
         lineButton = new JToggleButton();
         lineButton.setToolTipText("Line");
         lineButton.setBorder(BorderFactory.createEmptyBorder());
-        lineButton.setIcon(new ImageIcon(urlLine));
-        lineButton.setSelectedIcon(new ImageIcon(urlActiveLine));
-        lineButton.setRolloverIcon(new ImageIcon(urlRolloverLine));
+        lineButton.setIcon(Constants.getIcon("Line24.gif"));
+        lineButton.setSelectedIcon(Constants.getIcon("Line_active24.gif"));
+        lineButton.setRolloverIcon(Constants.getIcon("Line_rollover24.gif"));
 
         deleteButton = new JToggleButton();
         deleteButton.setToolTipText("Delete");
         deleteButton.setBorder(BorderFactory.createEmptyBorder());
-        deleteButton.setIcon(new ImageIcon(urlDel));
-        deleteButton.setSelectedIcon(new ImageIcon(urlActiveDel));
-        deleteButton.setRolloverIcon(new ImageIcon(urlRolloverDel));
+        deleteButton.setIcon(Constants.getIcon("Delete24.gif"));
+        deleteButton.setSelectedIcon(Constants.getIcon("Delete_active24.gif"));
+        deleteButton.setRolloverIcon(Constants.getIcon("Delete_rollover24.gif"));
 
         deleteAllButton = new JButton();
         deleteAllButton.setToolTipText("Delete all your annotations");
         deleteAllButton.setBorder(BorderFactory.createEmptyBorder());
-        deleteAllButton.setIcon(new ImageIcon(urlDelAll));
-        deleteAllButton.setSelectedIcon(new ImageIcon(urlActiveDelAll));
+        deleteAllButton.setIcon(Constants.getIcon("Delete_all16.gif"));
+        deleteAllButton.setSelectedIcon(Constants.getIcon("Delete_all_active16.gif"));
 
         ButtonGroup modeButtons = new ButtonGroup();
         modeButtons.add(textButton);
@@ -196,27 +168,27 @@ public class JClientPaintControls extends GradientPanel {
         add(Box.createRigidArea(new Dimension(20, 0)));
         add(deleteAllButton);
 
-        btnDeleteSheetAnn = new JButton(new ImageIcon(urldelSheetAnn));
+        btnDeleteSheetAnn = new JButton(Constants.getIcon("msgclient_delsheetann.png"));
         btnDeleteSheetAnn.setBorder(BorderFactory.createEmptyBorder());
         btnDeleteSheetAnn.setToolTipText("delete all annotations which came with sheet");
         add(btnDeleteSheetAnn);
         add(Box.createGlue());
-        btnWB = new JButton(new ImageIcon(urlWB));
+        btnWB = new JButton(Constants.getIcon("msgclient_wb.png"));
         btnWB.setToolTipText("new whiteboard");
         add(btnWB);
-        JButton btnGetSheet = new JButton(new ImageIcon(urlgetSheet));
+        JButton btnGetSheet = new JButton(Constants.getIcon("msgclient_getsheet.png"));
         btnGetSheet.setToolTipText("get current sheet");
         btnGetSheet.setActionCommand("getSheet");
         btnGetSheet.addActionListener(cc);
         add(btnGetSheet);
-        JButton btnGetSheetAnn = new JButton(new ImageIcon(urlgetSheetAnn));
+        JButton btnGetSheetAnn = new JButton(Constants.getIcon("msgclient_getsheetann2.png"));
         btnGetSheetAnn.setToolTipText("get current sheet or whiteboard with annotations");
         btnGetSheetAnn.setActionCommand("getSheetAnn");
         btnGetSheetAnn.addActionListener(cc);
         add(btnGetSheetAnn);
         add(Box.createRigidArea(new Dimension(20,0)));
 
-        btnVote = new JButton(new ImageIcon(urlVote));
+        btnVote = new JButton(Constants.getIcon("msgclient_vote.png"));
         btnVote.setToolTipText("vote on polls");
         btnVote.setBorder(BorderFactory.createEmptyBorder());
         btnVote.addActionListener(cc);

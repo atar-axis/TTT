@@ -17,6 +17,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import ttt.Constants;
+
 /**
  * provides drawing and other helper methods for the subclasses 
  * {@link MessageListTextPanel} and {@link MessageListSheetPanel}
@@ -41,9 +43,9 @@ public abstract class MessageListPanel extends JPanel {
     protected static BufferedImage IMG_LEFT = null;
     static {
 		try {
-			IMG_DEFER = ImageIO.read(MessageListPanel.class.getResource("../../../resources/msg_defer.png"));
-			IMG_TRASH = ImageIO.read(MessageListPanel.class.getResource("../../../resources/msg_messagedelete.png"));
-			IMG_LEFT = ImageIO.read(MessageListPanel.class.getResource("../../../resources/msg_left.png"));
+			IMG_DEFER = ImageIO.read(Constants.getResourceUrl("msg_defer.png"));
+			IMG_TRASH = ImageIO.read(Constants.getResourceUrl("msg_messagedelete.png"));
+			IMG_LEFT = ImageIO.read(Constants.getResourceUrl("msg_left.png"));
 		} catch (IOException ioe) { /* ignore */ }
     }
 

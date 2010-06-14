@@ -6,11 +6,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import ttt.Constants;
 import ttt.messages.Annotation;
 
 /**
@@ -53,33 +54,33 @@ public class QuickPollCreateDialog extends JPanel {
         // separate image files for each color
         colorButtons[0].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[0].setToolTipText("Choose Color");
-        colorButtons[0].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_red.png")));
-        colorButtons[0].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_red.png")));
-        colorButtons[0].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_red.png")));
+        colorButtons[0].setIcon(Constants.getIcon("color_button24_red.png"));
+        colorButtons[0].setSelectedIcon(Constants.getIcon("color_button_active24_red.png"));
+        colorButtons[0].setRolloverIcon(Constants.getIcon("color_button_rollover24_red.png"));
 
         colorButtons[1].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[1].setToolTipText("Choose Color");
-        colorButtons[1].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_blue.png")));
-        colorButtons[1].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_blue.png")));
-        colorButtons[1].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_blue.png")));
+        colorButtons[1].setIcon(Constants.getIcon("color_button24_blue.png"));
+        colorButtons[1].setSelectedIcon(Constants.getIcon("color_button_active24_blue.png"));
+        colorButtons[1].setRolloverIcon(Constants.getIcon("color_button_rollover24_blue.png"));
 
         colorButtons[2].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[2].setToolTipText("Choose Color");
-        colorButtons[2].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_green.png")));
-        colorButtons[2].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_green.png")));
-        colorButtons[2].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_green.png")));
+        colorButtons[2].setIcon(Constants.getIcon("color_button24_green.png"));
+        colorButtons[2].setSelectedIcon(Constants.getIcon("color_button_active24_green.png"));
+        colorButtons[2].setRolloverIcon(Constants.getIcon("color_button_rollover24_green.png"));
 
         colorButtons[3].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[3].setToolTipText("Choose Color");
-        colorButtons[3].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_yellow.png")));
-        colorButtons[3].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_yellow.png")));
-        colorButtons[3].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_yellow.png")));
+        colorButtons[3].setIcon(Constants.getIcon("color_button24_yellow.png"));
+        colorButtons[3].setSelectedIcon(Constants.getIcon("color_button_active24_yellow.png"));
+        colorButtons[3].setRolloverIcon(Constants.getIcon("color_button_rollover24_yellow.png"));
 
         colorButtons[4].setBorder(BorderFactory.createEmptyBorder());
         colorButtons[4].setToolTipText("Choose Color");
-        colorButtons[4].setIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button24_black.png")));
-        colorButtons[4].setSelectedIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_active24_black.png")));
-        colorButtons[4].setRolloverIcon(new ImageIcon(this.getClass().getResource("../../../resources/color_button_rollover24_black.png")));
+        colorButtons[4].setIcon(Constants.getIcon("color_button24_black.png"));
+        colorButtons[4].setSelectedIcon(Constants.getIcon("color_button_active24_black.png"));
+        colorButtons[4].setRolloverIcon(Constants.getIcon("color_button_rollover24_black.png"));
         colorButtons[4].setSelected(true);
 
 

@@ -118,12 +118,11 @@ public class Recorder implements MessageConsumer, Closeable {
         final String STOP = "stop";
         final String PLAY = "play";
 
-        final Icon record_icon = new ImageIcon(this.getClass().getResource("../resources/Record24.gif"));
-        final Icon stop_icon = new ImageIcon(this.getClass().getResource("../resources/Stop24.gif"));
+        final Icon record_icon = Constants.getIcon("Record24.gif");
+        final Icon stop_icon =Constants.getIcon("esources/Stop24.gif");
 
         final JButton recordButton = new RollOverButton(record_icon, RECORD);
-        final JButton playButton = new RollOverButton(
-                new ImageIcon(this.getClass().getResource("../resources/Play24.gif")), PLAY);
+        final JButton playButton = new RollOverButton(Constants.getIcon("Play24.gif"), PLAY);
 
         recordButton.setEnabled(out == null);
         playButton.setEnabled(false);
@@ -179,12 +178,9 @@ public class Recorder implements MessageConsumer, Closeable {
         final String STOP = "stop";
         final String PLAY = "play";
 
-        final JButton recordButton = new RollOverButton(new ImageIcon(this.getClass().getResource(
-        		"../resources/Record24.gif")), RECORD);
-        final JButton stopButton = new RollOverButton(
-                new ImageIcon(this.getClass().getResource("../resources/Stop24.gif")), STOP);
-        final JButton playButton = new RollOverButton(
-                new ImageIcon(this.getClass().getResource("../resources/Play24.gif")), PLAY);
+        final JButton recordButton = new RollOverButton(Constants.getIcon("Record24.gif"), RECORD);
+        final JButton stopButton = new RollOverButton(Constants.getIcon("Stop24.gif"), STOP);
+        final JButton playButton = new RollOverButton(Constants.getIcon("Play24.gif"), PLAY);
               
         recordButton.setEnabled(out == null);
         stopButton.setEnabled(out != null);
@@ -270,8 +266,8 @@ public class Recorder implements MessageConsumer, Closeable {
         final String RECORD = "record";
         final String STOP = "stop";
 
-        final Icon record_icon = new ImageIcon(this.getClass().getResource("../resources/Record24.gif"));
-        final Icon stop_icon = new ImageIcon(this.getClass().getResource("../resources/Stop24.gif"));
+        final Icon record_icon = Constants.getIcon("Record24.gif");
+        final Icon stop_icon = Constants.getIcon("Stop24.gif");
 
         final JButton recordButton = new RollOverButton(record_icon, RECORD);
 
@@ -300,8 +296,8 @@ public class Recorder implements MessageConsumer, Closeable {
         final String ZOOM_OUT = "minimize";
         final String ZOOM_IN = "maximize";
 
-        final Icon zoom_in_icon = new ImageIcon(this.getClass().getResource("../resources/ZoomIn24.gif"));
-        final Icon zoom_out_icon = new ImageIcon(this.getClass().getResource("../resources/ZoomOut24.gif"));
+        final Icon zoom_in_icon = Constants.getIcon("ZoomIn24.gif");
+        final Icon zoom_out_icon = Constants.getIcon("ZoomOut24.gif");
 
         final JButton zoomButton = new RollOverButton(zoom_in_icon, ZOOM_IN);
         zoomButton.addActionListener(new ActionListener() {

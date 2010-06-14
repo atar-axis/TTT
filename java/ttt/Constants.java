@@ -29,6 +29,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
 
 public class Constants {
 
@@ -515,6 +519,39 @@ public class Constants {
           }
         }
         return( path.delete() );
+    }
+    
+    public static  URL getResourceUrl(String fileName){
+    	
+    	try {
+			return new URL(TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/"));
+		} catch (MalformedURLException e) {
+			System .out.println("File not found: " + fileName);
+			return null;
+		}
+    }
+    
+    //Creates and returns an Image Icon
+    public static ImageIcon getIcon(String iconName) {   
+        String iconPath =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
+    	ImageIcon icon = new ImageIcon();    
+        try{
+        	URL x;
+			try {
+				x = new URL(iconPath + iconName);
+				   icon =	new ImageIcon(x);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	 
+        }
+    	catch(NullPointerException e){
+    		System.out.println("Couldn't find Icon Path: " + iconPath + iconName);
+    	}
+    	    
+    	    
+    	return icon; 
     }
     
 }

@@ -30,7 +30,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
+
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -38,7 +38,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
@@ -90,45 +90,11 @@ public class PaintControls extends GradientPanel {
     static final String DELETE_ALL = "delete all";
 
     private void jbInit() throws Exception {
-        URL urlText = this.getClass().getResource("../../resources/color_button_rollover24.gif");
-
-        URL urlActiveText =this.getClass().getResource("../../resources/color_button_rollover24.gif");
-
-        URL urlRolloverText = this.getClass().getResource("../../resources/color_button_rollover24.gif");
-
-        URL urlRect = this.getClass().getResource("../../resources/Rectangle24_new.gif");
-        URL urlActiveRect = this.getClass().getResource("../../resources/Rectangle_active24_new.gif");
-        URL urlRolloverRect =this.getClass().getResource("../../resources/Rectangle_rollover24_new.gif");
-        URL urlLine = this.getClass().getResource("../../resources/Line24.gif");
-        URL urlActiveLine = this.getClass().getResource("../../resources/Line_active24.gif");
-        URL urlRolloverLine = this.getClass().getResource("../../resources/Line_rollover24.gif");
-        URL urlFree = this.getClass().getResource("../../resources/Freehand24_new.gif");
-        URL urlActiveFree = this.getClass().getResource("../../resources/Freehand_active24_new.gif");
-        URL urlRolloverFree = this.getClass().getResource("../../resources/Freehand_rollover24_new.gif");
-        URL urlHighlight = this.getClass().getResource("../../resources/Highlight24_new.gif");
-        URL urlActiveHighlight = this.getClass().getResource("../../resources/Highlight_active24_new.gif");
-        URL urlRolloverHighlight = this.getClass().getResource("../../resources/Highlight_rollover24_new.gif");
-        URL urlDel = this.getClass().getResource("../../resources/Delete24.gif");
-        URL urlActiveDel = this.getClass().getResource("../../resources/Delete_active24.gif");
-        URL urlRolloverDel =this.getClass().getResource("../../resources/Delete_rollover24.gif");
-
-        URL urlDelAll = this.getClass().getResource("../../resources/Delete_all16.gif");
-        URL urlActiveDelAll = this.getClass().getResource("../../resources/Delete_all_active16.gif");
-        URL urlEnable = this.getClass().getResource("../../resources/Enable16.gif");
-        URL urlActiveEnable = this.getClass().getResource("../../resources/Enable_active16.gif");
-
-        URL urlColorButton = this.getClass().getResource("../../resources/color_button24.gif");
-        URL urlActiveColorButton = this.getClass().getResource("../../resources/color_button_active24.gif");
-        URL urlRolloverColorButton = this.getClass().getResource("../../resources/color_button_rollover24.gif");
-
-        Icon colorIcon = new ImageIcon(urlColorButton);
-        Icon colorActiveIcon = new ImageIcon(urlActiveColorButton);
-        Icon colorRolloverIcon = new ImageIcon(urlRolloverColorButton);
-
+      
         activateButton = new JCheckBox();
-        activateButton.setIcon(new ImageIcon(urlEnable));
+        activateButton.setIcon(Constants.getIcon("Enable16.gif"));
         activateButton.setBorder(BorderFactory.createEmptyBorder());
-        activateButton.setSelectedIcon(new ImageIcon(urlActiveEnable));
+        activateButton.setSelectedIcon(Constants.getIcon("Enable_active16.gif"));
         activateButton.setToolTipText("Activate painting");
         activateButton.setFocusable(false);
 
@@ -137,6 +103,10 @@ public class PaintControls extends GradientPanel {
             colorButtons[i] = new JRadioButton();
         }
 
+        Icon colorIcon = Constants.getIcon("color_button24.gif");
+        Icon colorActiveIcon = Constants.getIcon("color_button_active24.gif");
+        Icon colorRolloverIcon = Constants.getIcon("color_button_rollover24.gif");
+        
         // color buttons
         
         colorButtons[0].setBackground(Color.RED);
@@ -192,56 +162,56 @@ public class PaintControls extends GradientPanel {
         textButton = new JToggleButton();
         textButton.setToolTipText("Text");
         textButton.setBorder(BorderFactory.createEmptyBorder());
-        textButton.setIcon(new ImageIcon(urlText));
-        textButton.setSelectedIcon(new ImageIcon(urlActiveText));
-        textButton.setRolloverIcon(new ImageIcon(urlRolloverText));
+        textButton.setIcon(Constants.getIcon("color_button_rollover24.gif"));
+        textButton.setSelectedIcon(Constants.getIcon("color_button_rollover24.gif"));
+        textButton.setRolloverIcon(Constants.getIcon("color_button_rollover24.gif"));
         textButton.setFocusable(false);
         
         highlightButton = new JToggleButton();
         highlightButton.setToolTipText("Highlight");
         highlightButton.setBorder(BorderFactory.createEmptyBorder());
-        highlightButton.setIcon(new ImageIcon(urlHighlight));
-        highlightButton.setSelectedIcon(new ImageIcon(urlActiveHighlight));
-        highlightButton.setRolloverIcon(new ImageIcon(urlRolloverHighlight));
+        highlightButton.setIcon(Constants.getIcon("Highlight24_new.gif"));
+        highlightButton.setSelectedIcon(Constants.getIcon("Highlight_active24_new.gif"));
+        highlightButton.setRolloverIcon(Constants.getIcon("Highlight_rollover24_new.gif"));
         highlightButton.setFocusable(false);
 
         freeButton = new JToggleButton();
         freeButton.setToolTipText("Freehand");
         freeButton.setBorder(BorderFactory.createEmptyBorder());
-        freeButton.setIcon(new ImageIcon(urlFree));
-        freeButton.setSelectedIcon(new ImageIcon(urlActiveFree));
-        freeButton.setRolloverIcon(new ImageIcon(urlRolloverFree));
+        freeButton.setIcon(Constants.getIcon("Freehand24_new.gif"));
+        freeButton.setSelectedIcon(Constants.getIcon("Freehand_active24_new.gif"));
+        freeButton.setRolloverIcon(Constants.getIcon("Freehand_rollover24_new.gif"));
         freeButton.setFocusable(false);
 
         rectangleButton = new JToggleButton();
         rectangleButton.setToolTipText("Rectangle");
         rectangleButton.setBorder(BorderFactory.createEmptyBorder());
-        rectangleButton.setIcon(new ImageIcon(urlRect));
-        rectangleButton.setSelectedIcon(new ImageIcon(urlActiveRect));
-        rectangleButton.setRolloverIcon(new ImageIcon(urlRolloverRect));
+        rectangleButton.setIcon(Constants.getIcon("Rectangle24_new.gif"));
+        rectangleButton.setSelectedIcon(Constants.getIcon("Rectangle_active24_new.gif"));
+        rectangleButton.setRolloverIcon(Constants.getIcon("Rectangle_rollover24_new.gif"));
         rectangleButton.setFocusable(false);
 
         lineButton = new JToggleButton();
         lineButton.setToolTipText("Line");
         lineButton.setBorder(BorderFactory.createEmptyBorder());
-        lineButton.setIcon(new ImageIcon(urlLine));
-        lineButton.setSelectedIcon(new ImageIcon(urlActiveLine));
-        lineButton.setRolloverIcon(new ImageIcon(urlRolloverLine));
+        lineButton.setIcon(Constants.getIcon("Line24.gif"));
+        lineButton.setSelectedIcon(Constants.getIcon("Line_active24.gif"));
+        lineButton.setRolloverIcon(Constants.getIcon("Line_rollover24.gif"));
         lineButton.setFocusable(false);
 
         deleteButton = new JToggleButton();
         deleteButton.setToolTipText("Delete");
         deleteButton.setBorder(BorderFactory.createEmptyBorder());
-        deleteButton.setIcon(new ImageIcon(urlDel));
-        deleteButton.setSelectedIcon(new ImageIcon(urlActiveDel));
-        deleteButton.setRolloverIcon(new ImageIcon(urlRolloverDel));
+        deleteButton.setIcon(Constants.getIcon("Delete24.gif"));
+        deleteButton.setSelectedIcon(Constants.getIcon("Delete_active24.gif"));
+        deleteButton.setRolloverIcon(Constants.getIcon("Delete_rollover24.gif"));
         deleteButton.setFocusable(false);
 
         deleteAllButton = new JButton();
         deleteAllButton.setToolTipText("Delete all");
         deleteAllButton.setBorder(BorderFactory.createEmptyBorder());
-        deleteAllButton.setIcon(new ImageIcon(urlDelAll));
-        deleteAllButton.setSelectedIcon(new ImageIcon(urlActiveDelAll));
+        deleteAllButton.setIcon(Constants.getIcon("Delete_all16.gif"));
+        deleteAllButton.setSelectedIcon(Constants.getIcon("Delete_all_active16.gif"));
         deleteAllButton.setFocusable(false);
 
         ButtonGroup modeButtons = new ButtonGroup();
@@ -253,18 +223,18 @@ public class PaintControls extends GradientPanel {
         modeButtons.add(deleteButton);
 
         // create whiteboard controls
-        whiteboardEnable = new RollOverToggleButton(new ImageIcon( this.getClass().getResource("../../resources/Edit24.gif")));
+        whiteboardEnable = new RollOverToggleButton(Constants.getIcon("Edit24.gif"));
         whiteboardEnable.setMargin(new Insets(0, 0, 0, 0));
         whiteboardEnable.setActionCommand("switch");
         whiteboardEnable.setToolTipText("Switch between desktop and whiteboard");
         whiteboardEnable.setFocusable(false);
 
-        whiteboardPrevious = new RollOverButton(new ImageIcon( this.getClass().getResource("../../resources/Back24.gif")));
+        whiteboardPrevious = new RollOverButton(Constants.getIcon("Back24.gif"));
         whiteboardPrevious.setActionCommand("previous");
         whiteboardPrevious.setToolTipText("previous whiteboard page");
         whiteboardPrevious.setFocusable(false);
 
-        whiteboardNext = new RollOverButton(new ImageIcon( this.getClass().getResource("../../resources/Forward24.gif")));
+        whiteboardNext = new RollOverButton(Constants.getIcon("orward24.gif"));
         whiteboardNext.setActionCommand("next");
         whiteboardNext.setToolTipText("next whiteboard page");
         whiteboardNext.setFocusable(false);

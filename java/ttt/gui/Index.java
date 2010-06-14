@@ -38,7 +38,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
+
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -498,10 +498,9 @@ public class Index {
 
     private void createDefaultThumbnail() {
         // define default thumbnail icon
-        URL url = TTT.getInstance().getClass().getResource("../resources/77.kitty.jpg");
-        if (url != null) {        	
+      	
             // get image
-            Image image = Toolkit.getDefaultToolkit().getImage(url);
+            Image image = Constants.getIcon("77.kitty.jpg").getImage();
 
             // wait until image is fully loaded and image dimensions can be determined
             while (!Toolkit.getDefaultToolkit().prepareImage(image, -1, -1, null))
@@ -517,10 +516,7 @@ public class Index {
             // Image.SCALE_DEFAULT);
 
             defaultThumbnail = image;
-        } else
-        	
-            // TODO fix error handling
-            defaultThumbnail = null;
+        
     }
 
     // //////////////////////////////////////////////

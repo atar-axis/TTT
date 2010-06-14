@@ -1122,7 +1122,7 @@ public class TTT extends JFrame {
     public void addInternalFrameCentered(JInternalFrame frame) {
     	frame.pack();        
 
-        frame.setFrameIcon(new ImageIcon(getClass().getResource("../resources/ttt16.png")));
+        frame.setFrameIcon(Constants.getIcon("ttt16.png"));
         
         frame.setVisible(true);
         Rectangle rect = TTT.getInstance().desktop.getBounds();
@@ -1150,7 +1150,7 @@ public class TTT extends JFrame {
             height = ttt.desktop.getHeight() - y;
         if (width != internalFrame.getWidth() || height != internalFrame.getHeight())
             internalFrame.setSize(width, height);
-        internalFrame.setFrameIcon(new ImageIcon(getClass().getResource("../resources/ttt16.png")));
+        internalFrame.setFrameIcon(Constants.getIcon("ttt16.png"));
         ttt.desktop.add(internalFrame);
         try {
             internalFrame.setSelected(true);
@@ -1284,14 +1284,10 @@ public class TTT extends JFrame {
                     infoPanel.add(new JLabel("The controls are placed in the top left corner"));
                     infoPanel.add(new JLabel("but can be dragged to any other position on screen."));
                     infoPanel.add(new JLabel(" "));
-                    infoPanel.add(new JLabel("record", new ImageIcon(ttt.getClass().getResource(
-                            "../resources/Record24.gif")), JLabel.LEFT));
-                    infoPanel.add(new JLabel("stop recording", new ImageIcon(ttt.getClass().getResource(
-                            "../resources/Stop24.gif")), JLabel.LEFT));
-                    infoPanel.add(new JLabel("display TTT main window", new ImageIcon(ttt.getClass().getResource(
-                            "../resources/ZoomIn24.gif")), JLabel.LEFT));
-                    infoPanel.add(new JLabel("turn off TTT main window", new ImageIcon(ttt.getClass().getResource(
-                            "../resources/ZoomOut24.gif")), JLabel.LEFT));
+                    infoPanel.add(new JLabel("record", Constants.getIcon("Record24.gif"), JLabel.LEFT));
+                    infoPanel.add(new JLabel("stop recording", Constants.getIcon("Stop24.gif"), JLabel.LEFT));
+                    infoPanel.add(new JLabel("display TTT main window", Constants.getIcon("ZoomIn24.gif"), JLabel.LEFT));
+                    infoPanel.add(new JLabel("turn off TTT main window", Constants.getIcon("ZoomOut24.gif"), JLabel.LEFT));
 
                     infoPanel.add(new JLabel(" "));
                     JCheckBox showAgainCheckBox = new JCheckBox("Don't show this message again.");
@@ -1438,11 +1434,10 @@ public class TTT extends JFrame {
     }
     
     public static ImageIcon getIcon(String filename) {   
-    	System.out.println("TTT.class.getResource(Constants.class): " + TTT.class.getResource("Constants.class").toString());
-    	String workaround =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
-    	System.out.println(workaround + filename);
-    	
-    	return new ImageIcon( workaround + filename);    	
+    
+    	String iconPath =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
+        	
+    	return new ImageIcon( iconPath + filename);    	
     }
 }
 

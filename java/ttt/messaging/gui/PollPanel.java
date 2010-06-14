@@ -18,6 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import ttt.Constants;
+
 /**
  * super class of {@link FullPollPanel} and {@link QuickPollPanel}, which are used to
  * display the poll entry in the poll list.
@@ -34,9 +36,9 @@ public abstract class PollPanel extends JPanel {
 	static BufferedImage IMG_LEFT;
 	static {
 		try {
-			IMG_UNLOCK = ImageIO.read(PollPanel.class.getResource("../../../resources/msg_unlock.png"));
-			IMG_LOCK = ImageIO.read(PollPanel.class.getResource("../../../resources/msg_lock.png"));
-			IMG_LEFT = ImageIO.read(PollPanel.class.getResource("../../../resources/msg_left.png"));
+			IMG_UNLOCK = ImageIO.read(Constants.getResourceUrl("msg_unlock.png"));
+			IMG_LOCK = ImageIO.read(Constants.getResourceUrl("msg_lock.png"));
+			IMG_LEFT = ImageIO.read(Constants.getResourceUrl("msg_left.png"));
 		} catch (Exception e) { /* ignore */ }
 	}
 	

@@ -5,10 +5,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
 
 import javax.swing.*;
 
+import ttt.Constants;
 import ttt.messaging.gui.LoginDialog;
 
 /**
@@ -47,12 +47,7 @@ public class TTTMessengerClient extends JFrame {
 		super.setTitle("TTT Messenger Client");
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		// get resources
-        URL urlSendText = this.getClass().getResource("../../../resources/msgclient_sendtext.png");
-        URL urlSendSheet = this.getClass().getResource("../../../resources/msgclient_sendsheet.png");
-        URL urlSendTextSheet = this.getClass().getResource("../../../resources/msgclient_sendtextsheet.png");
-
+		
         // create annotation drawing panel
 		JAnnotationPanel drawPanel = new JAnnotationPanel();
 		drawPanel.setMinimumSize(new Dimension(800,600));
@@ -73,17 +68,17 @@ public class TTTMessengerClient extends JFrame {
 		
 		pnlTxt.add(scrollTxt);
 		
-		JButton btn1 = new JButton(new ImageIcon(urlSendText));
+		JButton btn1 = new JButton(Constants.getIcon("msgclient_sendtext.png"));
 		btn1.setActionCommand("send text");
 		btn1.setToolTipText("send text");
 		pnlTxt.add(btn1);
 		
-		JButton btn2 = new JButton(new ImageIcon(urlSendTextSheet));
+		JButton btn2 = new JButton(Constants.getIcon("msgclient_sendtextsheet.png"));
 		btn2.setActionCommand("send text+sheet");
 		btn2.setToolTipText("send text and sheet");
 		pnlTxt.add(btn2);
 		
-		JButton btn3 = new JButton(new ImageIcon(urlSendSheet));
+		JButton btn3 = new JButton(Constants.getIcon("msgclient_sendsheet.png"));
 		btn3.setActionCommand("send sheet");
 		btn3.setToolTipText("send sheet");
 		pnlTxt.add(btn3);

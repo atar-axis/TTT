@@ -70,11 +70,11 @@ public class WizardController extends javax.swing.JFrame {
         } else {
             jButtonNext.setText("Weiter");
             jButtonCancel.setText("Abbrechen");
-            jButtonBack.setText("Zurück");
+            jButtonBack.setText("Zurï¿½ck");
         }
     }
     
-    // getClass().getResource('ttt.wizard.resources\Recorder_32.gif')
+    
     
     /**
      * This method is called from within the constructor to
@@ -350,9 +350,9 @@ public class WizardController extends javax.swing.JFrame {
                             +"x"+screenSize.height+".\n" +
                             "A size of up to 1024x768 is recommended.","Warning: large resolution", JOptionPane.WARNING_MESSAGE);
                 } else{
-                    JOptionPane.showMessageDialog(this, "Die aktuelle Desktop Auflösung beträgt: "+screenSize.width
+                    JOptionPane.showMessageDialog(this, "Die aktuelle Desktop Auflï¿½sung betrï¿½gt: "+screenSize.width
                             +"x"+screenSize.height+".\n" +
-                            "Eine Auflösung von 1024x768 wird empfohlen.","Warnung: zu hohe Auflösung", JOptionPane.WARNING_MESSAGE);
+                            "Eine Auflï¿½sung von 1024x768 wird empfohlen.","Warnung: zu hohe Auflï¿½sung", JOptionPane.WARNING_MESSAGE);
                 }
             }
             
@@ -392,7 +392,7 @@ public class WizardController extends javax.swing.JFrame {
                                         if(m_Language == "EN")
                                             trayIcon.displayMessage("Info", "Use Right Mouse Button",TrayIcon.MessageType.INFO);
                                         else
-                                            trayIcon.displayMessage("Info", "Benützen Sie die rechte Maustaste",TrayIcon.MessageType.INFO);
+                                            trayIcon.displayMessage("Info", "Benï¿½tzen Sie die rechte Maustaste",TrayIcon.MessageType.INFO);
                                 }
                                 
                                 public void mouseEntered(MouseEvent e) {
@@ -438,7 +438,7 @@ public class WizardController extends javax.swing.JFrame {
                                             JOptionPane.showMessageDialog(null, "Could not find recording file or path." +
                                                     "Program will exit.");
                                         else
-                                            JOptionPane.showMessageDialog(null, "Der Speicherort für die Aufnahme existiert nicht." +
+                                            JOptionPane.showMessageDialog(null, "Der Speicherort fï¿½r die Aufnahme existiert nicht." +
                                                     "Das Programm wird beendet.");
                                         
                                         //close VNC Server

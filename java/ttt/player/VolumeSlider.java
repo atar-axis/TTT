@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -35,11 +35,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
+
 
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -50,9 +49,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import ttt.Constants;
 import ttt.TTT;
 import ttt.audio.VolumeControl;
-import ttt.gui.NegatedImageIcon;
+
 
 class VolumeSlider extends JInternalFrame {
     private JSlider volumeLevelSlider;
@@ -80,10 +80,9 @@ class VolumeSlider extends JInternalFrame {
         });
 
         // icons
-        // TODO: maybe: should be moved to constants
-        final URL urlVolume = this.getClass().getResource("../../resources/Volume24.gif");
-        final Icon volumeOnIcon = new ImageIcon(urlVolume);
-        final Icon volumeOffIcon = new NegatedImageIcon(urlVolume);
+       
+        final Icon volumeOnIcon = Constants.getIcon("Volume24.gif");
+        final Icon volumeOffIcon = Constants.getIcon("Volume24.gif");
 
         // mute button
         muteBox = new JCheckBox("mute");

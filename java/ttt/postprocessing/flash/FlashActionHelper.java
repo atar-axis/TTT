@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -33,8 +33,9 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 
-import ttt.Constants;
+
 import ttt.ProtocolPreferences;
+import ttt.TTT;
 import ttt.record.Recording;
 
 import com.anotherbigidea.flash.SWFConstants;
@@ -857,8 +858,9 @@ public class FlashActionHelper {
     static {
         try {
             // load the font from an extern SWF-File (in this case VerdanaFont.swf )
-            // NOTE: new Constants() is a little hack but an instance of some class from ttt package is required
-            URL urlVerdanaFont = new Constants().getClass().getResource("../../../resources/VerdanaFont.swf");
+                
+            URL urlVerdanaFont = new URL(TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/")+"VerdanaFont.swf");
+   
             fontdef = FontLoader.loadFont(urlVerdanaFont.openStream());
         } catch (Exception e) {
             System.out.println("CANNOT LOAD FONT FOR FLASH CONVERTER: " + e);
