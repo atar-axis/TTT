@@ -38,7 +38,7 @@ public final class OSUtils {
 			Class<?> clazz = Class.forName(cam);
 			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance();
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 			System.err.println("Exception "+e+" occured while trying to create a "+cam);			
 			throw new CameraException(e);			
 		}

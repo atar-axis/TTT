@@ -52,6 +52,7 @@ import javax.swing.event.InternalFrameEvent;
 import ttt.Constants;
 import ttt.TTT;
 import ttt.audio.VolumeControl;
+import ttt.gui.NegatedImageIcon;
 
 
 class VolumeSlider extends JInternalFrame {
@@ -82,7 +83,7 @@ class VolumeSlider extends JInternalFrame {
         // icons
        
         final Icon volumeOnIcon = Constants.getIcon("Volume24.gif");
-        final Icon volumeOffIcon = Constants.getIcon("Volume24.gif");
+        final Icon volumeOffIcon = new NegatedImageIcon(Constants.getResourceUrl("Volume24.gif"));
 
         // mute button
         muteBox = new JCheckBox("mute");

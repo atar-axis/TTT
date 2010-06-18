@@ -81,9 +81,14 @@ public class VideoRecorderPanel implements WindowListener{
 		panel.add(myLabel);
 		frame.add(panel);
 
-		frame.setVisible(true);
+		frame.setVisible(false);
 	}// End Constructor
 
+	
+	public boolean isVisible(){
+		return frame.isVisible();
+	}
+	
 	/**
 	 * Sets Panel size
 	 */
@@ -166,6 +171,7 @@ public class VideoRecorderPanel implements WindowListener{
 
 	public void setRecordpath(String Path) {
 		RecordPath = Path;
+		System.out.println("Setting Video Record path to " + Path);
 		WBC.setRecordPath(Path);
 	}
 

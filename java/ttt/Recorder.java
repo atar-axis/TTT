@@ -38,7 +38,6 @@ import java.util.zip.DeflaterOutputStream;
 
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -76,9 +75,13 @@ public class Recorder implements MessageConsumer, Closeable {
         showRecordPlayRecordWarningDialog(lectureProfile);
 
         // initialize audio and video
-        if (lectureProfile != null)
+        if (lectureProfile != null){
             audioVideoRecorder = new AudioRecorder();
-
+        
+            if(lectureProfile.isRecordVideoEnabled()){
+              	VideoRecorder = new VideoRecorderPanel(lectureProfile.getRecordingCamera(), lectureProfile.getVideoFormat(),lectureProfile.getVideoQuality(),/*file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4)*/null);          
+        	}
+        }
         // register for shutdown
         register(this);
         // TODO: unregister
@@ -238,21 +241,30 @@ public class Recorder implements MessageConsumer, Closeable {
     }
 
     
+    //Creates a show/hide button for the videocamera
 	public Component getVideoControls() {
 		
-		  final JButton hideButton = new RollOverButton("HideVideo");
+		  final JButton hideButton = new RollOverButton("Show Cam");
 		  hideButton.setEnabled(true);
 		  hideButton.setEnabled(true);		  
 		  JPanel controlPanel = (JPanel) getControls_3Buttons();
 		  
-		  ActionListener actionListener = new ActionListener() {
-			  Boolean x= false;
-	            public void actionPerformed(ActionEvent event) {
-	               VideoRecorder.setVisible(x);
-	               x = !x;
-	            }
-	        };
-	        hideButton.addActionListener(actionListener);
+	        hideButton.addActionListener(new ActionListener() {	  
+	        	
+		            public void actionPerformed(ActionEvent event) {
+		            	if(VideoRecorder != null){
+		            		if(VideoRecorder.isVisible()){
+		            			VideoRecorder.setVisible(false);	
+		            			hideButton.setText("Show Cam");
+		            		} else {
+		            			VideoRecorder.setVisible(true);
+		            			hideButton.setText("Hide Cam");
+		            		}
+		            	
+		            		
+		            	}
+		            }
+		        });
 		  controlPanel.add(hideButton);
 		  
 		return controlPanel;
@@ -354,7 +366,7 @@ public class Recorder implements MessageConsumer, Closeable {
 
         //VideoRec start       
     if(lectureProfile.isRecordVideoEnabled()){
-        VideoRecorder = new VideoRecorderPanel(lectureProfile.getRecordingCamera(), lectureProfile.getVideoFormat(),lectureProfile.getVideoQuality(),file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));          
+    	VideoRecorder.setRecordpath(file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));
         VideoRecorder.Start();
     }
      

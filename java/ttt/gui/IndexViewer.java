@@ -113,9 +113,9 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
         annotationsOn.setMargin(new Insets(0, 0, 0, 0));
 
         annotationsOn.setToolTipText("enable/disable annotations");
-        annotationsOn.setIcon(Constants.getIcon("Freehand24_new.gif"));
+        annotationsOn.setIcon(new NegatedImageIcon(Constants.getResourceUrl("Freehand24_new.gif")));
         annotationsOn.setSelectedIcon(Constants.getIcon("Freehand24_new.gif"));
-        annotationsOn.setRolloverIcon(Constants.getIcon("Freehand_rollover24_new.gif"));
+        annotationsOn.setRolloverIcon(new NegatedImageIcon(Constants.getResourceUrl("Freehand_rollover24_new.gif")));
         annotationsOn.setRolloverSelectedIcon(Constants.getIcon("Freehand_rollover24_new.gif"));
         annotationsOn.setSelected(true);
 
@@ -127,9 +127,9 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
         annotationsHighlightsOn.setMargin(new Insets(0, 0, 0, 0));
 
         annotationsHighlightsOn.setToolTipText("enable/disable textmarker");
-        annotationsHighlightsOn.setIcon(Constants.getIcon("Highlight24_new.gif"));
+        annotationsHighlightsOn.setIcon(new NegatedImageIcon(Constants.getResourceUrl("Highlight24_new.gif")));
         annotationsHighlightsOn.setSelectedIcon(Constants.getIcon("Highlight24_new.gif"));
-        annotationsHighlightsOn.setRolloverIcon(Constants.getIcon("Highlight_rollover24_new.gif"));
+        annotationsHighlightsOn.setRolloverIcon(new NegatedImageIcon(Constants.getResourceUrl("Highlight_rollover24_new.gif")));
         annotationsHighlightsOn.setRolloverSelectedIcon(Constants.getIcon("Highlight_rollover24_new.gif"));
 
         annotationsHighlightsOn.setSelected(true);

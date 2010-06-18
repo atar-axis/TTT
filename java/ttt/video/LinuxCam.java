@@ -32,7 +32,7 @@ public class LinuxCam implements WebCamControl, Runnable {
 
 	//all cameras are initialized in order to gather information about them
 	protected void initializeDevices() throws V4L4JException {
-		for (Object i : listV4LDeviceFiles()) {			
+		for (Object i : listV4LDeviceFiles()) {		
 			system.add(new VideoDevice(i.toString()));
 		}
 	}
@@ -47,8 +47,11 @@ public class LinuxCam implements WebCamControl, Runnable {
 		try {
 			while (isRecording) {
 					bb = fg.getFrame();
+					
 					image = new byte[bb.limit()];
+				
 					bb.get(image);
+				
 					CI.onNewImage(image, RecordPath, CompressionQuality);				
 			}
 		} catch (V4L4JException e) {
@@ -166,12 +169,9 @@ public class LinuxCam implements WebCamControl, Runnable {
 		List<TTTVideoFormat> SupportedFormats = new LinkedList<TTTVideoFormat>();
 		if (CamFound)
 			try {
-				for (ImageFormat i : system.get(Device).getDeviceInfo()
-						.getFormatList().getJPEGEncodableFormats()) {
-					if (i.getResolutionInfo().getType().toString().equals(
-							"DISCRETE")) {
-						for (DiscreteResolution j : i.getResolutionInfo()
-								.getDiscreteResolutions()) {
+				for (ImageFormat i : system.get(Device).getDeviceInfo().getFormatList().getJPEGEncodableFormats()) {
+					if (i.getResolutionInfo().getType().toString().equals("DISCRETE")) {						
+						for (DiscreteResolution j : i.getResolutionInfo().getDiscreteResolutions()) {
 							SupportedFormats.add(new TTTVideoFormat(j
 									.getWidth(), j.getHeight()));
 						}

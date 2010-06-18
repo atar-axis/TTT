@@ -535,21 +535,19 @@ public class Constants {
     public static ImageIcon getIcon(String iconName) {   
         String iconPath =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
     	ImageIcon icon = new ImageIcon();    
-        try{
+        
         	URL x;
-			try {
-				x = new URL(iconPath + iconName);
-				   icon =	new ImageIcon(x);
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	 
+		try {
+		    	x = new URL(iconPath + iconName);
+			   icon =	new ImageIcon(x);    	 
         }
     	catch(NullPointerException e){
     		System.out.println("Couldn't find Icon Path: " + iconPath + iconName);
-    	}
-    	    
+    		icon = new ImageIcon();
+    	} catch (MalformedURLException e) {
+    		System.out.println("Couldn't find Icon Path: " + iconPath + iconName);
+    		icon = new ImageIcon();
+		}    	    
     	    
     	return icon; 
     }

@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 
 import ttt.Constants;
 import ttt.gui.GradientPanel;
+import ttt.gui.NegatedImageIcon;
 import ttt.gui.RollOverButton;
 import ttt.record.Recording;
 import ttt.record.TimeChangedListener;
@@ -315,7 +316,7 @@ public class PlaybackControls extends GradientPanel implements TimeChangedListen
         nextIcon = Constants.getIcon("StepForward24.gif");
         previousIcon = Constants.getIcon("StepBack24.gif");
         volumeOnIcon = Constants.getIcon("Volume24.gif");
-        volumeOffIcon = Constants.getIcon("Volume24.gif");
+        volumeOffIcon = new NegatedImageIcon(Constants.getResourceUrl("Volume24.gif"));
         saveIcon = Constants.getIcon("Save24.gif");
         findIcon = Constants.getIcon("Find16.gif");
         movieIcon = Constants.getIcon("Movie24.gif");

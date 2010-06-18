@@ -58,7 +58,6 @@ import java.util.prefs.Preferences;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -184,6 +183,8 @@ public class TTT extends JFrame {
     // Menu
     // ////////////////////////////////////////////////////////
 
+   
+    
     private JMenuBar createMenu() {
         JMenuBar menuBar = new JMenuBar();
 
@@ -203,7 +204,7 @@ public class TTT extends JFrame {
         menuItem.setToolTipText("open and play a ttt recording");
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        menuItem.setIcon(getIcon("16x16/fileopen.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/fileopen.png"));
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 final File file = showFileDialog();
@@ -222,7 +223,7 @@ public class TTT extends JFrame {
         JMenu submenu = new JMenu("connect...");
         submenu.setToolTipText("connect to a ttt server");
         submenu.setMnemonic(KeyEvent.VK_C);
-        submenu.setIcon(getIcon("16x16/network.png"));
+        submenu.setIcon(Constants.getIcon("16x16/network.png"));
         menu.add(submenu);
 
         menuItem = new JMenuItem("connect to ttt server");
@@ -285,7 +286,7 @@ public class TTT extends JFrame {
         menu.addSeparator();
         menuItem = new JMenuItem("Messaging Client");
         menuItem.setToolTipText("send messages to teacher and participate in polls");
-        menuItem.setIcon(getIcon("16x16/mail_new3.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/mail_new3.png"));
         menuItem.addActionListener(new ActionListener() {
         	// @Override
         	public void actionPerformed(ActionEvent e) {
@@ -318,7 +319,7 @@ public class TTT extends JFrame {
 
         menuItem = new JMenuItem("present & record");
         menuItem.setToolTipText("start presenter with recording feature");
-        menuItem.setIcon(getIcon("16x16/mix_record.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/mix_record.png"));
         menuItem.setMnemonic(KeyEvent.VK_R);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
         menuItem.addActionListener(new ActionListener() {
@@ -346,7 +347,7 @@ public class TTT extends JFrame {
 
         menuItem = new JMenuItem("set recording folder");
         menuItem.setToolTipText("specify where to store recordings");
-        menuItem.setIcon(getIcon("16x16/folder.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/folder.png"));
         menuItem.setMnemonic(KeyEvent.VK_S);
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -403,7 +404,7 @@ public class TTT extends JFrame {
         //
         submenu = new JMenu("lecture profiles");
         submenu.setMnemonic(KeyEvent.VK_L);
-        submenu.setIcon(getIcon("16x16/bookmark_folder.png"));
+        submenu.setIcon(Constants.getIcon("16x16/bookmark_folder.png"));
         menu.add(submenu);
 
         menuItem = new JMenuItem("clear lecture profiles");
@@ -490,7 +491,7 @@ public class TTT extends JFrame {
 
         menuItem = new JMenuItem("open...");
         menuItem.setToolTipText("open ttt recording for post processing");
-        menuItem.setIcon(getIcon("16x16/fileopen.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/fileopen.png"));
         menuItem.setMnemonic(KeyEvent.VK_O);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
         menuItem.addActionListener(new ActionListener() {
@@ -547,7 +548,7 @@ public class TTT extends JFrame {
 
         menuItem = new JMenuItem("debug xml searchbase file");
         menuItem.setToolTipText("open and test xml file");
-        menuItem.setIcon(getIcon("16x16/db_update.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/db_update.png"));
         menuItem.setMnemonic(KeyEvent.VK_D);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
         menuItem.addActionListener(new ActionListener() {
@@ -594,7 +595,7 @@ public class TTT extends JFrame {
 
         // advanced post processing options
         submenu = new JMenu("post processing options");
-        submenu.setIcon(getIcon("16x16/configure.png"));
+        submenu.setIcon(Constants.getIcon("16x16/configure.png"));
         submenu.setMnemonic(KeyEvent.VK_O);
         menu.add(submenu);
 
@@ -612,7 +613,7 @@ public class TTT extends JFrame {
         // options for ssh/sftp transfer
         submenu = new JMenu("ssh options");
         submenu.setMnemonic(KeyEvent.VK_S);
-        submenu.setIcon(getIcon("16x16/encrypted.png"));
+        submenu.setIcon(Constants.getIcon("16x16/encrypted.png"));
         menu.add(submenu);
 
         menuItem = new JMenuItem("generate ssh keys");
@@ -701,7 +702,7 @@ public class TTT extends JFrame {
          
             }});
         menuItem.setToolTipText("run TTT Editor to edit recorded lectures");
-        menuItem.setIcon(getIcon("16x16/configure.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/configure.png"));
        menuItem.setMnemonic(KeyEvent.VK_F);
         menu2.add(menuItem);
         
@@ -717,7 +718,7 @@ public class TTT extends JFrame {
 
         menuItem = new JMenuItem("reset all options");
         menuItem.setToolTipText("remove any user settings");
-        menuItem.setIcon(getIcon("16x16/reload.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/reload.png"));
         menuItem.setMnemonic(KeyEvent.VK_R);
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
@@ -741,7 +742,7 @@ public class TTT extends JFrame {
         menu.addSeparator();
         menuItem = new JMenuItem("Messenger Server");
         menuItem.setToolTipText("starts messaging server (only avaible in teaching mode)");
-        menuItem.setIcon(getIcon("16x16/mail_new3.png"));
+        menuItem.setIcon(Constants.getIcon("16x16/mail_new3.png"));
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
         menu.add(menuItem);
         menuItem.addActionListener(new ActionListener() {
@@ -758,7 +759,7 @@ public class TTT extends JFrame {
 
         menu = new JMenu("Help");
         menuItem.setMnemonic(KeyEvent.VK_H);
-        menu.setIcon(getIcon("16x16/help.png"));
+        menu.setIcon(Constants.getIcon("16x16/help.png"));
         menuBar.add(menu);
 
         menuItem = new JMenuItem("About TeleTeachingTool");
@@ -1086,7 +1087,7 @@ public class TTT extends JFrame {
             setSize(width, height);
             setExtendedState(MAXIMIZED_BOTH);
            
-            setIconImage(getIcon("ttt16.png").getImage());
+            setIconImage(Constants.getIcon("ttt16.png").getImage());
             setVisible(true);
             getContentPane().setBackground(Color.WHITE);
           
@@ -1431,13 +1432,6 @@ public class TTT extends JFrame {
     
     public static boolean isEnabledNativeLookAndFeel() {
     	return enabledNativeLookAndFeel;
-    }
-    
-    public static ImageIcon getIcon(String filename) {   
-    
-    	String iconPath =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
-        	
-    	return new ImageIcon( iconPath + filename);    	
-    }
+    }    
 }
 

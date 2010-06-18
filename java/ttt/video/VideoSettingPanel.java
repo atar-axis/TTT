@@ -84,6 +84,9 @@ public class VideoSettingPanel implements ActionListener {
 			list = WBC.getDeviceNames();
 
 			WBC.setSelectedCam(WBC.getDeviceName(0));
+			
+			System.out.println("Chosen Camera: " + WBC.getDeviceName(0));
+						
 			CurrentCameraformat(0);
 			if(list != null)
 			for (int i = 0; i < list.size(); ++i) {
@@ -174,12 +177,11 @@ public class VideoSettingPanel implements ActionListener {
 
 		if (formats == null) {
 			formats = new LinkedList<TTTVideoFormat>();
-			lblnotice
-					.setText("No supported Formats found. Setting Resolution to 160x120.");
+			lblnotice.setText("No supported Formats found. Setting Resolution to 160x120.");
 			formats.add(new TTTVideoFormat(160, 120));
 		} else {
 			lblnotice
-					.setText("It is recommended to use 160x120 as resultion and 1 as Quality.");
+					.setText("It is recommended to use 160x120 as resultion and 10 as Quality.");
 		}
 		for (TTTVideoFormat format : formats) {
 			boxFormat.addItem(videoFormatToString(format));
@@ -275,7 +277,7 @@ public class VideoSettingPanel implements ActionListener {
 		if (e.getSource() == butStart) {	
 			try {
 				if(WBC.Start()){
-					setEnabled(false);
+					setEnabled(true);
 					frame.pack();
 				}		
 				else{
