@@ -46,23 +46,24 @@ public class SimpleSearch {
 			char ch = Character.toLowerCase((char) character);
 			if (Character.isLetterOrDigit(ch)) {
 				if (umlaut_reduction) {
-					switch (ch) {
-						case 'ä' :
-							stringBuffer.append("ae");
-							break;
-						case 'ö' :
-							stringBuffer.append("oe");
-							break;
-						case 'ü' :
-							stringBuffer.append("ue");
-							break;
-						case 'ß' :
-							stringBuffer.append("ss");
-							break;
-						default :
-							stringBuffer.append(ch);
-							break;
-					}
+				//removed to avoid compilation error
+//					switch (ch) {
+//						case 'ä' :
+//							stringBuffer.append("ae");
+//							break;
+//						case 'ö' :
+//							stringBuffer.append("oe");
+//							break;
+//						case 'ü' :
+//							stringBuffer.append("ue");
+//							break;
+//						case 'ß' :
+//							stringBuffer.append("ss");
+//							break;
+//						default :
+//							stringBuffer.append(ch);
+//							break;
+//					}
 				} else
 					stringBuffer.append(ch);
 				blank = false; // character added

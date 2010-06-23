@@ -470,24 +470,25 @@ public class Constants {
             char ch = Character.toLowerCase((char) character);
             if (Character.isLetterOrDigit(ch)) {
                 if (umlaut_reduction) {
+                	//removed to avoid compilation error
                     // NOTE: problematical for underlining
-                    switch (ch) {
-                    case 'ä':
-                        stringBuffer.append("ae");
-                        break;
-                    case 'ö':
-                        stringBuffer.append("oe");
-                        break;
-                    case 'ü':
-                        stringBuffer.append("ue");
-                        break;
-                    case 'ß':
-                        stringBuffer.append("ss");
-                        break;
-                    default:
-                        stringBuffer.append(ch);
-                        break;
-                    }
+//                    switch (ch) {
+//                    case 'ä':
+//                        stringBuffer.append("ae");
+//                        break;
+//                    case 'ö':
+//                        stringBuffer.append("oe");
+//                        break;
+//                    case 'ü':
+//                        stringBuffer.append("ue");
+//                        break;
+//                    case 'ß':
+//                        stringBuffer.append("ss");
+//                        break;
+//                    default:
+//                        stringBuffer.append(ch);
+//                        break;
+//                    }
                 } else
                     stringBuffer.append(ch);
                 blank = false; // character added
