@@ -87,6 +87,7 @@ import javax.xml.parsers.SAXParserFactory;
 import ttt.audio.AudioRecorder;
 import ttt.connections.TTTConnection;
 import ttt.editor.tttEditor.TTTEditor;
+import ttt.editor2.editor2;
 import ttt.gui.GradientPanel;
 import ttt.gui.NumberField;
 import ttt.gui.XMLHandler;
@@ -702,6 +703,27 @@ public class TTT extends JFrame {
          
             }});
         menuItem.setToolTipText("run TTT Editor to edit recorded lectures");
+        menuItem.setIcon(Constants.getIcon("16x16/configure.png"));
+       menuItem.setMnemonic(KeyEvent.VK_F);
+        menu2.add(menuItem);
+        
+        
+        
+        menuItem = new JMenuItem("Open Editor2 Beta");
+        //Open Editor 
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+            	if(enabledNativeLookAndFeel){
+            try {
+				UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName());
+			} catch (Exception e) {				
+				e.printStackTrace();
+			} 
+            	}
+         editor2.getInstance();       
+         
+            }});
+        menuItem.setToolTipText("run Editor to edit recorded lectures");
         menuItem.setIcon(Constants.getIcon("16x16/configure.png"));
        menuItem.setMnemonic(KeyEvent.VK_F);
         menu2.add(menuItem);
