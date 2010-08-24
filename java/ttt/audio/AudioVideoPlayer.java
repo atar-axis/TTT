@@ -149,11 +149,20 @@ public class AudioVideoPlayer {
     }
 
     public String getAudioFilename() throws IOException {
+    	if(fileAudio != null){
         return fileAudio.getCanonicalPath();
+    }
+    	else{
+    		return null;
+    	}
+    		
     }
 
     public String getVideoFilename() throws IOException {
-        return fileVideo.getCanonicalPath();
+    	if(fileVideo != null){
+        return fileVideo.getCanonicalPath();}
+    	else{
+    		return null;}
     }
 
     public void close() {
