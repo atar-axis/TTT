@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -65,6 +65,14 @@ public class Messages {
         return messages.get(i);
     }
 
+    public void setmessages(ArrayList<Message> list){
+    	messages = list;
+    }
+    
+    public ArrayList<Message> getMessages(){
+    	return messages;
+    }
+    
     /*******************************************************************************************************************
      * read messages *
      ******************************************************************************************************************/
@@ -392,7 +400,7 @@ public class Messages {
     synchronized public void setTime_full_frame_check_regarding_stripes(int time) {
         // long t = System.currentTimeMillis();
 
-        // if not set newly, this causes a call of stop() in run() beacuse end of recording reached
+        // if not set newly, this causes a call of stop() in run() because end of recording reached
         int newNext = messages.size();
 
         int totalCounter = 0;

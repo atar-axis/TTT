@@ -344,13 +344,19 @@ public class Player extends JInternalFrame {
         });
     }
 
+   private PlaybackControls playbackControls;
+   
+   
+   public PlaybackControls getPlaybackControls(){
+	   return playbackControls;
+   }
     // File Playback
     public Player(String file) throws IOException {
         Recording recording = new Recording(file);
         closeables.add(recording);
 
         GraphicsContext graphicsContext = recording.getGraphicsContext();
-        PlaybackControls playbackControls = recording.getPlaybackControls();
+        playbackControls = recording.getPlaybackControls();
 
         // add display
         JPanel pane = new JPanel(new BorderLayout());

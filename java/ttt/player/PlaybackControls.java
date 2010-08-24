@@ -82,6 +82,10 @@ public class PlaybackControls extends GradientPanel implements TimeChangedListen
             volumeSlider.dispose();
     }
 
+    public int getTimeSliderValue(){
+    	return timeSlider.getValue();
+    }
+    
     Icon playIcon, pauseIcon, stopIcon, nextIcon, previousIcon, volumeOnIcon, volumeOffIcon, saveIcon, findIcon,
             movieIcon;
     boolean timerChangedSlider;

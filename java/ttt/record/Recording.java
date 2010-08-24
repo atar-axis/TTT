@@ -88,6 +88,18 @@ public class Recording extends MessageProducerAdapter implements Runnable, Actio
         this(filename, true);
     }
 
+    public Messages getMessages(){
+    	return messages;
+    }
+    
+    public void setfileDesktop(File name){
+    	fileDesktop = name;
+    }
+    
+    public void setMessages(ArrayList<Message> list){
+    	messages.setmessages(list);
+    }
+    
     public Recording(String filename, boolean loadAudioVideoStreams) throws IOException {
         // read
         read(filename);
@@ -384,6 +396,14 @@ public class Recording extends MessageProducerAdapter implements Runnable, Actio
     // list of extensions
     private ArrayList<byte[]> extensions = new ArrayList<byte[]>();
 
+public ArrayList<byte[]> getExtensions(){
+	return extensions;
+}    
+
+public void setExtensions(ArrayList<byte[]> ext){
+	extensions = ext;
+}
+    
     private void readExtensions(DataInputStream in) throws IOException {
         // new format without total length of all extensions
         int len;
@@ -813,12 +833,22 @@ public class Recording extends MessageProducerAdapter implements Runnable, Actio
     // original recording flag - used for first backup name
     private boolean original = true;
 
-    public void store() {
+    /**
+     * Save the recording in a new file
+     * 
+     * @param OutputFile saves the recording into this file
+     */
+    
+    public boolean store(File OutputFile){
+    	fileDesktop = OutputFile;
+    return	store();
+    }
+    
+    
+    public boolean store() {
         // TODO: Progress Monitor (leave EventDispatchingThread)
         // ProgressMonitor progressMonitor = null;
         try {
-            // progressMonitor = new ProgressMonitor(TTT.getInstance(), "Writing...", null, 0, messages.size());
-
             // backup ttt file
             File renameFile = null;
 
@@ -854,11 +884,13 @@ public class Recording extends MessageProducerAdapter implements Runnable, Actio
 
             // write body
             messages.writeMessages(out);
+            return true;
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Writing failed.", "Error:", JOptionPane.ERROR_MESSAGE);
             System.out.println("Error: Writing failed. " + e.getMessage());
             e.printStackTrace();
+            return false;
         }
         // if (progressMonitor != null)
         // progressMonitor.close();
