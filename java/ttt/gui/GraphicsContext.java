@@ -61,6 +61,7 @@ import ttt.TTT;
 import ttt.messages.Annotation;
 import ttt.messages.CursorMessage;
 import ttt.messages.CursorPositionMessage;
+import ttt.messages.GraphicInterface;
 import ttt.messages.Message;
 import ttt.messages.MessageConsumer;
 import ttt.messages.MessageProducer;
@@ -68,7 +69,7 @@ import ttt.messages.WhiteboardMessage;
 import ttt.postprocessing.podcast.PodcastCreator;
 import ttt.record.Recording;
 
-public class GraphicsContext extends JComponent implements MessageConsumer {
+public class GraphicsContext extends JComponent implements GraphicInterface, MessageConsumer {
 
     public ProtocolPreferences prefs;
     private MessageProducer producer;

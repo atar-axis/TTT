@@ -575,7 +575,7 @@ public class LectureProfileDialog {
                             recorderCheckBox.setSelected(profile.isRecordEnabled());                            
                            // recordVideoCheckBox.setSelected(profile.isRecordVideoEnabled());
                            // recordVideoCheckBox.setVisible(recorderCheckBox.isSelected());
-                            if (CameraSettings!=null) if(CameraSettings.CamerasFound()){
+                            if (CameraSettings!=null) if(CameraSettings.camerasFound()){
                             	videoRecordingOnCheckbox.setSelected(profile.isRecordVideoEnabled());
                             	videoRecordingOffCheckbox.setSelected(!profile.isRecordVideoEnabled());
                             	if( CameraSettings.getCameraIDs().contains(profile.getRecordingCamera()))
@@ -674,7 +674,7 @@ public class LectureProfileDialog {
                             components[i].setEnabled(true);
                         }
                         
-                        if(CameraSettings.CamerasFound()){
+                        if(CameraSettings.camerasFound()){
                         	components = videoRecordingPanel.getComponents();
                         	for (int i = 0; i < components.length; i++) {
                         		components[i].setEnabled(true);

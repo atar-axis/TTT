@@ -46,9 +46,9 @@ public interface WebCamControl {
 	
 	public float getQuality(); //default quality is 0,1f
 	
-	public boolean Start() throws CameraStartException; //Starts Capturing images
+	public boolean start() throws CameraStartException; //Starts Capturing images
 	
-	public boolean Stop() throws CameraStopException; //Ends Capturing images
+	public boolean stop() throws CameraStopException; //Ends Capturing images
 		
 	/**
 	 * needed under Linux
@@ -58,7 +58,7 @@ public interface WebCamControl {
 	/**
 	 * @return  true if at least one camera detected.
 	 */
-	public boolean CameraFound();
+	public boolean cameraFound();
 	
 	
 	

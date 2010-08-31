@@ -79,7 +79,7 @@ public class VideoSettingPanel implements ActionListener {
 			//MySettings is a nested class within VideoSettingsPanel
 			WBC.setCaptureInterface(new MySettings());
 		
-		if (WBC.CameraFound()) {
+		if (WBC.cameraFound()) {
 			CamFound = true;
 			list = WBC.getDeviceNames();
 
@@ -87,7 +87,7 @@ public class VideoSettingPanel implements ActionListener {
 			
 			System.out.println("Chosen Camera: " + WBC.getDeviceName(0));
 						
-			CurrentCameraformat(0);
+			currentCameraformat(0);
 			if(list != null)
 			for (int i = 0; i < list.size(); ++i) {
 				boxCameras.addItem(list.get(i));
@@ -162,11 +162,11 @@ public class VideoSettingPanel implements ActionListener {
 		frame.add(panel, c);
 	}
 
-	public boolean CamerasFound() {
+	public boolean camerasFound() {
 		return CamFound;
 	}
 
-	public void CurrentCameraformat(int DeviceID) {
+	public void currentCameraformat(int DeviceID) {
 		// updates the CameraModeBox
 		boxFormat.removeAllItems();
 		try {
@@ -247,7 +247,7 @@ public class VideoSettingPanel implements ActionListener {
 		if (e.getSource() == boxCameras) {
 			try {
 				WBC.setSelectedCam(WBC.getDeviceName(boxCameras.getSelectedIndex()));
-			CurrentCameraformat(boxCameras.getSelectedIndex());
+			currentCameraformat(boxCameras.getSelectedIndex());
 			} catch (SetCameraException e1) {
 				e1.printStackTrace();
 			}			
@@ -267,7 +267,7 @@ public class VideoSettingPanel implements ActionListener {
 
 		if (e.getSource() == butStop) {
 			try {
-				WBC.Stop();
+				WBC.stop();
 			} catch (CameraStopException e1) {				
 				e1.printStackTrace();
 			}
@@ -276,7 +276,7 @@ public class VideoSettingPanel implements ActionListener {
 		
 		if (e.getSource() == butStart) {	
 			try {
-				if(WBC.Start()){
+				if(WBC.start()){
 					setEnabled(true);
 					frame.pack();
 				}		
@@ -292,7 +292,7 @@ public class VideoSettingPanel implements ActionListener {
 			show(false);
 			setEnabled(true);
 			try {
-				WBC.Stop();
+				WBC.stop();
 			} catch (CameraStopException e1) {				
 				e1.printStackTrace();
 			}
@@ -301,7 +301,7 @@ public class VideoSettingPanel implements ActionListener {
 		if (e.getSource() == butApply) {
 			setEnabled(true);
 			try {
-				WBC.Stop();
+				WBC.stop();
 			} catch (CameraStopException e1) {				
 				e1.printStackTrace();
 			}

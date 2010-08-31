@@ -65,7 +65,7 @@ public class VideoRecorderPanel implements WindowListener{
 		//MyCapture is a nested class within VideoRecroderPanel
 		WBC.setCaptureInterface(new MyCapture());
 
-		if (WBC.CameraFound()) {
+		if (WBC.cameraFound()) {
 			setRecordingCamera(RecordingCamera);
 			setRecordingFormat(Format);
 			setRecordpath(RecordPath);
@@ -99,13 +99,13 @@ public class VideoRecorderPanel implements WindowListener{
 	/**
 	 * Starts recording
 	 */
-	public void Start() {
-		if (WBC.CameraFound())
+	public void start() {
+		if (WBC.cameraFound())
 			if (!isRecording) {
 				WBC.setFormat(tttFormat.getWidth(), tttFormat.getHeight());
 				setSize();
 				try {
-					WBC.Start();
+					WBC.start();
 				} catch (CameraStartException e) {				
 					e.printStackTrace();
 				}
@@ -117,10 +117,10 @@ public class VideoRecorderPanel implements WindowListener{
 	/**
 	 *  Stops recording
 	 */
-	public void Stop() {
+	public void stop() {
 		if (isRecording) {
 			try {
-				WBC.Stop();
+				WBC.stop();
 			} catch (CameraStopException e) {	
 				e.printStackTrace();
 			}
@@ -146,7 +146,7 @@ public class VideoRecorderPanel implements WindowListener{
 	}
 
 	public void close() {
-		Stop();
+		stop();
 		frame.dispose();
 	}
 

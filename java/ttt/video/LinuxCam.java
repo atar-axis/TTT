@@ -95,7 +95,7 @@ public class LinuxCam implements WebCamControl, Runnable {
 	}
 
 	@Override
-	public boolean Start() {
+	public boolean start() {
 		boolean check = false;
 		if (CamFound)
 			try {
@@ -124,7 +124,7 @@ public class LinuxCam implements WebCamControl, Runnable {
 	}
 
 	@Override
-	public boolean Stop() {
+	public boolean stop() {
 		if (isRecording) {
 			captureThread = null;
 			isRecording = false;
@@ -216,7 +216,7 @@ public class LinuxCam implements WebCamControl, Runnable {
 	}
 
 	@Override
-	public boolean CameraFound() {
+	public boolean cameraFound() {
 		return CamFound;
 	}
 

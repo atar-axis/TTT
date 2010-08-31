@@ -116,7 +116,7 @@ public class WindowsCam implements WebCamControl {
 	}
 
 	@Override
-	public boolean Start() {
+	public boolean start() {
 		if (CamFound)
 			if (!isRecording) {
 				try {
@@ -142,7 +142,7 @@ public class WindowsCam implements WebCamControl {
 	}
 
 	@Override
-	public boolean Stop() {
+	public boolean stop() {
 		try {
 			if (isRecording) {
 				StartcaptureStream.stop();
@@ -199,7 +199,7 @@ public class WindowsCam implements WebCamControl {
 	} // not necessary for WindowsCam
 
 	@Override
-	public boolean CameraFound() {
+	public boolean cameraFound() {
 		return CamFound;
 	}
 

@@ -412,8 +412,6 @@ public class Player extends JInternalFrame {
 
         // finish init
         initInternalFrame(graphicsContext);
-
-        
         
         // start playback
         recording.play();

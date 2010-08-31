@@ -177,11 +177,11 @@ public class Recorder implements MessageConsumer, Closeable {
         // create control panel
         JPanel controlPanel;
 
-        final String RECORD = "record";
-        final String STOP = "stop";
+        final String RECORD = "start recording";
+        final String STOP = "stop recording";
         final String PLAY = "play";
 
-        final JButton recordButton = new RollOverButton(Constants.getIcon("Record24.gif"), RECORD);
+        final JButton recordButton = new RollOverButton(Constants.getIcon("Record24.png"), RECORD);
         final JButton stopButton = new RollOverButton(Constants.getIcon("Stop24.gif"), STOP);
         final JButton playButton = new RollOverButton(Constants.getIcon("Play24.gif"), PLAY);
               
@@ -243,8 +243,10 @@ public class Recorder implements MessageConsumer, Closeable {
     
     //Creates a show/hide button for the videocamera
 	public Component getVideoControls() {
-		
-		  final JButton hideButton = new RollOverButton("Show Cam");
+
+		final String WEBCAM = "Hide Webcam";
+      
+		  final JButton hideButton = new RollOverButton(Constants.getIcon("Webcam24.png"), WEBCAM);
 		  hideButton.setEnabled(true);
 		  hideButton.setEnabled(true);		  
 		  JPanel controlPanel = (JPanel) getControls_3Buttons();
@@ -255,10 +257,10 @@ public class Recorder implements MessageConsumer, Closeable {
 		            	if(VideoRecorder != null){
 		            		if(VideoRecorder.isVisible()){
 		            			VideoRecorder.setVisible(false);	
-		            			hideButton.setText("Show Cam");
+		            			hideButton.setToolTipText("Show Webcam");
 		            		} else {
 		            			VideoRecorder.setVisible(true);
-		            			hideButton.setText("Hide Cam");
+		            			hideButton.setToolTipText(WEBCAM);
 		            		}
 		            	
 		            		
@@ -367,7 +369,7 @@ public class Recorder implements MessageConsumer, Closeable {
         //VideoRec start       
     if(lectureProfile.isRecordVideoEnabled()){
     	VideoRecorder.setRecordpath(file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4));
-        VideoRecorder.Start();
+        VideoRecorder.start();
     }
      
         
@@ -452,7 +454,7 @@ public class Recorder implements MessageConsumer, Closeable {
                 	VideoRecorder.close();
                 	VideoRecorder = null;                	
                 } else{                	
-                    VideoRecorder.Stop();
+                    VideoRecorder.stop();
                     }
             }            
      
