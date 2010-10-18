@@ -118,8 +118,8 @@ public class TTTProcessor {
             return false;
 
         System.out.println("Beginning trim...");
-        System.out.println("Start time:\t" + editor2.getStringFromTime(startTimeMS, true));
-        System.out.println("End time:\t" + editor2.getStringFromTime(endTimeMS, true));
+        System.out.println("Start time:\t" + Editor2.getStringFromTime(startTimeMS, true));
+        System.out.println("End time:\t" + Editor2.getStringFromTime(endTimeMS, true));
         System.out.println();
 
         System.out.println("Saving video...");
@@ -146,11 +146,11 @@ public class TTTProcessor {
             // use real video cutting timestamps (better sync)
             if (videoSuccessful) {
                 System.out.println("\nAdjusting to video frames:");
-                System.out.println("start:\t" + editor2.getStringFromTime(cuttedStart, true) + "\t("
-                        + editor2.getStringFromTime(cuttedStart - startTimeMS * 1000000l, true) + ")");
-                System.out.println("end:\t" + editor2.getStringFromTime(cuttedEnd, true) + "\t("
-                        + editor2.getStringFromTime(cuttedEnd - endTimeMS * 1000000l, true) + ")");
-                System.out.println("diff:\t" + editor2.getStringFromTime(cuttedEnd - cuttedStart, true));
+                System.out.println("start:\t" + Editor2.getStringFromTime(cuttedStart, true) + "\t("
+                        + Editor2.getStringFromTime(cuttedStart - startTimeMS * 1000000l, true) + ")");
+                System.out.println("end:\t" + Editor2.getStringFromTime(cuttedEnd, true) + "\t("
+                        + Editor2.getStringFromTime(cuttedEnd - endTimeMS * 1000000l, true) + ")");
+                System.out.println("diff:\t" + Editor2.getStringFromTime(cuttedEnd - cuttedStart, true));
                 System.out.println();
             } else {
                 cuttedStart = startTimeMS;
@@ -285,7 +285,7 @@ public class TTTProcessor {
 		recording.setMessages(messages);
 		
 		for(Message m : messages){
-			System.out.println("what's going on? " +  editor2.getStringFromTime( m.getTimestamp()) + " . damn " + m.toString());
+			System.out.println("what's going on? " +  Editor2.getStringFromTime( m.getTimestamp()) + " . damn " + m.toString());
 		}
 		
 		
@@ -438,7 +438,7 @@ public class TTTProcessor {
     public static File[] getFilesForConcat() {
         ConcatSelector selector = new ConcatSelector();
 
-        int selection = JOptionPane.showInternalOptionDialog(editor2.getInstance().getDesktopPane(), selector,
+        int selection = JOptionPane.showInternalOptionDialog(Editor2.getInstance().getDesktopPane(), selector,
                 "Choose files to concatenate", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null,
                 null);
 

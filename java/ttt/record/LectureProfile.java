@@ -107,7 +107,7 @@ public class LectureProfile {
                 profile.showRecordPlayRecordWarning = preferences.getBoolean("show_record_play_record_warning", true);
                 profile.RecordingCamera = preferences.get("RecordingCamera", "");
                 profile.Format = new ttt.video.TTTVideoFormat(preferences.getInt("FormatWidth", 160),  preferences.getInt("FormatHeight", 120));
-                profile.VideoQuality = preferences.getFloat("VideoQuality", 0.1f);
+                profile.VideoQuality = preferences.getFloat("VideoQuality", 1.0f);
                 return profile;
             }
         } catch (Exception e) {

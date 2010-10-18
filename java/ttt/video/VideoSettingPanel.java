@@ -213,8 +213,8 @@ public class VideoSettingPanel implements ActionListener {
 		WBC.setQuality(AppliedQuality);
 		int index = (int) (Quality * 10) - 1;
 		if(1 <= index && index <= 10 ){
-		boxQuality.setSelectedIndex(index);}
-	
+		boxQuality.setSelectedIndex(index);
+		}	
 	}
 
 	public void setRecordingFormat(TTTVideoFormat format) {
@@ -292,7 +292,7 @@ public class VideoSettingPanel implements ActionListener {
 			show(false);
 			setEnabled(true);
 			try {
-				WBC.stop();
+				WBC.close();
 			} catch (CameraStopException e1) {				
 				e1.printStackTrace();
 			}
@@ -301,7 +301,7 @@ public class VideoSettingPanel implements ActionListener {
 		if (e.getSource() == butApply) {
 			setEnabled(true);
 			try {
-				WBC.stop();
+				WBC.close();
 			} catch (CameraStopException e1) {				
 				e1.printStackTrace();
 			}

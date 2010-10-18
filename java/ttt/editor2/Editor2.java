@@ -7,8 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,7 +17,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -36,6 +33,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.plaf.DimensionUIResource;
 
 import ttt.TTT;
@@ -50,7 +49,7 @@ import ttt.record.Recording;
  * Main class for TTTEditor.
  */
 @SuppressWarnings("serial")
-public class editor2 extends JFrame {
+public class Editor2 extends JInternalFrame {
 
 	static final String version = "18.08.2010";
 
@@ -59,7 +58,7 @@ public class editor2 extends JFrame {
 	// user preferences
 	static Preferences userPrefs = Preferences.userRoot().node("/TTTEditor");
 
-	private static editor2 instance;
+	private static Editor2 instance;
 
 	// markers for trimming the recording
 	private int startMarker;
@@ -132,7 +131,7 @@ public class editor2 extends JFrame {
 	/**
 	 * Class Constructor.
 	 */
-	public editor2() {
+	public Editor2() {
 		super("TTTEditor, Version: " + version);
 
 		desktopPane = new JDesktopPane();
@@ -153,14 +152,40 @@ public class editor2 extends JFrame {
 
 		// attempt to close all open files before closing
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				tryExit();
-			}
-		});		
 		
-		setVisible(true);
-		setExtendedState(MAXIMIZED_BOTH);
+		setResizable(true);
+		setIconifiable(true);
+		setMaximizable(true);
+				
+		
+		addInternalFrameListener(new InternalFrameListener() {		
+			@Override
+			public void internalFrameClosing(InternalFrameEvent arg0) {
+				tryExit();				
+			}
+			
+			@Override
+			public void internalFrameOpened(InternalFrameEvent arg0) {}
+			
+			@Override
+			public void internalFrameIconified(InternalFrameEvent arg0) {}
+			
+			@Override
+			public void internalFrameDeiconified(InternalFrameEvent arg0) {}
+			
+			@Override
+			public void internalFrameDeactivated(InternalFrameEvent arg0) {}
+			
+			@Override
+			public void internalFrameClosed(InternalFrameEvent arg0) {}
+			
+			@Override
+			public void internalFrameActivated(InternalFrameEvent arg0) {}
+		});
+		
+		
+		setEnabled(true);
+		
 	}
 
 	/**
@@ -169,7 +194,7 @@ public class editor2 extends JFrame {
 	 * @param args
 	 */
 	public static void main(final String[] args) {
-		editor2.getInstance();
+		Editor2.getInstance();
 	}
 
 	/**
@@ -226,7 +251,7 @@ public class editor2 extends JFrame {
 				if (desktopFiles.length < 2) {
 					JOptionPane
 							.showInternalMessageDialog(
-									editor2.getInstance().getDesktopPane(),
+									Editor2.getInstance().getDesktopPane(),
 									"You need to choose more than one file to concatenate",
 									"Invalid selection",
 									JOptionPane.ERROR_MESSAGE);
@@ -298,16 +323,16 @@ public class editor2 extends JFrame {
 		}
 
 		// use last opened path as start location for the filechooser
-		String lastUsedPath = editor2.userPrefs.get("last used path", null);
+		String lastUsedPath = Editor2.userPrefs.get("last used path", null);
 		JFileChooser fileChooser = lastUsedPath != null ? new JFileChooser(
 				lastUsedPath) : new JFileChooser();
 
-		int returnValue = fileChooser.showOpenDialog(editor2.getInstance());
+		int returnValue = fileChooser.showOpenDialog(Editor2.getInstance());
 
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 
 			// save used path
-			editor2.userPrefs.put("last used path", fileChooser
+			Editor2.userPrefs.put("last used path", fileChooser
 					.getSelectedFile().getAbsoluteFile().getParent());
 
 			// Open file and create edit Panel
@@ -327,7 +352,7 @@ public class editor2 extends JFrame {
 	public boolean open(File file) {
 		// ensure max space available before trying to open a new file
 		System.gc();
-		IOProgressDisplayFrame progress = new IOProgressDisplayFrame(editor2
+		IOProgressDisplayFrame progress = new IOProgressDisplayFrame(Editor2
 				.getInstance().getOutputDisplayPanel());
 		try {
 			// look for audio, desktop and video
@@ -391,15 +416,15 @@ public class editor2 extends JFrame {
 
 				graphicsContext.refresh();
 
-				JScrollPane scrollPane = new JScrollPane(graphicsContext);
+				JScrollPane videoPane = new JScrollPane(graphicsContext);
 
-				graphicsContext.setScaleFactor(0.7f);
+				graphicsContext.setScaleFactor(0.5f);
 
 				playerPane.setLayout(new GridBagLayout());
 				
-				playerPane.add(playbackControls, c);
+				playerPane.add(videoPane, c);				
 				c.gridy = 1;
-				playerPane.add(scrollPane, c);
+				playerPane.add(playbackControls, c);
 				c.gridy = 2;
 				playerPane.add(MarkerPanel, c);
 
@@ -423,9 +448,9 @@ public class editor2 extends JFrame {
 	 * 
 	 * @return returns the active instance of the editor2
 	 */
-	public static editor2 getInstance() {
+	public static Editor2 getInstance() {
 		if (instance == null) {
-			instance = new editor2();
+			instance = new Editor2();
 		}
 		return instance;
 	}
@@ -479,7 +504,7 @@ public class editor2 extends JFrame {
 
 		SelectionPanel selectionPanel = new SelectionPanel(file);
 
-		result = editor2.showInternalConfirmDialog(selectionPanel, "Confirm",
+		result = Editor2.showInternalConfirmDialog(selectionPanel, "Confirm",
 				JOptionPane.OK_CANCEL_OPTION);
 
 		if (result == JOptionPane.OK_OPTION) {
@@ -490,7 +515,7 @@ public class editor2 extends JFrame {
 			// indicate that file connection has been
 			// unsuccessful
 			if (!desktopPresent && !audioPresent && !videoPresent) {
-				JOptionPane.showInternalMessageDialog(editor2.getInstance()
+				JOptionPane.showInternalMessageDialog(Editor2.getInstance()
 						.getDesktopPane(), "No files have been selected.");
 				return false;
 			}
@@ -506,7 +531,7 @@ public class editor2 extends JFrame {
 				// If the user wishes to continue, return true to indicate that
 				// the file connection has been successful
 				// (although not all 3 files have been selected)
-				if (editor2.showInternalConfirmDialog(warningString, "Confirm",
+				if (Editor2.showInternalConfirmDialog(warningString, "Confirm",
 						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
 					// ensure files are ignored if not selected
 					if (!videoCheckBox.isSelected())
@@ -568,7 +593,7 @@ public class editor2 extends JFrame {
 	 */
 	public boolean closeFile() {
 		int confirm = JOptionPane
-				.showInternalConfirmDialog(editor2.getInstance()
+				.showInternalConfirmDialog(Editor2.getInstance()
 						.getDesktopPane(), "Do you want to save changes to "
 						+ desktopFile.getName() + "?", "Close file",
 						JOptionPane.YES_NO_CANCEL_OPTION);
@@ -832,13 +857,13 @@ public class editor2 extends JFrame {
 		// dispatching thread
 		try {
 			if (SwingUtilities.isEventDispatchThread()) {
-				result = JOptionPane.showInternalConfirmDialog(editor2
+				result = JOptionPane.showInternalConfirmDialog(Editor2
 						.getInstance().getDesktopPane(), message, title,
 						optionType, messageType);
 			} else
 				SwingUtilities.invokeAndWait(new Runnable() {
 					public void run() {
-						result = JOptionPane.showInternalConfirmDialog(editor2
+						result = JOptionPane.showInternalConfirmDialog(Editor2
 								.getInstance().getDesktopPane(), message,
 								title, optionType, messageType);
 					}

@@ -102,6 +102,11 @@ public class Recorder implements MessageConsumer, Closeable {
             audioVideoRecorder.close();
         audioVideoRecorder = null;
 
+        if(VideoRecorder != null) {
+     	VideoRecorder.close();     
+     	}          
+    	VideoRecorder = null;  
+        
         if (protocol != null)
             protocol.close();
         protocol = null;
@@ -450,10 +455,13 @@ public class Recorder implements MessageConsumer, Closeable {
 
            
             if (VideoRecorder != null) {
-                if (closing) {                  	              	
-                	VideoRecorder.close();
-                	VideoRecorder = null;                	
+                if (closing) {            
+                	
+                	VideoRecorder.close();                
+                	VideoRecorder = null;   
+                	
                 } else{                	
+                	
                     VideoRecorder.stop();
                     }
             }            

@@ -81,13 +81,18 @@ public class LinuxCam implements WebCamControl, Runnable {
 		else return new Object[0];
 	}
 
-	private void initFrameGrabber(int std, int channel)
-			throws V4L4JException { 
-		fg = system.get(selectedCameraID).getJPEGFrameGrabber(w, h, channel, std, V4L4JConstants.MAX_JPEG_QUALITY);
+	private void initFrameGrabber(int std, int channel) { 
+		try {			
+			fg = system.get(selectedCameraID).getJPEGFrameGrabber(w, h, channel, std, V4L4JConstants.MAX_JPEG_QUALITY);
+		} catch (V4L4JException e) {
+			System.out.println("Couldn't initiate Camera. fg broke.");
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void release() {//all initialized systems have to be released.
+		close();
 		for (VideoDevice x : system) {
 			x.releaseFrameGrabber();
 			x.release();
@@ -96,19 +101,21 @@ public class LinuxCam implements WebCamControl, Runnable {
 
 	@Override
 	public boolean start() {
-		boolean check = false;
+		boolean checkForCamera = false;
 		if (CamFound)
 			try {
 				
 			//checking if camera (still) exists
 			for(Object i: listV4LDeviceFiles()){
 				if(	i.toString().equals(system.get(selectedCameraID).getDevicefile()))	{
-				check = true;
+					checkForCamera = true;
 				}
 			}
 			
-			if(check){
+			if(checkForCamera){
+				if(fg == null) {
 				initFrameGrabber(0, 0);
+				}				
 				if (!isRecording) {
 					fg.startCapture();
 					captureThread = new Thread(this, "Capture Thread");
@@ -118,6 +125,7 @@ public class LinuxCam implements WebCamControl, Runnable {
 					}
 				}
 			} catch (V4L4JException e) {
+				
 				e.printStackTrace();
 			}
 		return false;
@@ -129,13 +137,28 @@ public class LinuxCam implements WebCamControl, Runnable {
 			captureThread = null;
 			isRecording = false;
 			fg.stopCapture();
-			fg = null;
-			system.get(selectedCameraID).releaseFrameGrabber();
+		//	fg = null;
+			//system.get(selectedCameraID).releaseFrameGrabber();
 			return true;
 		}
 		return false;
 	}
 
+	@Override
+	public boolean close() {
+		
+			if(isRecording) {
+			fg.stopCapture();				
+			}
+		
+			captureThread = null;			
+			isRecording = false;			
+			fg = null;
+			system.get(selectedCameraID).releaseFrameGrabber();
+		
+	return true;
+	}
+	
 	@Override
 	public String getDeviceName(int DeviceID) {		
 		if (CamFound)

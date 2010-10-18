@@ -44,7 +44,7 @@ public class OutputDisplayPanel extends JPanel {
         super(new BorderLayout());
 
         // modified 19.01.2006 by Peter Ziewer
-        if (!editor2.consoleOutput) {
+        if (!Editor2.consoleOutput) {
             System.setOut(printStream);
             System.setErr(printStream);
         }

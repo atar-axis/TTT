@@ -33,7 +33,7 @@ public final class Parameters {
     // + "TeleTeachingTool, and created by Pete Bankhead as part of a\n"
     // + "student project at the TUM.\n"
     // + "--------------------------------------------\n"+
-    "   TeleTeachingTool Editor   -   Version " + editor2.version + "\n\n"+
+    "   TeleTeachingTool Editor   -   Version " + Editor2.version + "\n\n"+
     "   Author:  \tPete Bankhead\n\n"
 
     + "   Author:  \tPeter Ziewer\n" + "                Technical University of Munich\n" + "                Germany\n"

@@ -124,10 +124,10 @@ public class VideoRecorderPanel implements WindowListener{
 			} catch (CameraStopException e) {	
 				e.printStackTrace();
 			}
-			WBC.release();
+			
 			isRecording = false;
 			saveelapsedTime();
-			this.frame.dispose();
+			
 		}
 	}
 
@@ -146,7 +146,20 @@ public class VideoRecorderPanel implements WindowListener{
 	}
 
 	public void close() {
-		stop();
+
+		try {
+	
+			stop();
+	
+			WBC.close();
+						
+			WBC.release();
+			
+			this.frame.dispose();
+		} catch (CameraStopException e) {	
+			this.frame.dispose();
+			e.printStackTrace();
+		}
 		frame.dispose();
 	}
 

@@ -147,7 +147,7 @@ public class WindowsCam implements WebCamControl {
 			if (isRecording) {
 				StartcaptureStream.stop();
 				StartcaptureStream.dispose();
-				System.out.println("aufnahmestopp");
+			
 				isRecording = false;
 			}
 		} catch (CaptureException e1) {
@@ -243,5 +243,20 @@ public class WindowsCam implements WebCamControl {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public boolean close() throws CameraStopException {
+		
+		try {
+			StartcaptureStream.stop();
+			StartcaptureStream.dispose();
+			isRecording = false;
+		} catch (CaptureException e) {
+			System.out.println("Something went wrong closing the Camerastream!");
+			e.printStackTrace();
+		}
+		
+		return true;
 	}
 }

@@ -54,6 +54,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -85,6 +86,25 @@ public class Player extends JInternalFrame {
     ArrayList<Closeable> closeables = new ArrayList<Closeable>();;
     private RfbProtocol protocol = null;
 
+    
+    
+    //used for testing
+    public static void main(String[] args){
+    	try {
+    		JFrame jay = new JFrame("Player");
+			Player play = new Player("/home/ludwig/testLecture/Theoretische_Informatik_2010_05_03.ttt");
+			jay.add(play);
+		//	jay.setSize(300,300);
+			jay.pack();
+			jay.setVisible(true);
+		jay.setEnabled(true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
     // simple player
     public Player(MessageProducer producer) throws IOException {
 
@@ -574,7 +594,7 @@ public class Player extends JInternalFrame {
             public void actionPerformed(ActionEvent event) {
                 // popup is not visible in fullscreen mode
                 // hence return to wiondowed mode first
-                TTT.leaveFfullscreen();
+                TTT.leaveFullscreen();
 
                 if (JOptionPane.showInternalConfirmDialog(TTT.getInstance().getContentPane(), "Reconnect?", "TTT",
                         JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)

@@ -180,7 +180,7 @@ public class TTTFileUtilities {
      */
     private static void createFileChooser() {
         // added 19.01.2006 by Peter Ziewer
-        String lastUsedPath = editor2.userPrefs.get("last used path", null);
+        String lastUsedPath = Editor2.userPrefs.get("last used path", null);
 
         fileChooser = lastUsedPath != null ? new JFileChooser(lastUsedPath) : new JFileChooser();
         fileChooser.setFileFilter(new TTTDefaultFileFilter());
@@ -223,12 +223,12 @@ public class TTTFileUtilities {
             }
         }
 
-        int returnValue = fileChooser.showOpenDialog(editor2.getInstance());
+        int returnValue = fileChooser.showOpenDialog(Editor2.getInstance());
 
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             // added 22.03.2006 by Peter Ziewer
             // use same path after restart
-            editor2.userPrefs.put("last used path", fileChooser.getSelectedFile().getAbsoluteFile().getParent());
+            Editor2.userPrefs.put("last used path", fileChooser.getSelectedFile().getAbsoluteFile().getParent());
 
             return fileChooser.getSelectedFile();
         }
@@ -267,7 +267,7 @@ public class TTTFileUtilities {
         if (suggestedFile != null)
             fileChooser.setSelectedFile(suggestedFile);
 
-        int returnValue = fileChooser.showSaveDialog(editor2.getInstance());
+        int returnValue = fileChooser.showSaveDialog(Editor2.getInstance());
         if (returnValue == JFileChooser.APPROVE_OPTION)
             return fileChooser.getSelectedFile();
 

@@ -50,6 +50,9 @@ public interface WebCamControl {
 	
 	public boolean stop() throws CameraStopException; //Ends Capturing images
 		
+	
+	public boolean close() throws CameraStopException; 
+	
 	/**
 	 * needed under Linux
 	 */
