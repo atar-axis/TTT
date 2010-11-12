@@ -234,7 +234,7 @@ public class PaintControls extends GradientPanel {
         whiteboardPrevious.setToolTipText("previous whiteboard page");
         whiteboardPrevious.setFocusable(false);
 
-        whiteboardNext = new RollOverButton(Constants.getIcon("orward24.gif"));
+        whiteboardNext = new RollOverButton(Constants.getIcon("Forward24.gif"));
         whiteboardNext.setActionCommand("next");
         whiteboardNext.setToolTipText("next whiteboard page");
         whiteboardNext.setFocusable(false);
