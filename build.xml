@@ -61,8 +61,8 @@
 
   <!-- Packs the classes into single .jar files -->
   <target name="pack" depends="classes">
+    <copy todir="${classes}/resources"><fileset dir="${java}/resources"></fileset></copy>
     <jar jarfile="${dist}/ttt.jar" basedir="${classes}">   
-    	<fileset dir="${java}/resources"/> 
       <manifest>
        <attribute name="Main-Class" value="ttt/TTT" />
        <attribute name="Class-Path" value="itext-1.4.8.jar jsch-0.1.32-patched.jar swing-layout-1.0.2.jar jmf-2.1.1e.jar mp3plugin.jar lti-civil.jar v4l4j.jar" />
