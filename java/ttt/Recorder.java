@@ -76,8 +76,12 @@ public class Recorder implements MessageConsumer, Closeable {
 
         // initialize audio and video
         if (lectureProfile != null){
+        	try{
             audioVideoRecorder = new AudioRecorder();
-        
+        	} catch (IOException e){
+        		System.out.println("Couldn't create AudioRecorder!");
+        	}
+            
             if(lectureProfile.isRecordVideoEnabled()){
               	VideoRecorder = new VideoRecorderPanel(lectureProfile.getRecordingCamera(), lectureProfile.getVideoFormat(),lectureProfile.getVideoQuality(),/*file.getCanonicalPath().substring(0, file.getCanonicalPath().length()-4)*/null);          
         	}
@@ -235,9 +239,20 @@ public class Recorder implements MessageConsumer, Closeable {
         controlPanel = new GradientPanel();
         controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
 
-        JComponent volumeLevelComponent = audioVideoRecorder.getVolumeLevelComponent();
-        if (volumeLevelComponent != null)
-            controlPanel.add(volumeLevelComponent);
+        JComponent volumeLevelComponent;
+		if (audioVideoRecorder != null) {
+			volumeLevelComponent = audioVideoRecorder.getVolumeLevelComponent();
+
+			if (volumeLevelComponent != null) {
+				controlPanel.add(volumeLevelComponent);
+			}
+       } else {
+    	   controlPanel.add(new JLabel("No Audio Rec"));
+    	   
+       }
+		
+		
+		
         controlPanel.add(recordButton);
         controlPanel.add(stopButton);
         controlPanel.add(playButton);

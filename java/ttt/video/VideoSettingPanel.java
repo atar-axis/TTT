@@ -75,7 +75,8 @@ public class VideoSettingPanel implements ActionListener {
 		TTT.getInstance().addInternalFrameCentered(frame);
 
 		try {
-			WBC= OSUtils.obtainWebcam();
+			WBC = OSUtils.obtainWebcam();
+			if(WBC != null){
 			//MySettings is a nested class within VideoSettingsPanel
 			WBC.setCaptureInterface(new MySettings());
 		
@@ -124,6 +125,8 @@ public class VideoSettingPanel implements ActionListener {
 		}
 		else {
 			lblnotice.setText("No Camera Found");
+		}
+		
 		}
 		}catch(CameraException e){
 			lblnotice.setText("No Camera Found");

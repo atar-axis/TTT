@@ -31,12 +31,13 @@ public class WindowsCam implements WebCamControl {
 	private int SelectedFormat; // Remembers the currently selected format
 	private CaptureStream StartcaptureStream; // The recording stream
 	private CaptureSystemFactory factory = DefaultCaptureSystemFactorySingleton.instance();
-    private	CaptureSystem system = factory.createCaptureSystem();
+    private	CaptureSystem system; 
 	private boolean CamFound = false;
 	private float CompressionQuality = 0.1f;
 
 	@SuppressWarnings("unchecked")
 	public WindowsCam() throws CaptureException {
+		system = factory.createCaptureSystem();
 		system.init();
 		List list = system.getCaptureDeviceInfoList();
 		if (list.size() > 0) { // check if any camera found

@@ -42,16 +42,12 @@ public class AudioVideoMonitorPanel extends JPanel {
 
     private AudioMonitorPanel audioMonitorPanel;
 
-    public AudioVideoMonitorPanel() {
+    public AudioVideoMonitorPanel() throws Exception {
         setOpaque(false);
 
-        try {
+      
             audioMonitorPanel = new AudioMonitorPanel(true);
-        } catch (Exception e) {
-            System.out.println("Cannot open audio monitor: " + e);
-            // e.printStackTrace();
-        }
-
+     
         if (audioMonitorPanel != null) {
             add(audioMonitorPanel);
             audioMonitorPanel.setPreferredSize(new Dimension(128, 16));

@@ -408,15 +408,12 @@ public class LectureProfileDialog {
             monitorPanel = new AudioVideoMonitorPanel();
             avPanel.add(monitorPanel);
         } catch (Exception e) {
-            JLabel jlabel = new JLabel("Monitor");
+            JLabel jlabel = new JLabel("Couldn't find Mic!");
             jlabel.setEnabled(false);
-            panel.add(jlabel);
-            jlabel = new JLabel("<not available>");
-            jlabel.setEnabled(false);
-            panel.add(jlabel);
+            avPanel.add(jlabel);
             System.out.println("Cannot open audio/video monitor: " + e);
         }
-
+      
         avPanel.add(Box.createHorizontalGlue());
         avPanel.add(videoRecordingPanel);
         avPanel.add(Box.createHorizontalGlue());

@@ -1,5 +1,6 @@
 package ttt.video;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 /**
@@ -37,6 +38,8 @@ public final class OSUtils {
 		try {
 			Class<?> clazz = Class.forName(cam);
 			WBC = (WebCamControl) clazz.getConstructors()[0].newInstance();
+		}catch(InvocationTargetException e){
+			System.out.println("Webcam libraries are missing.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Exception "+e+" occured while trying to create a "+cam);			
