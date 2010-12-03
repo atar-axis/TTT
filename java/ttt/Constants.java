@@ -25,12 +25,14 @@
 package ttt;
 
 import java.awt.Dimension;
+import java.awt.image.MemoryImageSource;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.awt.*;
 
 import javax.swing.ImageIcon;
 
@@ -531,6 +533,9 @@ public class Constants {
 			return null;
 		}
     }
+    
+    
+  
     /**
      * Creates and returns an Image Icon
      * 
@@ -540,21 +545,80 @@ public class Constants {
     public static ImageIcon getIcon(String iconName) {   
 		String iconPath = TTT.class.getResource("Constants.class").toString()
 				.replaceFirst("ttt/Constants.class", "resources/");
-		try {
-			File e = new File(new URL(iconPath + iconName).getPath());
-
-			if (e.exists()) {
-				return new ImageIcon(e.getCanonicalPath());
-			} else {
-				System.out
-						.println("Couldn't find Icon: " + iconPath + iconName);
-			}
+		
+		try {						
+			ImageIcon icon = new ImageIcon(new URL((iconPath + iconName)));
+		
+		
+		 
+			if(icon.getImage() == null){
+				throw new IOException();
+			}			
+			return icon;
 		}  catch (IOException e) {
-			System.out
-			.println("Couldn't find Icon: " + iconPath + iconName);
-			e.printStackTrace();
-		}
-		return null;
-    }
+			System.out.println("Couldn't read Icon: " + iconPath + iconName);
+			//draw a Replacement Icon
+			return createBrokenIcon();
+		} 
+	}
     
+    /**
+     * Generates a 16x16 icon 
+     * @return
+     */
+	public static ImageIcon createBrokenIcon() {
+		int width = 24;
+		int height = 24;
+
+		int[] pixels = new int[height * width];
+		int index = 0;
+
+		int alpha = 255;
+		int red = 255;
+		int green = 0;
+		int blue = 0;
+		// thickness of the stroke
+		int thick = 2;
+		int leftbound = 6;
+		int size = 24;
+		int rectsize = size - leftbound;
+		for (int y = 0; y < height; y++) {
+
+			for (int x = 0; x < width; x++) {
+
+				boolean rectbound = y > leftbound && y < rectsize
+						&& x > leftbound && x < rectsize;
+				// make stroke from top left to bottom right
+				if (rectbound && (0 <= (x - y) && (x - y) < thick)) {
+					// '<<' is the java bitshifting operator
+					pixels[index++] = (alpha << 24) | (red << 16)
+							| (green << 8) | blue;
+					// make stroke from top right to bottom left
+				} else if (rectbound
+						&& ((x + y) > (size - thick) && ((x + y) <= size))) {
+					pixels[index++] = (alpha << 24) | (red << 16)
+							| (green << 8) | blue;
+					// make top and bottom line
+				} else if (rectbound
+						&& (x < leftbound + thick | x > rectsize - thick)) {
+					pixels[index++] = (alpha << 24) | (red << 16)
+							| (green << 8) | blue;
+					// make top and bottem
+				} else if (rectbound
+						&& (y < leftbound + thick | y > rectsize - thick)) {
+					pixels[index++] = (alpha << 24) | (red << 16)
+							| (green << 8) | blue;
+				}
+
+				else {
+					pixels[index++] = (0 << 24) | (0 << 16) | (0 << 8) | blue;
+				}
+			}
+		}
+
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		return new ImageIcon(toolkit.createImage(new MemoryImageSource(width,
+				height, pixels, 0, width)));
+
+	}
 }
