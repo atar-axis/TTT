@@ -130,8 +130,8 @@ public class Recorder implements MessageConsumer, Closeable {
         final String STOP = "stop";
         final String PLAY = "play";
 
-        final Icon record_icon = Constants.getIcon("Record24.gif");
-        final Icon stop_icon =Constants.getIcon("esources/Stop24.gif");
+        final Icon record_icon = Constants.getIcon("Record24.png");
+        final Icon stop_icon =Constants.getIcon("Stop24.gif");
 
         final JButton recordButton = new RollOverButton(record_icon, RECORD);
         final JButton playButton = new RollOverButton(Constants.getIcon("Play24.gif"), PLAY);
@@ -300,7 +300,7 @@ public class Recorder implements MessageConsumer, Closeable {
         final String RECORD = "record";
         final String STOP = "stop";
 
-        final Icon record_icon = Constants.getIcon("Record24.gif");
+        final Icon record_icon = Constants.getIcon("Record24.png");
         final Icon stop_icon = Constants.getIcon("Stop24.gif");
 
         final JButton recordButton = new RollOverButton(record_icon, RECORD);

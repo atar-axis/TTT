@@ -531,26 +531,30 @@ public class Constants {
 			return null;
 		}
     }
-    
-    //Creates and returns an Image Icon
+    /**
+     * Creates and returns an Image Icon
+     * 
+     * @param iconName just the File name of the Image
+     * @return The corresponding ImageIcon
+     */
     public static ImageIcon getIcon(String iconName) {   
-        String iconPath =  TTT.class.getResource("Constants.class").toString().replaceFirst("ttt/Constants.class", "resources/");
-    	ImageIcon icon = new ImageIcon();    
-        
-        	URL x;
+		String iconPath = TTT.class.getResource("Constants.class").toString()
+				.replaceFirst("ttt/Constants.class", "resources/");
 		try {
-		    	x = new URL(iconPath + iconName);
-			   icon =	new ImageIcon(x);    	 
-        }
-    	catch(NullPointerException e){
-    		System.out.println("Couldn't find Icon Path: " + iconPath + iconName);
-    		icon = new ImageIcon();
-    	} catch (MalformedURLException e) {
-    		System.out.println("Couldn't find Icon Path: " + iconPath + iconName);
-    		icon = new ImageIcon();
-		}    	    
-    	    
-    	return icon; 
+			File e = new File(new URL(iconPath + iconName).getPath());
+
+			if (e.exists()) {
+				return new ImageIcon(e.getCanonicalPath());
+			} else {
+				System.out
+						.println("Couldn't find Icon: " + iconPath + iconName);
+			}
+		}  catch (IOException e) {
+			System.out
+			.println("Couldn't find Icon: " + iconPath + iconName);
+			e.printStackTrace();
+		}
+		return null;
     }
     
 }

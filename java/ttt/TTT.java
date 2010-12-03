@@ -1467,7 +1467,7 @@ public class TTT extends JFrame {
 									"but can be dragged to any other position on screen."));
 					infoPanel.add(new JLabel(" "));
 					infoPanel.add(new JLabel("record", Constants
-							.getIcon("Record24.gif"), JLabel.LEFT));
+							.getIcon("Record24.png"), JLabel.LEFT));
 					infoPanel.add(new JLabel("stop recording", Constants
 							.getIcon("Stop24.gif"), JLabel.LEFT));
 					infoPanel.add(new JLabel("display TTT main window",
