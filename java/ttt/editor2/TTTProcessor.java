@@ -504,8 +504,15 @@ public class TTTProcessor {
 
         long audioDurations[] = null;
         long videoDurations[] = null;
+		WavConcat audioConcat = null;
+        
+		
+		try{
+		 audioConcat = new WavConcat(audioFiles, audioOutput);
+        }catch(NullPointerException e){
+        	cannotConcatAudio = true;
+        }
 
-		WavConcat audioConcat = new WavConcat(audioFiles, audioOutput);
         Concat videoConcat = new Concat();
         if (!cannotConcatVideo) {
             System.out.println("Concatenating video");
