@@ -56,6 +56,7 @@ public class PaintControls extends GradientPanel {
     private JCheckBox activateButton;
     private JRadioButton[] colorButtons;
 
+    private AbstractButton mouseButton;
     private AbstractButton textButton;
     private AbstractButton highlightButton;
     private AbstractButton freeButton;
@@ -91,13 +92,13 @@ public class PaintControls extends GradientPanel {
 
     private void jbInit() throws Exception {
       
+    	
         activateButton = new JCheckBox();
-        activateButton.setIcon(Constants.getIcon("Enable16.gif"));
-        activateButton.setBorder(BorderFactory.createEmptyBorder());
+        activateButton.setIcon(Constants.getIcon("Enable16.gif"));        
         activateButton.setSelectedIcon(Constants.getIcon("Enable_active16.gif"));
         activateButton.setToolTipText("Activate painting");
         activateButton.setFocusable(false);
-
+        
         colorButtons = new JRadioButton[5];
         for (int i = 0; i < colorButtons.length; i++) {
             colorButtons[i] = new JRadioButton();
@@ -159,12 +160,22 @@ public class PaintControls extends GradientPanel {
             colorGroup.add(colorButtons[i]);
 
         // paint modes
+        
+        mouseButton = new JToggleButton();
+        mouseButton.setToolTipText("Mouse");
+        mouseButton.setBorder(BorderFactory.createEmptyBorder());
+        mouseButton.setIcon(Constants.getIcon("mouse24.png"));
+        mouseButton.setSelectedIcon(Constants.getIcon("mouse_active24.png"));
+        mouseButton.setRolloverIcon(Constants.getIcon("mouse_rollover24.png"));
+        mouseButton.setSelected(true);
+        mouseButton.setFocusable(false);
+        
         textButton = new JToggleButton();
         textButton.setToolTipText("Text");
         textButton.setBorder(BorderFactory.createEmptyBorder());
-        textButton.setIcon(Constants.getIcon("color_button_rollover24.gif"));
-        textButton.setSelectedIcon(Constants.getIcon("color_button_rollover24.gif"));
-        textButton.setRolloverIcon(Constants.getIcon("color_button_rollover24.gif"));
+        textButton.setIcon(Constants.getIcon("text24.png"));
+        textButton.setSelectedIcon(Constants.getIcon("text_active24.png"));
+        textButton.setRolloverIcon(Constants.getIcon("text_rollover24.png"));
         textButton.setFocusable(false);
         
         highlightButton = new JToggleButton();
@@ -215,6 +226,7 @@ public class PaintControls extends GradientPanel {
         deleteAllButton.setFocusable(false);
 
         ButtonGroup modeButtons = new ButtonGroup();
+        modeButtons.add(mouseButton);
         modeButtons.add(textButton);
         modeButtons.add(lineButton);
         modeButtons.add(rectangleButton);
@@ -249,6 +261,7 @@ public class PaintControls extends GradientPanel {
         add(colorButtons[3]);
         add(colorButtons[4]);
         add(Box.createRigidArea(new Dimension(20, 0)));
+        add(mouseButton);
         add(textButton);
         add(freeButton);
         add(highlightButton);
@@ -267,13 +280,22 @@ public class PaintControls extends GradientPanel {
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 // enable/disable painting
-                if (event.getSource() == activateButton)
+                if (event.getSource() == activateButton){
                     paintListener.setActivated(activateButton.isSelected());
-
+                   
+                    //deselect the Maus button and activate freehand drawing 
+                    if(mouseButton.isSelected() && activateButton.isSelected()){
+                    	freeButton.setSelected(true);
+                    } else {
+                    	mouseButton.setSelected(true);
+                    }
+                }
+                
                 // automatically enable painting
                 else if (event.getSource() != deleteAllButton) {
                     activateButton.setSelected(true);
                     paintListener.setActivated(true);
+                    
                 }
 
                 // set paint mode
@@ -284,6 +306,7 @@ public class PaintControls extends GradientPanel {
                     lineButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
+                    mouseButton.setSelected(false);
                 } else if (event.getSource() == highlightButton) {
                     paintListener.setPaintMode(Constants.AnnotationHighlight);
                     textButton.setSelected(false);
@@ -291,6 +314,7 @@ public class PaintControls extends GradientPanel {
                     lineButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
+                    mouseButton.setSelected(false);
                 } else if (event.getSource() == freeButton) {
                     paintListener.setPaintMode(Constants.AnnotationFreehand);
                     textButton.setSelected(false);
@@ -298,6 +322,7 @@ public class PaintControls extends GradientPanel {
                     lineButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
+                    mouseButton.setSelected(false);
                 } else if (event.getSource() == rectangleButton) {
                     paintListener.setPaintMode(Constants.AnnotationRectangle);
                     textButton.setSelected(false);
@@ -305,6 +330,7 @@ public class PaintControls extends GradientPanel {
                     freeButton.setSelected(false);
                     lineButton.setSelected(false);
                     deleteButton.setSelected(false);
+                    mouseButton.setSelected(false);
                 } else if (event.getSource() == lineButton) {
                     paintListener.setPaintMode(Constants.AnnotationLine);
                     textButton.setSelected(false);
@@ -312,6 +338,7 @@ public class PaintControls extends GradientPanel {
                     freeButton.setSelected(false);
                     rectangleButton.setSelected(false);
                     deleteButton.setSelected(false);
+                    mouseButton.setSelected(false);
                 } else if (event.getSource() == deleteButton) {
                     paintListener.setPaintMode(Constants.AnnotationDelete);
                     textButton.setSelected(false);
@@ -319,9 +346,22 @@ public class PaintControls extends GradientPanel {
                     freeButton.setSelected(false);
                     lineButton.setSelected(false);
                     rectangleButton.setSelected(false);
-                } else if (event.getSource() == deleteAllButton)
+                    mouseButton.setSelected(false);
+                } else if (event.getSource() == mouseButton) {    
+                    textButton.setSelected(false);
+                    highlightButton.setSelected(false);                  
+                    lineButton.setSelected(false);
+                    rectangleButton.setSelected(false);
+                    deleteButton.setSelected(false);
+                    activateButton.setSelected(false);
+                    freeButton.setSelected(false);
+                    
+                    paintListener.setActivated(false);
+                }
+                else if (event.getSource() == deleteAllButton){
                     paintListener.setPaintMode(Constants.AnnotationDeleteAll);
-
+                }
+                
                 // set color
                 else if (event.getSource() == colorButtons[0])
                     paintListener.setColor(Annotation.Red);
@@ -334,12 +374,24 @@ public class PaintControls extends GradientPanel {
                 else if (event.getSource() == colorButtons[4])
                     paintListener.setColor(Annotation.Black);
 
-                else if (event.getSource() == whiteboardEnable)
+                else if (event.getSource() == whiteboardEnable){
                     paintListener.enableWhiteboard(whiteboardEnable.isSelected());
-                else if (event.getSource() == whiteboardPrevious)
+                    if(mouseButton.isSelected()){
+                    	freeButton.setSelected(true);
+                    }
+                }
+                else if (event.getSource() == whiteboardPrevious){
                     paintListener.previousWhiteboard();
-                else if (event.getSource() == whiteboardNext)
+                    if(mouseButton.isSelected()){
+                    	freeButton.setSelected(true);
+                    }  
+                }
+                else if (event.getSource() == whiteboardNext){
                     paintListener.nextWhiteboard();
+                    if(mouseButton.isSelected()){
+                    	freeButton.setSelected(true);
+                    } 
+                }
             }
         };
 
@@ -351,7 +403,7 @@ public class PaintControls extends GradientPanel {
         rectangleButton.addActionListener(actionListener);
         lineButton.addActionListener(actionListener);
         deleteButton.addActionListener(actionListener);
-
+        mouseButton.addActionListener(actionListener);
         deleteAllButton.addActionListener(actionListener);
 
         whiteboardEnable.addActionListener(actionListener);
