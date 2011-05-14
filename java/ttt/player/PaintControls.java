@@ -279,16 +279,39 @@ public class PaintControls extends GradientPanel {
 
         ActionListener actionListener = new ActionListener() {
             public void actionPerformed(ActionEvent event) {
+            	
+            	//If the mouseButton gets disabled reactivate the last drawing mode
+            	 if(mouseButton.isSelected() && event.getSource() != mouseButton){
+            	       switch(  paintListener.getPaintMode()){
+            		case Constants.AnnotationText:
+            			textButton.setSelected(true);
+            			break;
+            		case Constants.AnnotationHighlight:
+            			highlightButton.setSelected(true);
+            			break;
+            		case Constants.AnnotationFreehand:
+            			freeButton.setSelected(true);
+            			break;
+            		case Constants.AnnotationRectangle:
+            			rectangleButton.setSelected(true);
+            			break;
+            		case Constants.AnnotationLine:
+            			lineButton.setSelected(true);
+            			break;
+            		case Constants.AnnotationDelete:
+            			deleteButton.setSelected(true);
+            			break;
+            		default:
+            		    paintListener.setPaintMode(Constants.AnnotationFreehand);
+            			freeButton.setSelected(true);
+            		}
+            	 }
+            	
+            	
                 // enable/disable painting
                 if (event.getSource() == activateButton){
                     paintListener.setActivated(activateButton.isSelected());
-                   
-                    //deselect the Maus button and activate freehand drawing 
-                    if(mouseButton.isSelected() && activateButton.isSelected()){
-                    	freeButton.setSelected(true);
-                    } else {
-                    	mouseButton.setSelected(true);
-                    }
+                    mouseButton.setSelected(!activateButton.isSelected());                   
                 }
                 
                 // automatically enable painting
@@ -360,19 +383,23 @@ public class PaintControls extends GradientPanel {
                 }
                 else if (event.getSource() == deleteAllButton){
                     paintListener.setPaintMode(Constants.AnnotationDeleteAll);
-                }
-                
+                }                 
                 // set color
-                else if (event.getSource() == colorButtons[0])
+                else if (event.getSource() == colorButtons[0]){
                     paintListener.setColor(Annotation.Red);
-                else if (event.getSource() == colorButtons[1])
+                    }
+                else if (event.getSource() == colorButtons[1]){
                     paintListener.setColor(Annotation.Blue);
-                else if (event.getSource() == colorButtons[2])
+                    }
+                else if (event.getSource() == colorButtons[2]){
                     paintListener.setColor(Annotation.Green);
-                else if (event.getSource() == colorButtons[3])
+                    }
+                else if (event.getSource() == colorButtons[3]){
                     paintListener.setColor(Annotation.Yellow);
-                else if (event.getSource() == colorButtons[4])
+                    }
+                else if (event.getSource() == colorButtons[4]){
                     paintListener.setColor(Annotation.Black);
+                    }
 
                 else if (event.getSource() == whiteboardEnable){
                     paintListener.enableWhiteboard(whiteboardEnable.isSelected());

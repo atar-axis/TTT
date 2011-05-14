@@ -518,6 +518,11 @@ public class PaintListener extends RFBKeyAndMouseListener implements KeyEventDis
 		}				
 		return false;
 	}
+
+	public int getPaintMode() {
+		return this.paintMode;
+		
+	}
 	
 }
 
