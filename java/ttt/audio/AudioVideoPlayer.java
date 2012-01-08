@@ -64,6 +64,7 @@ public class AudioVideoPlayer {
                 inputs = ((Codec)instance).getSupportedInputFormats();
                 outputs = ((Codec)instance).getSupportedOutputFormats(null);
                 boolean success = PlugInManager.addPlugIn("com.sun.media.codec.audio.mp3.JavaDecoder", inputs, outputs, PlugInManager.CODEC);
+                if(TTT.verbose)
                 System.out.println("initialized MP3 decoder plugin: "+success);
 			} catch (Exception e) {
 				String message = "Error initializing MP3 decoder plugin";
@@ -113,6 +114,7 @@ public class AudioVideoPlayer {
             TTT.showMessage(message, "TTT Audio Player", JOptionPane.ERROR_MESSAGE);
 
         } catch (FileNotFoundException e) {
+        	if(TTT.verbose)
             System.out.println("No audio found (" + e);
         }
 
@@ -125,8 +127,10 @@ public class AudioVideoPlayer {
             videoPlayer = Manager.createRealizedPlayer(videoFile);
             video_duration = (int) (videoPlayer.getDuration().getNanoseconds() / 1000000);
         } catch (MediaException e) {
+        	if(TTT.verbose)
             System.out.println("Can't play video: " + e);
         } catch (FileNotFoundException e) {
+        	if(TTT.verbose)
             System.out.println("No video found (" + e);
         }
 
@@ -222,7 +226,9 @@ public class AudioVideoPlayer {
     }
 
     public void setReplayRatio(double ratio) {
+    	if(TTT.verbose){
         System.out.println("Audio replay ratio: " + ratio);
+    	}
         replayRatio = ratio;
     }
 

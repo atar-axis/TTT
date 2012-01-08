@@ -144,12 +144,15 @@ public class FlashContext extends FlashActionHelper {
 
     protected void initialize() throws IOException {
         intervalMsec = (double) 1000 / frameRate;
+        if(TTT.verbose){
         System.out.println("    flash frame rate: " + frameRate);
+        }
         if (!batch)
             progressMonitor.setProgress(6);
-
+        if(TTT.verbose){
         // retrieve thumbnailWidth and thumbnailHeight to compute the Frame size
         System.out.println("    handle thumbnails");
+        }
         if (!recording.thumbnailsAvailable()) {
             if (!batch) {
                 progressMonitor.setProgress(10);
@@ -224,18 +227,26 @@ public class FlashContext extends FlashActionHelper {
     			//if the audio file was renamed from *.mp3 to *.mp3.mp2 and the audio encoding failed undo renaming
     			file.renameTo(new File(file.getAbsolutePath().substring(0,file.getAbsolutePath().length()-4)));
     		}
+    		if(TTT.verbose){
             System.out.println("    audio failed - cannot create flash movie");
+    		}
             throw new IOException("Cannot transcode audio to flash");
     	}
     }
 
     protected void getSoundStreamHead(File file) throws IOException {
+    	if(TTT.verbose){
     	System.out.println("    loading audio from " + file);
+    	}
         FileInputStream mp3 = new FileInputStream(file);
         blocks = new ArrayList();
+        if(TTT.verbose){
         System.out.print("    transform audio to flash ... ");
+        }
         head = MP3Helper.streamingBlocks(mp3, frameRate, blocks);
+        if(TTT.verbose){
         System.out.println("done");
+        }
         mp3.close();
     }
     
@@ -953,8 +964,9 @@ public class FlashContext extends FlashActionHelper {
         // ceate the main movieclip
         Movie movie = new Movie(recording.prefs.framebufferWidth + thumbnailWidth + 3,
                 recording.prefs.framebufferHeight + 40, frameRate, FLASH_VERSION, null);
+        if(TTT.verbose) {
         System.out.println("    output movie size: " + movie.getWidth() + "x" + movie.getHeight());
-
+        }
         // movie.appendFrame();
         // the main timeline contain only one frame
         Frame frameMovie = movie.appendFrame();
@@ -1134,8 +1146,10 @@ public class FlashContext extends FlashActionHelper {
     void check16000Frames() throws IOException {
 
         if (frameNumb == 16000) {
+        	if(TTT.verbose){
             System.out.println("    frame limit reached - split at "
                     + Constants.getStringFromTime((int) thumbnailTimestampBy16000Frames));
+        	}
             nc = nc + 1;
 
             Frame beforeLastFrame = movieClip.getFrame(frameNumb - 1);

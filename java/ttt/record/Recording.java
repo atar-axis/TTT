@@ -888,6 +888,7 @@ public void setExtensions(ArrayList<byte[]> ext){
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Writing failed.", "Error:", JOptionPane.ERROR_MESSAGE);
+          if(TTT.verbose)
             System.out.println("Error: Writing failed. " + e.getMessage());
             e.printStackTrace();
             return false;
@@ -993,20 +994,20 @@ public void setExtensions(ArrayList<byte[]> ext){
     public void createFlash(boolean batch) throws IOException {
         pause();
         int previousTime = getTime();
-
+if(TTT.verbose){
         System.out.println("----------------------------------------------");
         System.out.println("TTT2Flash Converter");
         System.out.println("----------------------------------------------");
-
+}
         long t = System.currentTimeMillis();
 
         FlashContext.createFlash(this, batch);
 
         t = System.currentTimeMillis() - t;
-
+if(TTT.verbose){
         System.out.println(" done in " + Constants.getStringFromTime((int) t));
         System.out.println("----------------------------------------------");
-
+}
         // reset playback
         // TODO: reset mode pause/play
         setTime(previousTime);

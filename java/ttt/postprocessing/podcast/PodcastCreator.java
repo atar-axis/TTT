@@ -96,12 +96,12 @@ public class PodcastCreator {
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, double framesPerSec, boolean batch) throws Exception {
-		
+		if(TTT.verbose){
 		System.out.println("----------------------------------------------");
 		System.out.println("PodcastCreator");
 		System.out.println("----------------------------------------------");
 		System.out.println("Creating mp4 podcast");
-		
+		}
 		//check whether the necessary applications are available
 		String ffmpegCmd = Exec.getCommand(FFMPEG);
 		if (ffmpegCmd == null) {
@@ -131,13 +131,16 @@ public class PodcastCreator {
 		
 		final ProgressMonitor progressMonitor = new ProgressMonitor(TTT.getRootComponent(), null, "building podcast video stream", 0, recording.messages.size());	//time per frame is roughly the same for video and audio encoding
 		final Exec exec = new Exec();
+		if(TTT.verbose){
 		System.out.println("Building podcast video stream from messages");
+		}
 		recording.whiteOut();
 		while (i < recording.messages.size()) {
-			
+		
 			//draw all messages of the next frame
 			while (i < recording.messages.size() && recording.messages.get(i).getTimestamp() - outMovieLength <= frameLength) {
 				recording.deliverMessage(recording.messages.get(i++));
+			
 			}
 			//the number of video frames depends on the timestamp of the succeeding message
 			//if the next message occurs in x frames relative to the current frame, the next window lasts x-1 frames because nothing happens   
@@ -154,8 +157,9 @@ public class PodcastCreator {
 			if (!batch && i < recording.messages.size()) {
 				progressMonitor.setProgress(i);
 			}
+			if(TTT.verbose){
 			System.out.println("   Message (" + i + "/" + recording.messages.size() + ")");
-			
+			}
 			//create window movie using ffmpeg
 			//write scaled window image
 			ImageIO.write(ImageCreator.getScaledInstance(recording.getGraphicsContext().getScreenshot(), resolutionWidth, resolutionHeight, RenderingHints.VALUE_INTERPOLATION_BICUBIC, true), "png", windowImageFile);
@@ -168,8 +172,9 @@ public class PodcastCreator {
 				outMovieFile.delete();
 				outMovieTmpFile.delete();
 				windowImageFile.delete();
+				if(TTT.verbose){
 				System.out.println("Unable to create window movie using ffmpeg:");
-				System.out.println(exec.getListenerStream());
+				System.out.println(exec.getListenerStream());}
 				throw new IOException("unable to create window movie using ffmpeg");
 			}
 			if (!batch && progressMonitor.isCanceled()) {
@@ -179,7 +184,8 @@ public class PodcastCreator {
 				outMovieTmpFile.delete();
 				windowImageFile.delete();
 				progressMonitor.close();
-				System.out.println("Canceled by user");
+				if(TTT.verbose){
+				System.out.println("Canceled by user");}
 				windowMovieFile.delete();
 				outMovieFile.delete();
 				outMovieTmpFile.delete();
@@ -201,8 +207,9 @@ public class PodcastCreator {
 					outMovieFile.delete();
 					outMovieTmpFile.delete();
 					windowImageFile.delete();
+					if(TTT.verbose){
 					System.out.println("Unable join slide movies using MP4Box:");
-					System.out.println(exec.getListenerStream());
+					System.out.println(exec.getListenerStream());}
 					throw new IOException("unable join slide movies using MP4Box");
 				}				
 			}
@@ -216,8 +223,10 @@ public class PodcastCreator {
 		outMovieFile.delete();
 		windowImageFile.delete();
 		
+		if(TTT.verbose){
 		//audio encoding with ffmpeg. The audio stream must be converted via aac to achieve ipod compatibility
 		System.out.println("Adding audio stream to podcast");
+		}
 		Timer timer = null;
 		if (!batch) {			
 			//the progress of the progress monitor is determined by the frame value ("frame= ") of the ffmpeg output
@@ -236,7 +245,9 @@ public class PodcastCreator {
 					scanner.useDelimiter("[ ]+");
 					if (scanner.findInLine("frame=") != null && scanner.hasNextInt()){
 						int i = scanner.nextInt();
+						if(TTT.verbose){
 						System.out.println("   Frame (" + i + "/" + nFrames + ")");
+						}
 						progressMonitor.setProgress(i);
 					}
 					exec.getListenerStream().reset();
@@ -256,7 +267,9 @@ public class PodcastCreator {
 				outMovieFile.delete();
 				outMovieTmpFile.delete();
 				windowImageFile.delete();
+				if(TTT.verbose){
 				System.out.println("Canceled by user");
+				}
 				return false;
 			}
 			progressMonitor.close();
@@ -264,12 +277,16 @@ public class PodcastCreator {
 		if (j != 0 || outMovieFile.length() == 0) {
 			//error while adding audio stream
 			outMovieFile.delete();
+			if(TTT.verbose){
 			System.out.println("Unable add audio stream using ffmpeg:");
 			System.out.println(exec.getListenerStream());
+			}
 			throw new IOException("unable to add audio stream using ffmpeg");
 		}
+		if(TTT.verbose){
 		System.out.println("Podcast created in " + Constants.getStringFromTime((int)(System.currentTimeMillis()-startTime)));
 		System.out.println("----------------------------------------------");
+		}
 		return true;
 	}	
 	

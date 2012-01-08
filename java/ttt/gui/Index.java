@@ -652,7 +652,7 @@ public class Index {
     
         if (mode == 0)
             return true;
-
+        if(TTT.verbose){
         // print information
         System.out.print("Computing ");
         if ((mode & ScriptCreator.THUMBNAILS) != 0)
@@ -664,16 +664,17 @@ public class Index {
         if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0)
             System.out.print("OCR input . ");
         System.out.println();
-
+        }
         // print file names
         String name = recording.getDirectory() + recording.getFileBase();
+        if(TTT.verbose){
         if ((mode & ScriptCreator.PDF_SCRIPT) != 0)
             System.out.println(name + ".pdf");
         if ((mode & ScriptCreator.HTML_SCRIPT) != 0)
             System.out.println(name + ".html");
         if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0)
             System.out.println(name + ".ocr");
-
+        }
         ProgressMonitor progressMonitor = null;
         if (!batch && ShowProgressMonitor) {
             // show progress
@@ -697,7 +698,9 @@ public class Index {
                 try {
                     pdfHelper = new PDFHelper(recording);
                 } catch (Exception e) {
+                	if(TTT.verbose){
                     System.out.println("Cannot create PDF:");
+                	}
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Cannot generate pdf script: " + e, "Error...",
                             JOptionPane.ERROR_MESSAGE);
@@ -730,7 +733,9 @@ public class Index {
                         	Constants.deleteDirectory(new File(name+".html"));
                         if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0)
                         	Constants.deleteDirectory(new File(name+".ocr"));
+                        if(TTT.verbose){
                         System.out.println("Cancelled by user");
+                        }
                         isCanceled = true;
                         break;
                     } else if (TTT.verbose) {
@@ -738,9 +743,9 @@ public class Index {
                         progressMonitor.setProgress(i);
                     }
                 }
-
+                if(TTT.verbose){
                 System.out.print(".");
-
+                }
                 // set time of index
                 IndexEntry indexEntry = index.get(i);
                 recording.setTime(indexEntry.getTimestamp());
@@ -780,7 +785,9 @@ public class Index {
                         try {
                             pdfHelper.writeNextIndex(i, screenshot);
                         } catch (Exception e) {
+                        	if(TTT.verbose) {
                             System.out.println("Cannot create PDF:");
+                        }
                             e.printStackTrace();
                             JOptionPane.showMessageDialog(null, "Cannot generate pdf script: " + e, "Error...",
                                     JOptionPane.ERROR_MESSAGE);
@@ -796,7 +803,9 @@ public class Index {
             try {
                 pdfHelper.close();
             } catch (Exception e) {
+            	if(TTT.verbose){
                 System.out.println("Cannot create PDF:");
+            	}
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Cannot generate pdf script: " + e, "Error...",
                         JOptionPane.ERROR_MESSAGE);
@@ -806,9 +815,9 @@ public class Index {
         }
 
         t = System.currentTimeMillis() - t;
-
+        if(TTT.verbose){
         System.out.println(" done in " + Constants.getStringFromTime((int) t));
-
+        }
         // remove process monitor
         if (progressMonitor != null)
             progressMonitor.close();
@@ -874,8 +883,9 @@ public class Index {
             }
         }
         t = System.currentTimeMillis() - t;
+        if(TTT.verbose){
         System.out.println(Constants.getStringFromTime((int) t));
-
+        }
         recording.graphicsContext.paint_to_offscreen_image = true;
         recording.graphicsContext.enableRefresh(true);
     }
@@ -1126,7 +1136,7 @@ public class Index {
                 in.read(characters);
 
                 boolean last_was_blank = false;
-
+                if(TTT.verbose){
                 for (int i = 0; i < characters.length; i++) {
                     // page devider
                     if (characters[i] == 12) {
@@ -1152,7 +1162,7 @@ public class Index {
                         System.out.print(characters[i]);
                     }
                 }
-
+                }
             } catch (IOException e) {
                 System.out.println("failed (" + e + ")");
             }

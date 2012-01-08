@@ -349,11 +349,17 @@ public class ScriptCreator {
             return directory.isDirectory();
         else
             try {
+            	if(TTT.verbose)
                 System.out.print("create directory: " + directory.getCanonicalPath());
-                if (!directory.mkdir())
+                if (!directory.mkdir()){
+                	if(TTT.verbose)
                     System.out.println(" - FAILED");
+                }
                 else
+                {
+                	if(TTT.verbose)
                     System.out.println();
+                }
             } catch (IOException e) {}
         return directory.exists();
     }

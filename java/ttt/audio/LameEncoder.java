@@ -66,11 +66,12 @@ public class LameEncoder {
 	 * @return True: Conversion succeeded.<br>False: Canceled by user 
 	 */
 	public static boolean convertAudioFile(File inFile, File outFile, String options, boolean batch) throws Exception {
-		
+		if(TTT.verbose){
 		System.out.println("----------------------------------------------");
 		System.out.println("LameEncoder");
 		System.out.println("----------------------------------------------");
 		System.out.println("Encoding mp3 file");
+		}
 		long startTime = System.currentTimeMillis();	//time measurement
 		String lameCmd = Exec.getCommand(LAME);	//get lame command
 		if (lameCmd == null) {
@@ -109,7 +110,9 @@ public class LameEncoder {
 			if (progressMonitor.isCanceled()) {
 				progressMonitor.close();				
 				outFile.delete();	//delete the  partly encoded outFile
+				if(TTT.verbose){
 				System.out.println("Canceled by user");
+				}
 				return false;
 			}
 			progressMonitor.close();
@@ -121,13 +124,17 @@ public class LameEncoder {
 		}
 				
 		if (i != 0 || outFile.length() == 0) {	//check success
+			if(TTT.verbose){
 			System.out.println("Unable to encode audio file using lame:");
+			}
 			System.out.println(exec.getListenerStream());
 			outFile.delete();
 			throw new IOException("unable to encode audio file using lame");
 		}		
+		if(TTT.verbose){
 		System.out.println("Done in " + Constants.getStringFromTime((int)(System.currentTimeMillis()-startTime)));
 		System.out.println("----------------------------------------------");
+		}
 		return true;
 	}
 		

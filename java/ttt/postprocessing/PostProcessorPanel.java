@@ -1109,7 +1109,9 @@ public class PostProcessorPanel extends GradientPanel {
 
             // store changes if needed
             if (modified) {
+            	if(TTT.verbose){
                 System.out.println("writing changes to recording");
+            	}
                 recording.store();
                 modified = false;
             }
