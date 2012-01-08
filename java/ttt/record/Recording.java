@@ -974,13 +974,18 @@ public void setExtensions(ArrayList<byte[]> ext){
 
     // mode can be a & combination of HTML_SCRIPT, OCR_OPTIMIZED, THUMBNAILS (of class ScriptCreator)
     public boolean createScript(final int mode) throws IOException {
-        return index.computeScreenshots(mode, false);
+        return index.computeScreenshots(mode, false, true);
     }
 
     public boolean createScript(final int mode, boolean batch) throws IOException {
-        return index.computeScreenshots(mode, batch);
+        return index.computeScreenshots(mode, batch, true);
     }
 
+    
+    public boolean createScript(final int mode, boolean batch, boolean ShowProgressMonitor) throws IOException {
+        return index.computeScreenshots(mode, batch, ShowProgressMonitor);
+    }
+    
     /*******************************************************************************************************************
      * TTT 2 Flash
      ******************************************************************************************************************/

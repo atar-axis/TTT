@@ -646,8 +646,10 @@ public class Index {
     // //////////////////////////////////////////////////////////////////
     // thumbnails
     // //////////////////////////////////////////////////////////////////
-
-    public boolean computeScreenshots(int mode, boolean batch) throws IOException {
+    
+    
+    public boolean computeScreenshots(int mode, boolean batch, boolean ShowProgressMonitor) throws IOException {
+    
         if (mode == 0)
             return true;
 
@@ -673,7 +675,7 @@ public class Index {
             System.out.println(name + ".ocr");
 
         ProgressMonitor progressMonitor = null;
-        if (!batch) {
+        if (!batch && ShowProgressMonitor) {
             // show progress
             String text = mode == ScriptCreator.THUMBNAILS ? "Computing thumbnails" : "Computing screenshots";
             progressMonitor = new ProgressMonitor(TTT.getRootComponent(), text, null, 0, index.size());
@@ -747,38 +749,13 @@ public class Index {
                 Image screenshot = recording.graphicsContext.getScreenshotWithoutAnnotations();
 
                 // set thumbnail
-                if ((mode & ScriptCreator.THUMBNAILS) != 0) {
-
-                    // // new
-                    // if (true) {
+                if ((mode & ScriptCreator.THUMBNAILS) != 0) {                    
 
                     // faster image scaling
                     Image thumbnail = ScriptCreator.getScaledInstance(screenshot, recording.prefs.framebufferWidth
                             / thumbnail_scale_factor, recording.prefs.framebufferHeight / thumbnail_scale_factor);
                     indexEntry.setThumbnail(thumbnail);
-
-                    // }
-                    //
-                    // // old
-                    // else {
-                    // // old version with slower image scaling
-                    // // TODO: remove after testing new version (see above)
-                    // Image thumbnail = screenshot.getScaledInstance(recording.prefs.framebufferWidth
-                    // / thumbnail_scale_factor, recording.prefs.framebufferHeight / thumbnail_scale_factor,
-                    // Image.SCALE_SMOOTH);
-                    //
-                    // // create new image and paint thumbnail on it
-                    // // approx. 50% slower, but only 5% of memory usage
-                    // // TODO: check if still valid with new image scaler used above
-                    // BufferedImage bimage = new BufferedImage(thumbnail.getWidth(null), thumbnail.getHeight(null),
-                    // BufferedImage.TYPE_INT_RGB);
-                    // // Copy image to buffered image
-                    // Graphics g = bimage.createGraphics();
-                    // // Paint the image onto the buffered image
-                    // g.drawImage(thumbnail, 0, 0, null);
-                    // g.dispose();
-                    // indexEntry.setThumbnail(bimage);
-                    // }
+                  
                 }
 
                 // write input for Optical Character Recognition

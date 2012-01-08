@@ -1307,76 +1307,17 @@ public class PostProcessorPanel extends GradientPanel {
                     modified = true;
                 }
 
-                // create screenshot related data
-                try {
-                    // get combined mode
-                    int mode = 0;
-                    if (thumbnailsCheckBox.isSelected()) {
-                        mode |= ScriptCreator.THUMBNAILS;
-                        modified = true;
-                    }
-                    if (htmlCheckBox.isSelected())
-                        mode |= ScriptCreator.HTML_SCRIPT;
-                    if (pdfCheckBox.isSelected())
-                        mode |= ScriptCreator.PDF_SCRIPT;
-                    if (ocrCheckBox.isSelected())
-                        mode |= ScriptCreator.OCR_OPTIMIZED;
-                    
-                 
-                    // compute everything specified by mode
-                    recording.createScript(mode, batch);
-                } catch (Exception e) {
-                    TTT.showMessage("Script/screenshot creation failed: " + e);
-                    e.printStackTrace();
-                }
+                createScreenShots();
 
                 // now store recording with thumbnails
-                // NOTE: store thumbnails now, because flash generation may fail due to insufficient memory
+                // NOTE: store Thumbnails now, because flash generation may fail due to insufficient memory
                 storeRecordingIfNeeded();
 
-                //convert audio file
-                try {
-                    if (mp3CheckBox.isSelected()) {
-                        LameEncoder.convertAudioFile(recording.getExistingFileBySuffix(new String[] {"wav","mp2"}), recording.getFileBySuffix("mp3"), batch);
-                    }
-                } catch (Exception e) {
-                    TTT.showMessage("MP3 creation failed: " + e);
-                    e.printStackTrace();
-                }
-
-                // create flash movie
-                try { 
-                    if (flashCheckBox.isSelected()) {
-                        if (!recording.thumbnailsAvailable())
-                            modified = true; // thumbnails will be created by flash generator
-                        recording.createFlash(batch);
-                    }
-                } catch (Exception e) {
-                    TTT.showMessage("Flash creation failed: " + e);
-                    e.printStackTrace();
-                }
-                
-                //create mp4 podcast
-                try {
-                    if (mp4CheckBox.isSelected()) {
-                        PodcastCreator.createPodcast(recording, batch);
-                    }
-                } catch (Exception e) {
-                    TTT.showMessage("MP4 creation failed: " + e);
-                    e.printStackTrace();
-                }
-                
-              //create camVid
-                try {
-                    if (camCheckBox.isSelected()) {
-                        ttt.video.VideoCreator newVideo = new  ttt.video.VideoCreator();
-                        newVideo.create(recording.getExistingFileBySuffix("bjpg").getPath());
-                    }
-                } catch (Exception e) {
-                    TTT.showMessage("CamVid creation failed: " + e);
-                    e.printStackTrace();
-                }
-                
+                convertAudio();
+                createFlash();
+                createMp4();
+                createWebCamVideo();
+            
                 
                 // update status fields
                 updateStatusFields();
@@ -1386,6 +1327,8 @@ public class PostProcessorPanel extends GradientPanel {
                 createButton.setForeground(Color.BLACK);
                 importSearchbaseButton.setForeground(Color.BLUE);
             }
+            
+            
         });
         if (batch)
             thread.run();
@@ -1393,7 +1336,84 @@ public class PostProcessorPanel extends GradientPanel {
             thread.start();
             
     }// GEN-LAST:event_createButtonActionPerformed
+    private void createWebCamVideo() {
+        
+        //create camVid
+          try {
+              if (camCheckBox.isSelected()) {
+                  ttt.video.VideoCreator newVideo = new  ttt.video.VideoCreator();
+                  newVideo.create(recording.getExistingFileBySuffix("bjpg").getPath());
+              }
+          } catch (Exception e) {
+              TTT.showMessage("CamVid creation failed: " + e);
+              e.printStackTrace();
+          }
+          
+		
+	}
+	private void createMp4() {
+    	//create mp4 podcast
+        try {
+            if (mp4CheckBox.isSelected()) {
+                PodcastCreator.createPodcast(recording, batch);
+            }
+        } catch (Exception e) {
+            TTT.showMessage("MP4 creation failed: " + e);
+            e.printStackTrace();
+        }
+		
+	}
+	public void createFlash(){
+    	  // create flash movie
+        try { 
+            if (flashCheckBox.isSelected()) {
+                if (!recording.thumbnailsAvailable())
+                    modified = true; // thumbnails will be created by flash generator
+                recording.createFlash(batch);
+            }
+        } catch (Exception e) {
+            TTT.showMessage("Flash creation failed: " + e);
+            e.printStackTrace();
+        }
+    }
+    
+    public void convertAudio(){
+    	//convert audio file
+        try {
+            if (mp3CheckBox.isSelected()) {
+                LameEncoder.convertAudioFile(recording.getExistingFileBySuffix(new String[] {"wav","mp2"}), recording.getFileBySuffix("mp3"), batch);
+            }
+        } catch (Exception e) {
+            TTT.showMessage("MP3 creation failed: " + e);
+            e.printStackTrace();
+        }
 
+    }
+    
+    public void createScreenShots(){
+    	  // create screenshot related data
+        try {
+            // get combined mode
+            int mode = 0;
+            if (thumbnailsCheckBox.isSelected()) {
+                mode |= ScriptCreator.THUMBNAILS;
+                modified = true;
+            }
+            if (htmlCheckBox.isSelected())
+                mode |= ScriptCreator.HTML_SCRIPT;
+            if (pdfCheckBox.isSelected())
+                mode |= ScriptCreator.PDF_SCRIPT;
+            if (ocrCheckBox.isSelected())
+                mode |= ScriptCreator.OCR_OPTIMIZED;
+            
+         
+            // compute everything specified by mode
+            recording.createScript(mode, batch);
+        } catch (Exception e) {
+         //   TTT.showMessage("Script/screenshot creation failed: " + e);
+            e.printStackTrace();
+        }
+    }
     private void searchbaseActionPerformed(java.awt.event.ActionEvent event) {
         // import searchbase file
         // show file dialog
