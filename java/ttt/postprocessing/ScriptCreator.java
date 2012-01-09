@@ -87,6 +87,33 @@ public class ScriptCreator {
         }
     }
 
+    public ScriptCreator(Recording recording, int mode, String ocrPath) throws IOException {
+        this.recording = recording;
+
+        // create directory for html index
+        boolean generate_script = true;
+
+        String directory = recording.getDirectory();
+        file_base = recording.getFileBase();
+
+        ocr_path = ocrPath;//directory + file_base + ".ocr";
+        if ((mode & OCR_OPTIMIZED) != 0)
+            generate_script &= createDirectory(ocr_path);
+
+        index_file_base = directory + file_base + ".html";
+        if ((mode & HTML_SCRIPT) != 0) {
+            generate_script &= createDirectory(index_file_base);
+            generate_script &= createDirectory(index_file_base + File.separator + "thumbs");
+            generate_script &= createDirectory(index_file_base + File.separator + "html");
+            generate_script &= createDirectory(index_file_base + File.separator + "images");
+            if (generate_script) {
+                writeMainIndexAndThumbnailOverview();
+            } else {
+                System.out.println("\nERROR: Script generation failed. Could not create directories.\n");
+            }
+        }
+    }
+    
     public static void main(String[] args) throws IOException {
         if (args.length == 0)
             usage();

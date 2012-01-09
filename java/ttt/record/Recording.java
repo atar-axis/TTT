@@ -983,6 +983,10 @@ public void setExtensions(ArrayList<byte[]> ext){
     }
 
     
+    public boolean createScript(final int mode, boolean batch, String ocrPath) throws IOException {
+        return index.computeScreenshots(mode, batch, true, ocrPath);
+    }
+    
     public boolean createScript(final int mode, boolean batch, boolean ShowProgressMonitor) throws IOException {
         return index.computeScreenshots(mode, batch, ShowProgressMonitor);
     }

@@ -647,6 +647,16 @@ public class Index {
     // thumbnails
     // //////////////////////////////////////////////////////////////////
     
+    ScriptCreator scriptCreator;
+    public boolean computeScreenshots(int mode, boolean batch, boolean ShowProgressMonitor, String ocrPath){
+    	
+    	try {
+    		scriptCreator = new ScriptCreator(recording, mode, ocrPath);
+			return computeScreenshots(mode, batch, ShowProgressMonitor);
+		} catch (IOException e) {
+			return false;
+		}
+    }
     
     public boolean computeScreenshots(int mode, boolean batch, boolean ShowProgressMonitor) throws IOException {
     
@@ -688,7 +698,8 @@ public class Index {
         recording.pause();
         int previousTime = recording.getTime();
 
-        ScriptCreator scriptCreator = new ScriptCreator(recording, mode);
+        if(scriptCreator != null)
+         scriptCreator = new ScriptCreator(recording, mode);
 
         PDFHelper pdfHelper = null;
         if ((mode & ScriptCreator.PDF_SCRIPT) != 0) {
