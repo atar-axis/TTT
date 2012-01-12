@@ -652,13 +652,31 @@ public class Index {
     	
     	try {
     		scriptCreator = new ScriptCreator(recording, mode, ocrPath);
-			return computeScreenshots(mode, batch, ShowProgressMonitor);
+			return createScreenshots(mode, batch, ShowProgressMonitor);
 		} catch (IOException e) {
 			return false;
 		}
     }
     
-    public boolean computeScreenshots(int mode, boolean batch, boolean ShowProgressMonitor) throws IOException {
+    public boolean computeScreenshots(int mode, boolean batch, boolean ShowProgressMonitor) {
+    	try {
+    	scriptCreator = new ScriptCreator(recording, mode);
+    	
+			return createScreenshots(mode, batch, ShowProgressMonitor);
+		} catch (IOException e) {
+				return false;
+		}
+    }
+    
+    /**
+     * Actually computes the Screenshots
+     * @param mode
+     * @param batch
+     * @param ShowProgressMonitor
+     * @return
+     * @throws IOException
+     */
+    private boolean createScreenshots(int mode, boolean batch, boolean ShowProgressMonitor) throws IOException {
     
         if (mode == 0)
             return true;
@@ -775,8 +793,8 @@ public class Index {
                 }
 
                 // write input for Optical Character Recognition
-                if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0)
-                    scriptCreator.writeOCRScreenshot(i, screenshot);
+                if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0){
+                  scriptCreator.writeOCRScreenshot(i, screenshot);}
 
                 if (((mode & ScriptCreator.HTML_SCRIPT) != 0) || ((mode & ScriptCreator.PDF_SCRIPT) != 0)) {
                     // add (future) annotations of index
