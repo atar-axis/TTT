@@ -1353,6 +1353,9 @@ public class PostProcessorPanel extends GradientPanel {
           
 		
 	}
+    /**
+     * creates the Podcast in the same Folder as the recording lies in
+     */
 	private void createMp4() {
     	//create mp4 podcast
         try {
