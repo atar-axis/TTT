@@ -82,8 +82,21 @@ public class PodcastCreator {
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, boolean batch) throws Exception {
-		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch);
+		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch, true);
 	}
+	
+	
+	/**
+	 * Creates podcast using default parameters
+	 * @param recording
+	 * @param batch
+	 * @return True: Podcast created successfully.<br>False: Canceled by user.
+	 * @throws Exception
+	 */
+	public static boolean createPodcast(Recording recording, boolean batch,boolean ShowProgressmonitor) throws Exception {
+		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch, ShowProgressmonitor);
+	}
+	
 	
 	/**
 	 * Creates podcast
@@ -95,7 +108,7 @@ public class PodcastCreator {
 	 * @return True: Podcast created successfully.<br>False: Canceled by user
 	 * @throws Exception
 	 */
-	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, double framesPerSec, boolean batch) throws Exception {
+	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, double framesPerSec, boolean batch, final boolean ShowProgressmonitor) throws Exception {
 		if(TTT.verbose){
 		System.out.println("----------------------------------------------");
 		System.out.println("PodcastCreator");
@@ -128,8 +141,15 @@ public class PodcastCreator {
 		int vFrames;	//number of video frames of window movie
 		int i = 0;
 		int j;
+		//TODO the handling of the ProgressMonitor is INSANELY dirty
+		final ProgressMonitor progressMonitor;
+		if(ShowProgressmonitor){
+			progressMonitor = new ProgressMonitor(TTT.getRootComponent(), null, "building podcast video stream", 0, recording.messages.size());	//time per frame is roughly the same for video and audio encoding
+		}else{
+			progressMonitor = null;
+		}
 		
-		final ProgressMonitor progressMonitor = new ProgressMonitor(TTT.getRootComponent(), null, "building podcast video stream", 0, recording.messages.size());	//time per frame is roughly the same for video and audio encoding
+		
 		final Exec exec = new Exec();
 		if(TTT.verbose){
 		System.out.println("Building podcast video stream from messages");
@@ -154,7 +174,7 @@ public class PodcastCreator {
 			}
 			outMovieLength += vFrames * frameLength;
 			
-			if (!batch && i < recording.messages.size()) {
+			if (ShowProgressmonitor && !batch && i < recording.messages.size()) {
 				progressMonitor.setProgress(i);
 			}
 			if(TTT.verbose){
@@ -177,13 +197,14 @@ public class PodcastCreator {
 				System.out.println(exec.getListenerStream());}
 				throw new IOException("unable to create window movie using ffmpeg");
 			}
-			if (!batch && progressMonitor.isCanceled()) {
+			if (ShowProgressmonitor & !batch && progressMonitor.isCanceled()) {
 				//canceled by user
 				windowMovieFile.delete();
 				outMovieFile.delete();
 				outMovieTmpFile.delete();
 				windowImageFile.delete();
-				progressMonitor.close();
+				if(ShowProgressmonitor){
+				progressMonitor.close();}
 				if(TTT.verbose){
 				System.out.println("Canceled by user");}
 				windowMovieFile.delete();
@@ -231,12 +252,14 @@ public class PodcastCreator {
 		if (!batch) {			
 			//the progress of the progress monitor is determined by the frame value ("frame= ") of the ffmpeg output
 			final int nFrames = recording.getDuration()/1000;
+			if(ShowProgressmonitor){
 			progressMonitor.setNote("adding audio stream to podcast");
 			progressMonitor.setMaximum(nFrames);
 			progressMonitor.setProgress(0);
+			}
 			timer = new Timer(1000, new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (progressMonitor.isCanceled()) {
+					if (ShowProgressmonitor && progressMonitor.isCanceled()) {
 						exec.abort();
 					}
 					//get the value after "frame=" of the last line
@@ -248,7 +271,8 @@ public class PodcastCreator {
 						if(TTT.verbose){
 						System.out.println("   Frame (" + i + "/" + nFrames + ")");
 						}
-						progressMonitor.setProgress(i);
+						if(ShowProgressmonitor){
+						progressMonitor.setProgress(i);}
 					}
 					exec.getListenerStream().reset();
 				}
@@ -261,7 +285,7 @@ public class PodcastCreator {
 		outMovieTmpFile.delete();	
 		if (!batch) {
 			timer.stop();			
-			if (progressMonitor.isCanceled()) {
+			if (ShowProgressmonitor&&progressMonitor.isCanceled()) {
 				//canceled by user
 				windowMovieFile.delete();
 				outMovieFile.delete();
@@ -272,7 +296,8 @@ public class PodcastCreator {
 				}
 				return false;
 			}
-			progressMonitor.close();
+			if(ShowProgressmonitor){
+			progressMonitor.close();}
 		}
 		if (j != 0 || outMovieFile.length() == 0) {
 			//error while adding audio stream
