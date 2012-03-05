@@ -19,8 +19,8 @@ BrandingText " "
 ;Page instfiles
 
 !define JRE_VERSION "1.7"
-!define JRE_URL_64 "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-x64.exe"
-!define JRE_URL_32 "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-i586.exe"
+!define JREX_URL "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-x64.exe"
+!define JREI_URL "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-i586.exe"
 Var JRE_URL
 
 Function .onInit
@@ -30,12 +30,12 @@ Function .onInit
   IfFileExists $WINDIR\SYSWOW64\*.* Is64bit Is32bit
 Is32bit:
     SetRegView 32
-    StrCpy $JRE_URL "$JRE_URL_32"
+    StrCpy $JRE_URL "${JREI_URL}"
     GOTO End32Bitvs64BitCheck
  
 Is64bit:
     SetRegView 64
-    StrCpy $JRE_URL "$JRE_URL_64"
+    StrCpy $JRE_URL "${JREX_URL}"
  
 End32Bitvs64BitCheck:
 
@@ -85,9 +85,7 @@ Function GetJRE
  
   ClearErrors
   ReadRegStr $R1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-  MessageBox MB_ICONSTOP "Query Registry for $R1"
   ReadRegStr $R0 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
-  MessageBox MB_ICONSTOP "Query Registry for $R0"
   StrCpy $R0 "$R0\bin\javaw.exe"
   IfFileExists $R0 JreFound
  
