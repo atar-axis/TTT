@@ -18,8 +18,11 @@ BrandingText " "
 ;Page directory
 ;Page instfiles
 
-!define JRE_VERSION "1.6"
-!define JRE_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=18714&/jre-6u5-windows-i586-p.exe"
+!define JRE_VERSION "1.7"
+!define JRE_URL_64 "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-x64.exe"
+!define JRE_URL_32 "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-i586.exe"
+!define JRE_URL "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-i586.exe"
+
 
 Function .onInit
 
