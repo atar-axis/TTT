@@ -21,12 +21,23 @@ BrandingText " "
 !define JRE_VERSION "1.7"
 !define JRE_URL_64 "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-x64.exe"
 !define JRE_URL_32 "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-i586.exe"
-!define JRE_URL "http://download.oracle.com/otn-pub/java/jdk/7u3-b05/jre-7u3-windows-i586.exe"
-
+Var JRE_URL
 
 Function .onInit
 
   !insertmacro MUI_LANGDLL_DISPLAY
+  ; Install to the correct directory on 32 bit or 64 bit machines
+  IfFileExists $WINDIR\SYSWOW64\*.* Is64bit Is32bit
+Is32bit:
+    SetRegView 32
+    StrCpy $JRE_URL "$JRE_URL_32"
+    GOTO End32Bitvs64BitCheck
+ 
+Is64bit:
+    SetRegView 64
+    StrCpy $JRE_URL "$JRE_URL_64"
+ 
+End32Bitvs64BitCheck:
 
 FunctionEnd
 Function DetectJRE
@@ -43,7 +54,7 @@ Function DownloadJRE
                          be downloaded and installed"
  
         StrCpy $2 "$TEMP\Java Runtime Environment.exe"
-        nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
+        nsisdl::download /TIMEOUT=30000 $JRE_URL $2
         Pop $R0 ;Get the return value
                 StrCmp $R0 "success" +3
                 MessageBox MB_OK "Download failed: $R0"
@@ -74,14 +85,14 @@ Function GetJRE
  
   ClearErrors
   ReadRegStr $R1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
+  MessageBox MB_ICONSTOP "Query Registry for $R1"
   ReadRegStr $R0 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
+  MessageBox MB_ICONSTOP "Query Registry for $R0"
   StrCpy $R0 "$R0\bin\javaw.exe"
- 
-  IfErrors GoodLuck JreFound
-  StrCpy $R0 "javaw.exe"
+  IfFileExists $R0 JreFound
  
  GoodLuck:
-  MessageBox MB_ICONSTOP "Cannot find appropriate Java Runtime Environment."
+  MessageBox MB_ICONSTOP "Cannot find appropriate Java Runtime Environment. (Searching for $R0)"
   Abort
 
  JreFound:
