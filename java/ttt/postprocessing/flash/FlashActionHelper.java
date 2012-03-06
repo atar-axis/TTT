@@ -32,6 +32,7 @@ import java.net.URL;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 
 import ttt.ProtocolPreferences;
@@ -307,8 +308,19 @@ public class FlashActionHelper {
 
     // ziewer - modified to load resources from jar
     Shape loadImage(String fileName) throws IOException {
-        URL url = this.getClass().getResource(fileName);
-        Image img = ImageIO.read(url);
+    	String iconPath = TTT.class.getResource("Constants.class").toString()
+				.replaceFirst("ttt/Constants.class", "resources/");
+		
+							
+			ImageIcon icon = new ImageIcon(new URL((iconPath + fileName)));
+		
+				 
+			  	
+    	
+    	
+    	
+     //   URL url = this.getClass().getResource(fileName);
+        Image img = icon.getImage();//ImageIO.read(url);
 
         // create a shape that uses the image as a fill
         // (images cannot be placed directly. They can only be used as shape fills)

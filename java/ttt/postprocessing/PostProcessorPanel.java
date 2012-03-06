@@ -1347,8 +1347,9 @@ public class PostProcessorPanel extends GradientPanel {
                   newVideo.create(recording.getExistingFileBySuffix("bjpg").getPath());
               }
           } catch (Exception e) {
+        	  e.printStackTrace();
               TTT.showMessage("CamVid creation failed: " + e);
-              e.printStackTrace();
+            
           }
           
 		
@@ -1363,8 +1364,8 @@ public class PostProcessorPanel extends GradientPanel {
                 PodcastCreator.createPodcast(recording, batch);
             }
         } catch (Exception e) {
-            TTT.showMessage("MP4 creation failed: " + e);
-            e.printStackTrace();
+        	e.printStackTrace();
+            TTT.showMessage("MP4 creation failed: " + e);            
         }
 		
 	}
@@ -1377,8 +1378,8 @@ public class PostProcessorPanel extends GradientPanel {
                 recording.createFlash(batch);
             }
         } catch (Exception e) {
-            TTT.showMessage("Flash creation failed: " + e);
-            e.printStackTrace();
+        	e.printStackTrace();
+            TTT.showMessage("Flash creation failed: " + e);            
         }
     }
     
@@ -1389,8 +1390,8 @@ public class PostProcessorPanel extends GradientPanel {
                 LameEncoder.convertAudioFile(recording.getExistingFileBySuffix(new String[] {"wav","mp2"}), recording.getFileBySuffix("mp3"), batch);
             }
         } catch (Exception e) {
-            TTT.showMessage("MP3 creation failed: " + e);
-            e.printStackTrace();
+        	  e.printStackTrace();
+            TTT.showMessage("MP3 creation failed: " + e);          
         }
 
     }
