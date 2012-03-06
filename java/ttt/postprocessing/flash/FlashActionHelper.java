@@ -73,7 +73,7 @@ public class FlashActionHelper {
     // Control elements
     // ////////////////////////////////////////////////////////////////
     Button createButtonPlay() throws IOException {
-        Shape shapePlay = loadImage("../../../resources/FlashPlay.png");
+        Shape shapePlay = loadImage("FlashPlay.png");
 
         Button buttonPlay = new Button(false);
         buttonPlay.addLayer(shapePlay, new Transform(), new AlphaTransform(), 0, true, true, false, true);
@@ -96,7 +96,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonStop() throws IOException {
-        Shape shapeStop = loadImage("../../../resources/FlashPause.png");
+        Shape shapeStop = loadImage("FlashPause.png");
 
         Button buttonStop = new Button(false);
         buttonStop.addLayer(shapeStop, new Transform(), new AlphaTransform(), 0, true, true, false, true);
@@ -117,7 +117,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonNextSlide() throws IOException {
-        Shape shapeNext = loadImage("../../../resources/FlashNext.png");
+        Shape shapeNext = loadImage("FlashNext.png");
 
         Button buttonNextSlide = new Button(false);
         buttonNextSlide.addLayer(shapeNext, new Transform(), new AlphaTransform(), 0, true, true, false, true);
@@ -150,7 +150,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonPreviousSlide() throws IOException {
-        Shape shapePrev = loadImage("../../../resources/FlashPrev.png");
+        Shape shapePrev = loadImage("FlashPrev.png");
 
         Button buttonPreviousSlide = new Button(false);
         buttonPreviousSlide.addLayer(shapePrev, new Transform(), new AlphaTransform(), 0, true, true, false, true);
@@ -182,7 +182,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonBackward() throws IOException {
-        Shape shapeNext = loadImage("../../../resources/FlashFastBackward.png");
+        Shape shapeNext = loadImage("FlashFastBackward.png");
 
         Button button = new Button(false);
         button.addLayer(shapeNext, new Transform(), new AlphaTransform(), 0, true, true, false, true);
@@ -197,7 +197,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonForward() throws IOException {
-        Shape shapeNext = loadImage("../../../resources/FlashFastForward.png");
+        Shape shapeNext = loadImage("FlashFastForward.png");
 
         Button button = new Button(false);
         button.addLayer(shapeNext, new Transform(), new AlphaTransform(), 0, true, true, false, true);
@@ -212,7 +212,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonScrollThumbnailDown() throws IOException {
-        Shape shapeScrollThumbnailDown = loadImage("../../../resources/FlashDownWide.png");
+        Shape shapeScrollThumbnailDown = loadImage("FlashDownWide.png");
 
         Button buttonScrollThumbnailDown = new Button(false);
         buttonScrollThumbnailDown.addLayer(shapeScrollThumbnailDown, new Transform(), new AlphaTransform(), 0, true,
@@ -251,7 +251,7 @@ public class FlashActionHelper {
     }
 
     Button createButtonScrollThumbnailUp() throws IOException {
-        Shape shapeScrollThumbnailUp = loadImage("../../../resources/FlashUpWide.png");
+        Shape shapeScrollThumbnailUp = loadImage("FlashUpWide.png");
 
         Button buttonScrollThumbnailUp = new Button(false);
         buttonScrollThumbnailUp.addLayer(shapeScrollThumbnailUp, new Transform(), new AlphaTransform(), 0, true, true,
@@ -900,7 +900,7 @@ public class FlashActionHelper {
         Frame timeFrame = timeClip.appendFrame();
         // timeFrame.placeSymbol(field, preferences.framebufferWidth / 2 - 12, preferences.framebufferHeight + 17, 1);
         // add border
-        timeFrame.placeSymbol(loadImage("../../../resources/FlashTimeBorder.png"), 2, 2);
+        timeFrame.placeSymbol(loadImage("FlashTimeBorder.png"), 2, 2);
         // add time label
         timeFrame.placeSymbol(field, 0, 4);
 
