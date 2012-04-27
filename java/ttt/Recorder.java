@@ -443,8 +443,12 @@ public class Recorder implements MessageConsumer, Closeable {
     synchronized public void startRec() throws IOException {
         // get filename
         file = null;
-        if (file == null)
-            file = new File(TTT.userPrefs.get("record_path", ".") + File.separator + lectureProfile.getFilename());
+        if (file == null){
+        	String recpath = TTT.userPrefs.get("record_path", ".");
+        	File recFile =new File(recpath);
+        	if (!recFile.exists())	recFile.mkdirs();
+            file = new File(recpath + File.separator + lectureProfile.getFilename());
+        }
 
         file = new File(getValidFilename(file.getCanonicalPath()) + Constants.desktopEndings[0]);
         startRec(file);
