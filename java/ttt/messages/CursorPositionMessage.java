@@ -31,6 +31,7 @@ import java.io.IOException;
 import ttt.Constants;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
 
 public class CursorPositionMessage extends FramebufferUpdateMessage {
     // TODO: think about superclass
@@ -117,5 +118,14 @@ public class CursorPositionMessage extends FramebufferUpdateMessage {
         lastCursorX = x;
         lastCursorY = y;
         lastCursorFrame = flashContext.frame;
+    }
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"x\":"+this.x+",");
+    	html5Context.out.write("\"y\":"+this.y);
+    	this.writeToJsonEnd(html5Context);
     }
 }

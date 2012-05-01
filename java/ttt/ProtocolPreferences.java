@@ -104,6 +104,20 @@ public class ProtocolPreferences {
     public void setEncodings(int[] encodings) {
         this.encodings = encodings;
     }
+    
+    public String toJson() {
+    	return   "{\"framebufferWidth\":"+this.framebufferWidth+","
+				+"\"framebufferHeight\":"+this.framebufferHeight+","
+    			+"\"bytesPerPixel\":"+this.bytesPerPixel+","
+				+"\"bitsPerPixel\":"+this.bitsPerPixel+","
+				+"\"bigEndian\":"+this.bigEndian+","
+				+"\"redMax\":"+this.redMax+","
+				+"\"redShift\":"+this.redShift+","
+				+"\"blueMax\":"+this.blueMax+","
+				+"\"blueShift\":"+this.blueShift+","
+				+"\"greenMax\":"+this.greenMax+","
+				+"\"greenShift\":"+this.greenShift+"}";
+    }
 
     public String toString() {
         return "Desktop: " + name + "\n" + "Size: " + framebufferWidth + " x " + framebufferHeight + " (" + depth

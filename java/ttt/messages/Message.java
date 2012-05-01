@@ -24,6 +24,7 @@
  */
 package ttt.messages;
 
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -32,6 +33,7 @@ import ttt.Constants;
 import ttt.ProtocolPreferences;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
 
 public abstract class Message {
 
@@ -244,4 +246,25 @@ public abstract class Message {
 
     // TODO: should be abstract
     public void writeToFlash(FlashContext flashContext) throws IOException {};
+    
+
+    protected void writeToJsonBegin(Html5Context html5Context) throws IOException {
+    	html5Context.out.write("{\"type\":\""+this.getClass().getSimpleName()+"\",");
+    	html5Context.out.write("\"time\":"+this.getTimestamp());
+    }
+    
+    protected void writeToJsonEnd(Html5Context html5Context) throws IOException {
+    	html5Context.out.write("}");
+    }
+    
+    protected String colorToCssString(Color color) {
+    	return "rgb("+color.getRed()+","+color.getGreen()+","+color.getBlue()+")";
+    }
+    
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	System.out.println("Unimplemented Msg: "+this.getClass().getSimpleName());
+    	
+    	this.writeToJsonBegin(html5Context);
+    	this.writeToJsonEnd(html5Context);
+    }
 }

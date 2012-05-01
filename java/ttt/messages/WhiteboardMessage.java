@@ -31,6 +31,7 @@ import ttt.Constants;
 import ttt.ProtocolPreferences;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
 
 // must extend FramebufferUpdate or index generation will not detect Whiteboard pages
 public class WhiteboardMessage extends FramebufferUpdateMessage {
@@ -107,5 +108,13 @@ public class WhiteboardMessage extends FramebufferUpdateMessage {
                 flashContext.frame.remove(whiteBoardInstance);
             }
         }
+    }
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"pageNumber\":"+this.pageNumber);
+    	this.writeToJsonEnd(html5Context);
     }
 }

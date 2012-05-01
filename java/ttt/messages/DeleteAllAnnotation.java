@@ -32,6 +32,7 @@ import java.io.IOException;
 import ttt.Constants;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
 
 public class DeleteAllAnnotation extends Annotation {
 
@@ -95,5 +96,10 @@ public class DeleteAllAnnotation extends Annotation {
     	// should never be called b/c messaging does not send delete annotations
     	return "";
     }
-
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	this.writeToJsonBegin(html5Context);
+    	this.writeToJsonEnd(html5Context);
+    }
 }

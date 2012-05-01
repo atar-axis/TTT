@@ -38,6 +38,8 @@ import ttt.Constants;
 import ttt.TTT;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
+import biz.source_code.base64Coder.Base64Coder;
 
 import com.anotherbigidea.flash.SWFConstants;
 import com.anotherbigidea.flash.movie.ImageUtil;
@@ -317,5 +319,31 @@ public class CursorMessage extends FramebufferUpdateMessage {
             // place cursor on the stage
             cursorInstance = flashContext.frame.placeSymbol(shapeCursor, x, y, FlashContext.cursorDepth);
         }
+    }
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	html5Context.recording.graphicsContext.enableRefresh(false);
+        //reset input stream and handle message data
+        byteArrayInputStream.reset();
+        handleCursorShapeUpdate(html5Context.recording.graphicsContext, is, null, getEncoding(), x, y, width, height);
+
+    	Image softCursor = html5Context.recording.graphicsContext.softCursor;
+    	
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"x\":"+this.x+",");
+    	html5Context.out.write("\"y\":"+this.y+",");
+    	html5Context.out.write("\"width\":"+this.width+",");
+    	html5Context.out.write("\"height\":"+this.height+",");
+    	html5Context.out.write("\"image\":\"data:image/"+Html5Context.thumbnailImageFormat+";base64,");
+    	
+
+    	if (softCursor != null) {
+			html5Context.out.write(Base64Coder.encode(Html5Context.imageToByte(softCursor)));
+    	}
+    	
+    	html5Context.out.write("\"");
+    	this.writeToJsonEnd(html5Context);
     }
 }

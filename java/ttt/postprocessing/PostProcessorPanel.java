@@ -50,10 +50,13 @@ import ttt.Constants;
 import ttt.TTT;
 import ttt.audio.LameEncoder;
 import ttt.audio.MP3Converter;
+import ttt.audio.OggVorbisEncoder;
 import ttt.gui.GradientPanel;
 import ttt.gui.Index;
 import ttt.helper.LibraryChecker;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
+import ttt.postprocessing.html5.Html5PlayerCreator;
 import ttt.postprocessing.podcast.PodcastCreator;
 import ttt.record.Recording;
 
@@ -110,6 +113,17 @@ public class PostProcessorPanel extends GradientPanel {
       
         ocrCheckBox
                 .setToolTipText("generate optimized input for optical character recognition (see full text search help)");        
+        
+        //ogg vorbis
+        if (OggVorbisEncoder.isOggVorbisAvailable() && (recording.getExistingFileBySuffix("wav").exists() /*||
+        		(LameEncoder.isLameAvailable() && recording.getExistingFileBySuffix("mp3").exists())*/)) {
+        	oggVorbisCheckBox.setToolTipText("generate an ogg vorbis audio file from wav file");
+        } else {
+        	oggVorbisCheckBox.setToolTipText("wav audio file not found");
+        	oggVorbisCheckBox.setSelected(false);
+        	oggVorbisCheckBox.setEnabled(false);
+        } 
+        
         //the conversion of a audio file to a mp3 file is only accessible if lame is found and if there exists a wav or mp2 file of the recording 
         if (LameEncoder.isLameAvailable() && recording.getExistingFileBySuffix(new String[] {"wav","mp2"}).exists()) {
         	mp3CheckBox.setToolTipText("generate a mp3 audio file from wav or mp2 file");
@@ -143,6 +157,46 @@ public class PostProcessorPanel extends GradientPanel {
         	flashCheckBox.setSelected(false);
         	flashCheckBox.setEnabled(false);
         }
+        
+        if (Html5Context.isCreationPossible(recording)) {
+        	html5CheckBox.setToolTipText("generate a HTML5 version of this recording");
+        	if (recording.getExistingFileBySuffix("mp3").exists() == false) {
+        		html5CheckBox.addItemListener(new ItemListener() {
+        			public void itemStateChanged(ItemEvent event) {
+        				try {
+        					//if there is no mp3 file, a mp3 file must be created before creating the flash movie
+	        				if (html5CheckBox.isSelected() && PostProcessorPanel.this.recording.getExistingFileBySuffix("mp3").exists() == false) {
+	        					mp3CheckBox.setSelected(true);
+	        				}
+        				} catch (IOException e) {
+        					e.printStackTrace();
+        				}
+        			}
+        		});
+        	}
+        	if (recording.getExistingFileBySuffix("ogg").exists() == false) {
+        		html5CheckBox.addItemListener(new ItemListener() {
+        			public void itemStateChanged(ItemEvent event) {
+        				try {
+        					//if there is no mp3 file, a mp3 file must be created before creating the flash movie
+	        				if (html5CheckBox.isSelected() && PostProcessorPanel.this.recording.getExistingFileBySuffix("ogg").exists() == false) {
+	        					oggVorbisCheckBox.setSelected(true);
+	        				}
+        				} catch (IOException e) {
+        					e.printStackTrace();
+        				}
+        			}
+        		});
+        	}
+        } else {
+        	html5CheckBox.setToolTipText("audio file not found");
+        	html5CheckBox.setSelected(false);
+        	html5CheckBox.setEnabled(false);
+        }
+        html5PlayerCheckBox.setToolTipText("generate the HTML5 player files necessary for playing the HTML5 recording");
+        
+        
+        
         if (PodcastCreator.isCreationPossible(recording)) {
         	mp4CheckBox.setToolTipText("generate a mp4 podcast of this recording");
         } else {
@@ -342,6 +396,13 @@ public class PostProcessorPanel extends GradientPanel {
                 mp3StatusField.setForeground(Color.RED);
                 mp3StatusField.setText("not found");
             }
+            if (recording.getExistingFileBySuffix("ogg").exists()) {
+                oggVorbisStatusField.setForeground(Color.GREEN);
+                oggVorbisStatusField.setText("found");
+            } else {
+                oggVorbisStatusField.setForeground(Color.RED);
+                oggVorbisStatusField.setText("not found");
+            }
             File file = recording.getExistingFileBySuffix("swf");
             if (file.isFile() && file.length() < 2000) {
                 flashStatusField.setForeground(Color.ORANGE);
@@ -359,6 +420,22 @@ public class PostProcessorPanel extends GradientPanel {
             } else {
                 mp4StatusField.setForeground(Color.RED);
                 mp4StatusField.setText("not found");
+            }
+            //html5
+            if (new File(recording.getDirectory() + Html5Context.HTML5_DIRECTORY).isDirectory()) {
+                html5StatusField.setForeground(Color.GREEN);
+                html5StatusField.setText("folder found");
+                html5StatusField.setToolTipText("folder exists - content not confirmed");
+                html5PlayerStatusField.setForeground(Color.GREEN);
+                html5PlayerStatusField.setText("folder found");
+                html5PlayerStatusField.setToolTipText("folder exists - content not confirmed");
+            } else {
+                html5StatusField.setForeground(Color.RED);
+                html5StatusField.setText("not found");
+                html5StatusField.setToolTipText(null);
+                html5PlayerStatusField.setForeground(Color.RED);
+                html5PlayerStatusField.setText("not found");
+                html5PlayerStatusField.setToolTipText(null);
             }
             
             // init full text search panel
@@ -461,6 +538,8 @@ public class PostProcessorPanel extends GradientPanel {
         pdfCheckBox = new javax.swing.JCheckBox();
         ocrCheckBox = new javax.swing.JCheckBox();
         flashCheckBox = new javax.swing.JCheckBox();
+        html5CheckBox = new javax.swing.JCheckBox();
+        html5PlayerCheckBox = new javax.swing.JCheckBox();
         createButton = new javax.swing.JButton();
         createHelpButton = new javax.swing.JButton();
         thumbnailsStatusField = new javax.swing.JLabel();
@@ -468,8 +547,12 @@ public class PostProcessorPanel extends GradientPanel {
         pdfStatusField = new javax.swing.JLabel();
         ocrStatusField = new javax.swing.JLabel();
         flashStatusField = new javax.swing.JLabel();
+        html5StatusField = new javax.swing.JLabel();
+        html5PlayerStatusField = new javax.swing.JLabel();
         mp3CheckBox = new javax.swing.JCheckBox();
         mp3StatusField = new javax.swing.JLabel();
+        oggVorbisCheckBox = new javax.swing.JCheckBox();
+        oggVorbisStatusField = new javax.swing.JLabel();
         mp4CheckBox = new javax.swing.JCheckBox();
         mp4StatusField = new javax.swing.JLabel();
         camCheckBox = new javax.swing.JCheckBox();
@@ -622,7 +705,15 @@ public class PostProcessorPanel extends GradientPanel {
         flashCheckBox.setSelected(true);
         flashCheckBox.setText("Flash/SWF");
         flashCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
+        
+        html5CheckBox.setSelected(true);
+        html5CheckBox.setText("HTML5 video");
+        html5CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        
+        html5PlayerCheckBox.setSelected(true);
+        html5PlayerCheckBox.setText("HTML5 player");
+        html5PlayerCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        
         createButton.setText("Create");
         createButton.setMargin(new java.awt.Insets(0, 8, 0, 8));
         createButton.addActionListener(new java.awt.event.ActionListener() {
@@ -648,12 +739,20 @@ public class PostProcessorPanel extends GradientPanel {
         ocrStatusField.setText("not found");
 
         flashStatusField.setText("not found");
+        
+        html5StatusField.setText("not found");
 
         mp3CheckBox.setSelected(true);
         mp3CheckBox.setText("MP3 audio");
         mp3CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         mp3StatusField.setText("not found");
+        
+        oggVorbisCheckBox.setSelected(true);
+        oggVorbisCheckBox.setText("Ogg Vorbis audio");
+        oggVorbisCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        oggVorbisStatusField.setText("not found");
 
         mp4CheckBox.setSelected(true);
         mp4CheckBox.setText("MP4 podcast");
@@ -680,7 +779,10 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(pdfCheckBox)
                     .add(ocrCheckBox)
                     .add(mp3CheckBox)
+                    .add(oggVorbisCheckBox)
                     .add(flashCheckBox)
+                    .add(html5CheckBox)
+                    .add(html5PlayerCheckBox)
                     .add(mp4CheckBox)
                     .add(camCheckBox))
                 .add(28, 28, 28)
@@ -690,7 +792,10 @@ public class PostProcessorPanel extends GradientPanel {
                     .add(pdfStatusField)
                     .add(ocrStatusField)
                     .add(mp3StatusField)
+                    .add(oggVorbisStatusField)
                     .add(flashStatusField)
+                    .add(html5StatusField)
+                    .add(html5PlayerStatusField)
                     .add(mp4StatusField)
                     .add(camStatusField))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 405, Short.MAX_VALUE)
@@ -731,8 +836,19 @@ public class PostProcessorPanel extends GradientPanel {
                             .add(mp3StatusField))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(oggVorbisCheckBox)
+                            .add(oggVorbisStatusField))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(flashCheckBox)
                             .add(flashStatusField))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(html5CheckBox)
+                            .add(html5StatusField))
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(html5PlayerCheckBox)
+                            .add(html5PlayerStatusField))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                             .add(mp4CheckBox)
@@ -977,7 +1093,10 @@ public class PostProcessorPanel extends GradientPanel {
     		ctrlSatus.put(thumbnailsCheckBox, thumbnailsCheckBox.isEnabled());
     		ctrlSatus.put(pdfCheckBox, pdfCheckBox.isEnabled());
     		ctrlSatus.put(flashCheckBox, flashCheckBox.isEnabled());
+    		ctrlSatus.put(html5CheckBox, html5CheckBox.isEnabled());
+    		ctrlSatus.put(html5PlayerCheckBox, html5PlayerCheckBox.isEnabled());
     		ctrlSatus.put(mp3CheckBox, mp3CheckBox.isEnabled());
+    		ctrlSatus.put(oggVorbisCheckBox, oggVorbisCheckBox.isEnabled());
     		ctrlSatus.put(mp4CheckBox, mp4CheckBox.isEnabled());
     		ctrlSatus.put(camCheckBox, camCheckBox.isEnabled());
     		ctrlSatus.put(userField, userField.isEnabled());
@@ -993,7 +1112,10 @@ public class PostProcessorPanel extends GradientPanel {
         ocrCheckBox.setEnabled(enabled);
 
         flashCheckBox.setEnabled(enabled && ctrlSatus.get(flashCheckBox));	     
+        html5CheckBox.setEnabled(enabled && ctrlSatus.get(html5CheckBox));
+        html5PlayerCheckBox.setEnabled(enabled && ctrlSatus.get(html5PlayerCheckBox));
         mp3CheckBox.setEnabled(enabled && ctrlSatus.get(mp3CheckBox));
+        oggVorbisCheckBox.setEnabled(enabled && ctrlSatus.get(oggVorbisCheckBox));
         mp4CheckBox.setEnabled(enabled && ctrlSatus.get(mp4CheckBox));	
         camCheckBox.setEnabled(enabled && ctrlSatus.get(camCheckBox));
         createHelpButton.setEnabled(enabled);
@@ -1316,7 +1438,10 @@ public class PostProcessorPanel extends GradientPanel {
                 storeRecordingIfNeeded();
 
                 convertAudio();
+                convertOggVorbis();
                 createFlash();
+                createHtml5();
+                createHtml5Player();
                 createMp4();
                 createWebCamVideo();
             
@@ -1382,6 +1507,32 @@ public class PostProcessorPanel extends GradientPanel {
             TTT.showMessage("Flash creation failed: " + e);            
         }
     }
+	
+	public void createHtml5(){
+    	  // create html5 movie
+        try { 
+            if (html5CheckBox.isSelected()) {
+                if (!recording.thumbnailsAvailable())
+                    modified = true;
+                recording.createHTML5(batch);
+            }
+        } catch (Exception e) {
+            TTT.showMessage("HTML5 creation failed: " + e);
+            e.printStackTrace();
+        }
+    }
+	
+	public void createHtml5Player(){
+    	  // create html5 player files
+        try { 
+            if (html5PlayerCheckBox.isSelected()) {
+            	Html5PlayerCreator.createPlayer(new File(recording.getDirectory() + Html5Context.HTML5_DIRECTORY));
+            }
+        } catch (Exception e) {
+            TTT.showMessage("HTML5 player creation failed: " + e);
+            e.printStackTrace();
+        }
+    }
     
     public void convertAudio(){
     	//convert audio file
@@ -1394,6 +1545,22 @@ public class PostProcessorPanel extends GradientPanel {
             TTT.showMessage("MP3 creation failed: " + e);          
         }
 
+    }
+    
+    public void convertOggVorbis(){
+    	//convert audio file
+        try {
+            if (oggVorbisCheckBox.isSelected()) {
+            	/*if (!recording.getExistingFileBySuffix("wav").exists() && recording.getExistingFileBySuffix("mp3").exists()) {
+            		//no wav file, convert mp3 to wav before proceeding
+            		LameEncoder.convertAudioFile(recording.getExistingFileBySuffix("mp3"), recording.getFileBySuffix("wav"), "-decode", batch);
+            	}*/
+                OggVorbisEncoder.convertAudioFile(recording.getExistingFileBySuffix("wav"), recording.getFileBySuffix("ogg"), batch);
+            }
+        } catch (Exception e) {
+            TTT.showMessage("Ogg Vorbis creation failed: " + e);
+            e.printStackTrace();
+        }
     }
     
     public void createScreenShots(){
@@ -1523,6 +1690,10 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JLabel filenameField;
     private javax.swing.JCheckBox flashCheckBox;
     private javax.swing.JLabel flashStatusField;
+    private javax.swing.JCheckBox html5CheckBox;
+    private javax.swing.JLabel html5StatusField;
+    private javax.swing.JCheckBox html5PlayerCheckBox;
+    private javax.swing.JLabel html5PlayerStatusField;
     private javax.swing.JCheckBox htmlCheckBox;
     private javax.swing.JLabel htmlStatusField;
     private javax.swing.JButton importSearchbaseButton;
@@ -1544,6 +1715,8 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JPanel jPanelThumbs;
     private javax.swing.JPanel jPanelFullTextSearch;
     private javax.swing.JPanel jPanelPublishing;
+    private javax.swing.JCheckBox oggVorbisCheckBox;
+    private javax.swing.JLabel oggVorbisStatusField;
     private javax.swing.JCheckBox mp3CheckBox;
     private javax.swing.JLabel mp3StatusField;
     private javax.swing.JCheckBox mp4CheckBox;

@@ -1,8 +1,10 @@
 package ttt.messages;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
@@ -16,20 +18,18 @@ import java.io.UnsupportedEncodingException;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import ttt.Constants;
+import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
+
+import com.anotherbigidea.flash.movie.Font.NoGlyphException;
 import com.anotherbigidea.flash.movie.FontDefinition;
 import com.anotherbigidea.flash.movie.FontLoader;
 import com.anotherbigidea.flash.movie.Instance;
 import com.anotherbigidea.flash.movie.Text;
-import com.anotherbigidea.flash.movie.Font.NoGlyphException;
-
-import ttt.Constants;
-import ttt.postprocessing.flash.FlashContext;
 
 /**
  * Annotation which displays a text string.
@@ -281,6 +281,18 @@ public final class TextAnnotation extends Annotation{
 			calculateBounds();
 		}
 	}
+	
+	/*@Override
+	public String writeToJson() {
+		String s = "{\"type\":\"TextAnnotation\",";
+		s += "\"color\":"+color+",";
+		s += "\"text\":\""+text+"\",";
+		s += "\"bText\":\""+bText+"\",";
+		s += "\"posX\":"+posX+",";
+		s += "\"posY\":"+posY+",";
+		s += "\"maxWidth\":"+maxWidth+"}\n";
+		return s;
+	}*/
 
 	@Override
 	public void writeToFlash(FlashContext flashContext) throws IOException {
@@ -327,6 +339,20 @@ public final class TextAnnotation extends Annotation{
 //		flashEdit.setProperties(false, true, false, false, true, true, false, false);
 //		flashEdit.setTextColor(new AlphaColor(255,0,0,0));
 	}
+	
+	@Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	Color fillColor = annotationColors[color];
+    	
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"color\":\""+colorToCssString(fillColor)+"\",");
+    	html5Context.out.write("\"x\":"+this.posX+",");
+    	html5Context.out.write("\"y\":"+this.posY+",");
+    	html5Context.out.write("\"text\":\""+this.text+"\"");
+    	
+    	this.writeToJsonEnd(html5Context);
+    }
 	
 	private void getTextBytes() {
 		try {

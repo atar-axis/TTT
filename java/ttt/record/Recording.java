@@ -40,9 +40,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.Map.Entry;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -64,6 +64,7 @@ import ttt.player.PlaybackControls;
 import ttt.player.TimeSlider.MyChangeEvent;
 import ttt.postprocessing.ScriptCreator;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
 
 public class Recording extends MessageProducerAdapter implements Runnable, ActionListener, Closeable, VolumeControl {
     // TODO: visibility
@@ -1006,6 +1007,32 @@ if(TTT.verbose){
         long t = System.currentTimeMillis();
 
         FlashContext.createFlash(this, batch);
+
+        t = System.currentTimeMillis() - t;
+if(TTT.verbose){
+        System.out.println(" done in " + Constants.getStringFromTime((int) t));
+        System.out.println("----------------------------------------------");
+}
+        // reset playback
+        // TODO: reset mode pause/play
+        setTime(previousTime);
+    }
+    
+    /*******************************************************************************************************************
+     * TTT 2 HTML5/Json
+     ******************************************************************************************************************/
+
+    public void createHTML5(boolean batch) throws IOException {
+        pause();
+        int previousTime = getTime();
+if(TTT.verbose){
+        System.out.println("----------------------------------------------");
+        System.out.println("TTT2Json Converter");
+        System.out.println("----------------------------------------------");
+}
+        long t = System.currentTimeMillis();
+
+        Html5Context.createJson(this, batch);
 
         t = System.currentTimeMillis() - t;
 if(TTT.verbose){

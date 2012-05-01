@@ -24,11 +24,14 @@
  */
 package ttt.messages;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.io.DataOutputStream;
 import java.io.IOException;
+
+import ttt.postprocessing.html5.Html5Context;
 
 public abstract class SimpleAnnotation extends Annotation {
     int color;
@@ -120,6 +123,21 @@ public abstract class SimpleAnnotation extends Annotation {
     	sb.append(" endy=\"").append(endy).append("\" ");
     	sb.append(" />\n");
     	return sb.toString();
+    }
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	Color fillColor = annotationColors[color];
+    	
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"color\":\""+colorToCssString(fillColor)+"\",");
+    	html5Context.out.write("\"startX\":"+this.startx+",");
+    	html5Context.out.write("\"startY\":"+this.starty+",");
+    	html5Context.out.write("\"endX\":"+this.endx+",");
+    	html5Context.out.write("\"endY\":"+this.endy);
+    	
+    	this.writeToJsonEnd(html5Context);
     }
 
 }

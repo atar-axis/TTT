@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
 import ttt.Constants;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
 
 import com.anotherbigidea.flash.movie.Instance;
 import com.anotherbigidea.flash.structs.AlphaColor;
@@ -165,10 +166,11 @@ public class FreehandAnnotation extends Annotation {
 
     public com.anotherbigidea.flash.movie.Frame frame = null;
 
-    public void writeToFlash(FlashContext flashContext) throws IOException {
-        // converting Path to ArrayList for points
-        // TODO: use path directly
-        ArrayList<Point> pointList = new ArrayList<Point>();
+
+    // converting Path to ArrayList for points
+    // TODO: use path directly
+    private ArrayList<Point> pathToPointList() {
+    	ArrayList<Point> pointList = new ArrayList<Point>();
         PathIterator iterator = path.getPathIterator(null);
         double[] pointOfPath = new double[6];
         for (int i = 0; i < count; i++) {
@@ -176,6 +178,12 @@ public class FreehandAnnotation extends Annotation {
             pointList.add(new Point((int) pointOfPath[0], (int) pointOfPath[1]));
             iterator.next();
         }
+        
+        return pointList;
+    }
+    
+    public void writeToFlash(FlashContext flashContext) throws IOException {
+    	ArrayList<Point> pointList = pathToPointList();
 
         flashContext.symbolCount++;
         flashContext.checkNextFrame(this.getTimestamp());
@@ -207,6 +215,28 @@ public class FreehandAnnotation extends Annotation {
         Annotation annot = (Annotation) flashContext.message;
         // buffer annotation's message and instance
         flashContext.addAnnotations(annot, instanceFreeHand);
+    }
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	Color freehandColor = annotationColors[color];
+    	ArrayList<Point> pointList = pathToPointList();
+    	
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"color\":\""+colorToCssString(freehandColor)+"\",");
+    	html5Context.out.write("\"points\":[");
+    	
+    	for (int i = 0; i < pointList.size(); i++) {
+    		if (i > 0) {
+    			html5Context.out.write(",");
+    		}
+    		html5Context.out.write("{\"x\":"+pointList.get(i).x+",\"y\":"+pointList.get(i).y+"}");
+    	}
+    	
+    	html5Context.out.write("]");
+    	
+    	this.writeToJsonEnd(html5Context);
     }
     
     // MODMSG

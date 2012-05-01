@@ -34,55 +34,54 @@ import ttt.TTT;
 
 
 /**
- * Helper class for using the mp3 encoder <a href="http://lame.sourceforge.net/">lame</a> via system calls. <br>
- * Created on 29. June 2009, 14:15
- * @author Christof Angermueller
+ * Helper class for using the ogg vorbis encoder via system calls, based on LameEncoder
+ * Created on 03-23-2012
+ * @author Manuel Thurner
  */
-public class LameEncoder {
+public class OggVorbisEncoder {
 
-	private static final String LAME = "C:\\dev\\bin\\lame.exe";	
+	private static final String OGGVORBIS = "C:\\dev\\bin\\oggenc.exe";	
 	
 	public static void main(String[] args) throws Exception{		
 		
-		String[] lameArgs = Arrays.copyOf(args, 3);
-		if (lameArgs[0] == null || lameArgs[1] == null) {
-			System.out.println("LameEncoder inputFile outputFile [options]");
+		String[] oggVorbisArgs = Arrays.copyOf(args, 3);
+		if (oggVorbisArgs[0] == null || oggVorbisArgs[1] == null) {
+			System.out.println("OggVorbisEncoder inputFile outputFile [options]");
 			return;
 		}
-		LameEncoder.convertAudioFile(new File(lameArgs[0]),new File(lameArgs[1]),lameArgs[2] == null ? "" : lameArgs[2],true);
+		OggVorbisEncoder.convertAudioFile(new File(oggVorbisArgs[0]),new File(oggVorbisArgs[1]),oggVorbisArgs[2] == null ? "" : oggVorbisArgs[2],true);
 	}
 	
 	
-	/**Checks whether lame is available
-	 * @return	True if lame is available
+	/**Checks whether oggVorbis is available
+	 * @return	True if oggVorbis is available
 	 * */
-	public static boolean isLameAvailable() {
-		return Exec.getCommand(LAME) != null;
+	public static boolean isOggVorbisAvailable() {
+		return Exec.getCommand(OGGVORBIS) != null;
 	}
 	
 	
-	/**Allows converting audio files using lame
+	/**Allows converting audio files using oggenc
 	 * @return True: Conversion succeeded.<br>False: Canceled by user 
 	 */
 	public static boolean convertAudioFile(File inFile, File outFile, String options, boolean batch) throws Exception {
 		if(TTT.verbose){
 		System.out.println("----------------------------------------------");
-		System.out.println("LameEncoder");
+		System.out.println("OggEncoder");
 		System.out.println("----------------------------------------------");
-		System.out.println("Encoding mp3 file");
+		System.out.println("Encoding oggvorbis file");
 		}
 		long startTime = System.currentTimeMillis();	//time measurement
-		String lameCmd = Exec.getCommand(LAME);	//get lame command
-		if (lameCmd == null) {
-			throw new IOException("lame not found");
+		String oggencCmd = Exec.getCommand(OGGVORBIS);	//get oggenc command
+		if (oggencCmd == null) {
+			throw new IOException("oggenc not found");
 		}				
 		outFile.delete();	//delete outFile in order to test success after encoding
 		
 		final Exec exec = new Exec();
 		int i;
 		if (!batch) {
-			String msg = !options.contains("-d") ? "encoding mp3 file" : "decoding mp3 file to wav";
-			final ProgressMonitor progressMonitor = new ProgressMonitor(TTT.getRootComponent(),null,msg,0,100);
+			final ProgressMonitor progressMonitor = new ProgressMonitor(TTT.getRootComponent(),null,"encoding ogg vorbis file",0,100);
 			progressMonitor.setMillisToDecideToPopup(100);
 			progressMonitor.setMillisToPopup(100);
 			//the progress depends on the current outFile size in comparison to the expected outFile size
@@ -102,9 +101,9 @@ public class LameEncoder {
 			});				
 			timer.start();
 			
-			//call lame						
+			//call oggenc						
 			exec.createListenerStream();
-			i = exec.exec(new String[] {lameCmd,options,inFile.getPath(), outFile.getPath()});	
+			i = exec.exec(new String[] {oggencCmd, options, "-o "+outFile.getPath(), inFile.getPath()});	
 			
 			timer.stop();
 			if (progressMonitor.isCanceled()) {
@@ -118,18 +117,18 @@ public class LameEncoder {
 			progressMonitor.close();
 		} else {
 			
-			//call lame
+			//call oggenc
 			exec.createListenerStream();
-			i = exec.exec(new String[] {lameCmd,options,inFile.getPath(), outFile.getPath()});			
+			i = exec.exec(new String[] {oggencCmd, options, "-o "+outFile.getPath(), inFile.getPath()});		
 		}
 				
 		if (i != 0 || outFile.length() == 0) {	//check success
 			if(TTT.verbose){
-			System.out.println("Unable to encode audio file using lame:");
+			System.out.println("Unable to encode audio file using oggenc:");
 			}
 			System.out.println(exec.getListenerStream());
 			outFile.delete();
-			throw new IOException("unable to encode audio file using lame");
+			throw new IOException("unable to encode audio file using oggenc");
 		}		
 		if(TTT.verbose){
 		System.out.println("Done in " + Constants.getStringFromTime((int)(System.currentTimeMillis()-startTime)));
@@ -139,7 +138,7 @@ public class LameEncoder {
 	}
 		
 	
-	/**Allows converting audio files using lame determining suitable options automatically
+	/**Allows converting audio files using oggenc determining suitable options automatically
 	 * @return True: Conversion succeeded.<br>False: Canceled by user
 	 */
 	public static boolean convertAudioFile(File inFile, File outFile, boolean batch) throws Exception {
@@ -148,13 +147,13 @@ public class LameEncoder {
 		int length = (int)inFile.length()>>20;	//file size in mb
 		int q;
 		if (length < 20) {
-			q = 2;	//high quality
+			q = 6;	//high quality
 		} else if (length < 40) {
-			q = 5;	//average quality
+			q = 4;	//average quality
 		} else if (length < 80) {
-			q = 7;	//acceptable quality and fast
+			q = 2;	//acceptable quality and fast
 		} else {
-			q = 9;	//acceptable quality and very fast
+			q = 0;	//acceptable quality and very fast
 		}
 		return convertAudioFile(inFile,outFile,"-q " + q, batch);
 	}

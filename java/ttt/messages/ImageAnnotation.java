@@ -8,15 +8,17 @@ import java.io.IOException;
 
 import org.w3c.dom.Element;
 
-import com.anotherbigidea.flash.movie.Image;
-import com.anotherbigidea.flash.movie.ImageUtil;
-import com.anotherbigidea.flash.movie.Instance;
-import com.anotherbigidea.flash.movie.Shape;
-
 import ttt.Constants;
 import ttt.helper.Base64Codec;
 import ttt.helper.ImageHelper;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
+import biz.source_code.base64Coder.Base64Coder;
+
+import com.anotherbigidea.flash.movie.Image;
+import com.anotherbigidea.flash.movie.ImageUtil;
+import com.anotherbigidea.flash.movie.Instance;
+import com.anotherbigidea.flash.movie.Shape;
 
 /**
  * Annotation which displays an image.
@@ -122,4 +124,17 @@ public class ImageAnnotation extends Annotation {
 		
 		flashContext.addAnnotations(this, instanceImg);
 	}
+	
+	@Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"x\":"+this.posX+",");
+    	html5Context.out.write("\"y\":"+this.posY+",");
+    	html5Context.out.write("\"image\":\"data:image/jpeg;base64,");
+    	html5Context.out.write(Base64Coder.encode(this.imgData));
+    	html5Context.out.write("\"");
+    	
+    	this.writeToJsonEnd(html5Context);
+    }
 }

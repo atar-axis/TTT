@@ -27,8 +27,8 @@ package ttt.messages;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.RasterFormatException;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -39,6 +39,8 @@ import java.util.Random;
 import ttt.Constants;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
+import ttt.postprocessing.html5.Html5Context;
+import biz.source_code.base64Coder.Base64Coder;
 
 import com.anotherbigidea.flash.SWFConstants;
 import com.anotherbigidea.flash.movie.ImageUtil;
@@ -140,6 +142,20 @@ public class HextileMessage extends FramebufferUpdateMessage {
         // graphicsContext.handleUpdatedPixels(x, y, w, h);
         graphicsContext.refresh(x, y, w, h);
     }
+    
+    static private void hextileRectToJson(GraphicsContext graphicsContext, BufferedWriter out, DataInputStream is, int x, int y, int w, int h, boolean updateFlag) throws IOException {
+    	byte[] read = new byte[16];
+        int isEof = is.read(read);
+		while(isEof != -1) {
+		    out.write(Base64Coder.encode(read));
+		    isEof = is.read(read);
+		    if (isEof != -1) {
+		    	out.write("\",\"");
+		    }
+		}
+    }
+    
+ 
 
     // Handle one tile in the Hextile-encoded data.
     static private void handleHextileSubrect(GraphicsContext graphicsContext, DataInputStream is, DataOutputStream os,
@@ -395,6 +411,29 @@ public class HextileMessage extends FramebufferUpdateMessage {
     public void writeToFlash(FlashContext flashContext) throws IOException {
     	writeToFlashORIG(flashContext);
     	//writeToFlashNEWER(flashContext);
+    }
+    
+    @Override
+    public void writeToJson(Html5Context html5Context) throws IOException {
+    	this.writeToJsonBegin(html5Context);
+    	html5Context.out.write(",");
+    	html5Context.out.write("\"x\":"+this.x+",");
+    	html5Context.out.write("\"y\":"+this.y+",");
+    	html5Context.out.write("\"width\":"+this.width+",");
+    	html5Context.out.write("\"height\":"+this.height+",");
+    	html5Context.out.write("\"hextiles\":"+"[\"");
+    	
+    	// rset input stream and handle message data
+        byteArrayInputStream.reset();
+        
+    	try {
+			hextileRectToJson(html5Context.recording.graphicsContext, html5Context.out, is, x, y, width, height, updateFlag);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	html5Context.out.write("\"]");
+    	this.writeToJsonEnd(html5Context);
     }
 
     public void writeToFlashORIG(FlashContext flashContext) throws IOException {
