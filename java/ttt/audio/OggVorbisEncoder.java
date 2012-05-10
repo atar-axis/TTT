@@ -40,7 +40,7 @@ import ttt.TTT;
  */
 public class OggVorbisEncoder {
 
-	private static final String OGGVORBIS = "C:\\dev\\bin\\oggenc.exe";	
+	private static final String OGGVORBIS = "oggenc";	
 	
 	public static void main(String[] args) throws Exception{		
 		
@@ -103,7 +103,7 @@ public class OggVorbisEncoder {
 			
 			//call oggenc						
 			exec.createListenerStream();
-			i = exec.exec(new String[] {oggencCmd, options, "-o "+outFile.getPath(), inFile.getPath()});	
+			i = exec.exec(new String[] {oggencCmd, options, "-o "+outFile.getPath(), inFile.getPath()});
 			
 			timer.stop();
 			if (progressMonitor.isCanceled()) {
@@ -128,7 +128,7 @@ public class OggVorbisEncoder {
 			}
 			System.out.println(exec.getListenerStream());
 			outFile.delete();
-			throw new IOException("unable to encode audio file using oggenc");
+			throw new IOException("unable to encode audio file using oggenc, i: "+i+" outFile.length: "+outFile.length()+" outFile.getPath(): "+outFile.getPath());
 		}		
 		if(TTT.verbose){
 		System.out.println("Done in " + Constants.getStringFromTime((int)(System.currentTimeMillis()-startTime)));

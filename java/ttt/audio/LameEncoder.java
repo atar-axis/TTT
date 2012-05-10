@@ -40,7 +40,7 @@ import ttt.TTT;
  */
 public class LameEncoder {
 
-	private static final String LAME = "C:\\dev\\bin\\lame.exe";	
+	private static final String LAME = "lame";	
 	
 	public static void main(String[] args) throws Exception{		
 		

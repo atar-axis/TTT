@@ -165,7 +165,7 @@ public class PostProcessorPanel extends GradientPanel {
         			public void itemStateChanged(ItemEvent event) {
         				try {
         					//if there is no mp3 file, a mp3 file must be created before creating the flash movie
-	        				if (html5CheckBox.isSelected() && PostProcessorPanel.this.recording.getExistingFileBySuffix("mp3").exists() == false) {
+	        				if (html5CheckBox.isSelected() && mp3CheckBox.isEnabled() && PostProcessorPanel.this.recording.getExistingFileBySuffix("mp3").exists() == false) {
 	        					mp3CheckBox.setSelected(true);
 	        				}
         				} catch (IOException e) {
@@ -179,7 +179,7 @@ public class PostProcessorPanel extends GradientPanel {
         			public void itemStateChanged(ItemEvent event) {
         				try {
         					//if there is no mp3 file, a mp3 file must be created before creating the flash movie
-	        				if (html5CheckBox.isSelected() && PostProcessorPanel.this.recording.getExistingFileBySuffix("ogg").exists() == false) {
+	        				if (html5CheckBox.isSelected() && oggVorbisCheckBox.isEnabled() && PostProcessorPanel.this.recording.getExistingFileBySuffix("ogg").exists() == false) {
 	        					oggVorbisCheckBox.setSelected(true);
 	        				}
         				} catch (IOException e) {
