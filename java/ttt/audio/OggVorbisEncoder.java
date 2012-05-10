@@ -103,7 +103,7 @@ public class OggVorbisEncoder {
 			
 			//call oggenc						
 			exec.createListenerStream();
-			i = exec.exec(new String[] {oggencCmd, options, "-o "+outFile.getPath(), inFile.getPath()});
+			i = exec.exec(new String[] {oggencCmd, options, "-o"+outFile.getPath(), inFile.getPath()});
 			
 			timer.stop();
 			if (progressMonitor.isCanceled()) {
@@ -119,7 +119,8 @@ public class OggVorbisEncoder {
 			
 			//call oggenc
 			exec.createListenerStream();
-			i = exec.exec(new String[] {oggencCmd, options, "-o "+outFile.getPath(), inFile.getPath()});		
+			i = exec.exec(new String[] {oggencCmd, options, "-o"+outFile.getPath(), inFile.getPath()});
+			
 		}
 				
 		if (i != 0 || outFile.length() == 0) {	//check success
