@@ -118,6 +118,7 @@ Section ""
   File nsis/MP4Box.exe
   File nsis/js32.dll
   File nsis/ffmpeg.exe
+  File nsis/oggenc.exe
   File nsis/ttt.ico
   File nsis/civil.dll
 
