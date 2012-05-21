@@ -422,7 +422,7 @@ public class PostProcessorPanel extends GradientPanel {
                 mp4StatusField.setText("not found");
             }
             //html5
-            if (new File(recording.getDirectory() + Html5Context.HTML5_DIRECTORY).isDirectory()) {
+            if (new File(Html5Context.getWebPlayerDirectory(recording)).isDirectory()) {
                 html5StatusField.setForeground(Color.GREEN);
                 html5StatusField.setText("folder found");
                 html5StatusField.setToolTipText("folder exists - content not confirmed");
@@ -1526,7 +1526,7 @@ public class PostProcessorPanel extends GradientPanel {
     	  // create html5 player files
         try { 
             if (html5PlayerCheckBox.isSelected()) {
-            	Html5PlayerCreator.createPlayer(new File(recording.getDirectory() + Html5Context.HTML5_DIRECTORY));
+            	Html5PlayerCreator.createPlayer(new File(Html5Context.getWebPlayerDirectory(recording)));
             }
         } catch (Exception e) {
             TTT.showMessage("HTML5 player creation failed: " + e);

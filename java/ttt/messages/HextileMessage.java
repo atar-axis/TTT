@@ -144,7 +144,7 @@ public class HextileMessage extends FramebufferUpdateMessage {
     }
     
     static private void hextileRectToJson(GraphicsContext graphicsContext, BufferedWriter out, DataInputStream is, int x, int y, int w, int h, boolean updateFlag) throws IOException {
-    	byte[] read = new byte[16];
+    	byte[] read = new byte[3];
         int isEof = is.read(read);
 		while(isEof != -1) {
 		    out.write(Base64Coder.encode(read));

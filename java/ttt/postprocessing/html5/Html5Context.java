@@ -28,7 +28,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
@@ -51,11 +50,12 @@ public class Html5Context {
 
     public static boolean html5_debug = false;
     public static final String thumbnailImageFormat = "png";
-	public static final String HTML5_DIRECTORY = "webplayer";
 	public static final String FILE_NAME = "lecture";
+	public static final long MAX_FILE_SIZE = 5*1024*1024; //5 MB
+	private static final String HTML5_DIR_SUFFIX = "_webplayer";
     private boolean batch;
     public Recording recording;
-    public BufferedWriter out;
+    public CountingBufferedWriter out;
 
     static public void createJson(Recording recording, boolean batch) throws IOException {
         Html5Context html5Context = new Html5Context(recording, batch);
@@ -70,6 +70,10 @@ public class Html5Context {
     protected Html5Context(Recording recording, boolean batch) {
         this.recording = recording;
         this.batch = batch;
+    }
+    
+    static public String getWebPlayerDirectory(Recording recording) throws IOException {
+    	return recording.getDirectory() + recording.getFileBase() + HTML5_DIR_SUFFIX;
     }
 
     // use to save the corresponding timestamp in the first frame of each clip
@@ -110,11 +114,6 @@ public class Html5Context {
             progressMonitor.setNote("converting thumbnails");
         }
 
-        // determine width and height of thumbnails
-        IndexEntry entry = recording.index.get(0);
-        ImageIcon imIcon = entry.getThumbnail();
-        Image im = imIcon.getImage();
-
         // buffer index information
         for (int i = 0; i < recording.index.size(); i++) {
             IndexEntry ie = recording.index.get(i);
@@ -133,16 +132,16 @@ public class Html5Context {
 
     private void createJson() throws IOException {
         try {
-        	File html5dir = new File(recording.getDirectory() + HTML5_DIRECTORY);
+        	File html5dir = new File(getWebPlayerDirectory(this.recording));
         	if (!html5dir.isDirectory()) {
         		//create dir
         		html5dir.mkdir();
         	}
         	
         	//write file
-        	String fileName = recording.getDirectory() + HTML5_DIRECTORY + "/" + FILE_NAME + ".js";
+        	String fileName = getWebPlayerDirectory(this.recording) + "/" + FILE_NAME + ".js";
 			FileWriter fstream = new FileWriter(fileName);
-			this.out = new BufferedWriter(fstream);
+			this.out = new CountingBufferedWriter(fstream);
         	
             if (!batch) {
                 // show progress
@@ -158,10 +157,12 @@ public class Html5Context {
             this.initialize();
             
             //JSON with padding
+            String paddingEnd = "})});";
             out.write("$(function(){controller.loadData({");
             
             //PREFS
             out.write("\"prefs\":"+this.recording.graphicsContext.prefs.toJson()+",");
+            
             
             //THUMBNAILS
             if (!batch) {
@@ -183,6 +184,8 @@ public class Html5Context {
                 progressMonitor.setNote("converting messages");
             }
             
+            int fileCounter = 2;
+            
             out.write(", \"messages\": [");
             for (int i = 0; i < recording.messages.size(); i++) {
                 if (!batch) {
@@ -191,18 +194,34 @@ public class Html5Context {
                 	}
                 	progressMonitor.setProgress(10 + (60 * i / recording.messages.size()));
                 }
-                    
                 
                 message = recording.messages.get(i);
                 message.writeToJson(this);
-                if (i < recording.messages.size()-1) {
+                
+                out.flush();
+                
+                //split into multiple js files if too big
+                if (out.getBytesWritten() >= MAX_FILE_SIZE) {
+                	String newFileName = FILE_NAME+fileCounter+".js";
+                	
+                	//write custom message so the player knows that it should load a new file
+                	out.write(",{\"type\":\"NewFileIndicator\",\"id\":"+fileCounter+",\"fileName\":\""+newFileName+"\"}]"+paddingEnd);
+                	out.flush();
+                	out.close();
+                	
+                	fstream = new FileWriter(getWebPlayerDirectory(this.recording) + "/" + newFileName);
+                	this.out = new CountingBufferedWriter(fstream);
+                	out.write("$(function(){controller.loadAdditionalData({\"id\":"+fileCounter+",\"messages\": [");
+                	
+                	fileCounter++;
+                } else if (i < recording.messages.size()-1) {
                 	out.write(",");
                 }
             }
             out.write("]");
             
             //close padding
-            out.write("})});");
+            out.write(paddingEnd);
             
             
             if (!batch) {
@@ -237,7 +256,7 @@ public class Html5Context {
     	//copy audio to html5 directory, if existent
         String[] audioFormatSuffix = {"mp3", "ogg"};
         for (int i = 0; i < audioFormatSuffix.length; i++) {
-        	File target = new File(recording.getDirectory() + HTML5_DIRECTORY + "/" + FILE_NAME + "." + audioFormatSuffix[i]);
+        	File target = new File(getWebPlayerDirectory(this.recording) + "/" + FILE_NAME + "." + audioFormatSuffix[i]);
             if (recording.getExistingFileBySuffix(audioFormatSuffix[i]).exists() && !target.exists()) {
             	Html5PlayerCreator.copyFile(recording.getExistingFileBySuffix(audioFormatSuffix[i]), target);
             }
