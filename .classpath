@@ -15,6 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/lti-civil.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Pat Bateman/Downloads/base64coder/target/base64coder.jar"/>
+	<classpathentry kind="lib" path="lib/base64coder.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
