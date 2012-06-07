@@ -185,7 +185,7 @@ public class PodcastCreator {
 			ImageIO.write(ImageCreator.getScaledInstance(recording.getGraphicsContext().getScreenshot(), resolutionWidth, resolutionHeight, RenderingHints.VALUE_INTERPOLATION_BICUBIC, true), "png", windowImageFile);
 			windowMovieFile.delete();
 			exec.createListenerStream();
-			j = exec.exec(new String[] {"ffmpeg", "-loop_input", "-r", String.valueOf(framesPerSec), "-i", windowImageFile.getPath(), "-pix_fmt", "rgb24", "-vcodec", "mpeg4", "-vframes", String.valueOf(vFrames), "-s", resolutionWidth + "x" + resolutionHeight,"-y", windowMovieFile.getPath()});
+			j = exec.exec(new String[] {"ffmpeg","-b:v", String.valueOf(34)+"k","-loop_input", "-r", String.valueOf(framesPerSec), "-i", windowImageFile.getPath(), "-pix_fmt", "rgb24", "-vcodec", "mpeg4", "-vframes", String.valueOf(vFrames), "-s", resolutionWidth + "x" + resolutionHeight,"-y", windowMovieFile.getPath()});
 			if (j != 0 || windowMovieFile.length() == 0) {
 				//error while creating window movie
 				windowMovieFile.delete();
@@ -281,7 +281,8 @@ public class PodcastCreator {
 		}
 		exec.createListenerStream();
 		outMovieFile = recording.getFileBySuffix("mp4");
-		j = exec.exec(new String[] {ffmpegCmd,"-i",audioFile.getPath(),"-i",outMovieTmpFile.getPath(),"-acodec","libfaac","-ab" ,"128" ,"-ar","44100","-vcodec","copy","-y", outMovieFile.getPath()});
+	 j = exec.exec(ffmpegCmd + " -i " + audioFile.getPath() + " -i " +outMovieTmpFile.getPath()+ " -b:a 32k "+ " -b:v 32k " + "-y "+ outMovieFile.getPath());
+	
 		outMovieTmpFile.delete();	
 		if (!batch) {
 			timer.stop();			
