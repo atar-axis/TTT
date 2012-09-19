@@ -180,7 +180,6 @@ public class GraphicsContext extends JComponent implements GraphicInterface, Mes
     //MODMSG : changed return type to BufferedImage
     public BufferedImage getScreenshotWithoutAnnotations() {
         BufferedImage screenshot;
-
         // Create a buffered image using the default color model
         screenshot = new BufferedImage(prefs.framebufferWidth, prefs.framebufferHeight, BufferedImage.TYPE_INT_RGB);
 

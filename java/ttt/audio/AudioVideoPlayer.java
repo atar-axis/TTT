@@ -243,11 +243,12 @@ public class AudioVideoPlayer {
 
     // set playback to new time
     public void setTime(int time) {
-        // linear sync of audio preplay
+    	 // linear sync of audio preplay
         if (recording.desktop_replay_factor_sync)
             player.setMediaTime(new Time((long) ((time + replayOffset) / replayRatio) * 1000000l));
         else
             player.setMediaTime(new Time(time * 1000000l));
+
     }
 
     // playback control

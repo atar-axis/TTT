@@ -123,7 +123,7 @@ public class JSAAudioRecorder extends Thread implements IAudioRecorder {
             throw new IOException("audio source unavailable");
         }
         audioInputStream = new AudioInputStream(targetDataLine);
-        targetType = AudioFileFormat.Type.WAVE;
+        targetType = AudioFileFormat.Type. WAVE;
     }
 
     public void startRecording(File file) {

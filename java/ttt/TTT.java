@@ -147,9 +147,10 @@ public class TTT extends JFrame {
 			System.out.println(ABOUT);
 
 		setJMenuBar(createMenu());
-
+		
 		desktop = new JDesktopPane();
 		setContentPane(desktop);
+		
 		desktop.setVisible(true);
 		// attempt to close all open files before closing
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -326,7 +327,7 @@ public class TTT extends JFrame {
 		menu.setMnemonic(KeyEvent.VK_T);
 		menuBar.add(menu);
 
-		menuItem = new JMenuItem("present & record");
+		menuItem = new JMenuItem("Start Recording");
 		menuItem.setToolTipText("start presenter with recording feature");
 		menuItem.setIcon(Constants.getIcon("16x16/mix_record.png"));
 		menuItem.setMnemonic(KeyEvent.VK_R);

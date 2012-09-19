@@ -85,6 +85,7 @@ public class ScriptCreator {
                 System.out.println("\nERROR: Script generation failed. Could not create directories.\n");
             }
         }
+        
     }
 
     public ScriptCreator(Recording recording, int mode, String ocrPath) throws IOException {

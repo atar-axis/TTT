@@ -706,7 +706,7 @@ public class Index {
         ProgressMonitor progressMonitor = null;
         if (!batch && ShowProgressMonitor) {
             // show progress
-            String text = mode == ScriptCreator.THUMBNAILS ? "Computing thumbnails" : "Computing screenshots";
+        	String text = mode == ScriptCreator.THUMBNAILS ? "Computing thumbnails" : "Computing screenshots";
             progressMonitor = new ProgressMonitor(TTT.getRootComponent(), text, null, 0, index.size());
             progressMonitor.setMillisToDecideToPopup(100);
             progressMonitor.setMillisToPopup(100);
@@ -718,9 +718,10 @@ public class Index {
 
         if(scriptCreator != null)
          scriptCreator = new ScriptCreator(recording, mode);
-
+     
         PDFHelper pdfHelper = null;
         if ((mode & ScriptCreator.PDF_SCRIPT) != 0) {
+        
             // generate PDF helper
             // check whether the iText-library is installed or not
             if (LibraryChecker.isITextPdfLibraryInstalled()) {
@@ -746,7 +747,7 @@ public class Index {
         // measure time
         long t = System.currentTimeMillis();
         boolean isCanceled = false;
-        
+    
         // compute
         if (mode != 0)
             for (int i = 0; i < index.size(); i++) {
@@ -777,6 +778,8 @@ public class Index {
                 }
                 // set time of index
                 IndexEntry indexEntry = index.get(i);
+
+               
                 recording.setTime(indexEntry.getTimestamp());
 
                 // create screenshot
@@ -785,6 +788,7 @@ public class Index {
                 // set thumbnail
                 if ((mode & ScriptCreator.THUMBNAILS) != 0) {                    
 
+                	
                     // faster image scaling
                     Image thumbnail = ScriptCreator.getScaledInstance(screenshot, recording.prefs.framebufferWidth
                             / thumbnail_scale_factor, recording.prefs.framebufferHeight / thumbnail_scale_factor);
@@ -826,7 +830,6 @@ public class Index {
                     }
                 }
             }
-
         // close pdf document
         if (((mode & ScriptCreator.PDF_SCRIPT) != 0) && pdfHelper != null) {
             try {

@@ -367,17 +367,7 @@ public class Recorder implements MessageConsumer, Closeable {
         System.out.println("\nRecorder start.");
         System.out.println("    Recording desktop to '" + file.getCanonicalPath() + "'");
 
-        // modified by Ziewer - 10.05.2007
-        //
-        // WAS
-        // // TODO: sync start - maybe start after ttt header is written but BEFORE startime is written
-        // if (audioVideoRecorder != null)
-        // audioVideoRecorder.startRec(file.getCanonicalPath());
-        //
-        // // prepare recording
-        // writeHeader(file.getCanonicalPath());
-        // END WAS
-
+   
         // prepare recording
         DataOutputStream new_out = writeHeader(file.getCanonicalPath());
 
@@ -522,22 +512,7 @@ public class Recorder implements MessageConsumer, Closeable {
         // no extensions
         out.writeInt(0);
 
-        // modified by Ziewer - 10.05.2007
-        //
-        // WAS
-        // // startime
-        // long starttime = System.currentTimeMillis();
-        // out.writeLong(starttime);
-        //
-        // // offset to adjust timestamps
-        // offset = (int) (protocol.getStarttime() - starttime);
-        //
-        // out.flush();
-        //
-        // // make visible for message handler
-        // this.out = out;
-        // END WAS
-        //
+    
         out.flush();
         return out;
         // end of modification by Ziewer - 10.05.2007

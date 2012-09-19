@@ -115,8 +115,9 @@ public class PlaybackControls extends GradientPanel implements TimeChangedListen
             break;
 
         default:
-            if (event >= 0)
+            if (event >= 0){
                 timeSlider.setValue(event, false);
+            }
             else
             // index
             if (recording.indexViewer != null)
@@ -124,7 +125,6 @@ public class PlaybackControls extends GradientPanel implements TimeChangedListen
 
         }
     }
-
     private VolumeSlider volumeSlider;
 
     // initialize GUI

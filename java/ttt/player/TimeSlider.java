@@ -38,133 +38,146 @@ import ttt.Constants;
 import ttt.record.Recording;
 
 /***********************************************************************************************************************
- * using own listener handling, to allow setting a value without releasing an event
+ * using own listener handling, to allow setting a value without releasing an
+ * event
  **********************************************************************************************************************/
 
 public class TimeSlider extends JSlider {
 
-    // own change event including timestamp and adjustment flag
-    private MyChangeEvent changeEvent = new MyChangeEvent(this);
+	// own change event including timestamp and adjustment flag
+	private MyChangeEvent changeEvent = new MyChangeEvent(this);
 
-    // label to display time
-    private JLabel timeLabel;
+	// label to display time
+	private JLabel timeLabel;
 
-    public TimeSlider(final Recording recording, JLabel timeLabel) {
-        super(HORIZONTAL, 0, recording.getDuration(), 0);
-        setBackground(Color.WHITE);
-        setMajorTickSpacing(10 * 60000);
-        setMinorTickSpacing(5 * 60000);
-        setPaintTicks(true);
-        setToolTipText("Adjust playback time");
+	public TimeSlider(final Recording recording, JLabel timeLabel) {
+		super(HORIZONTAL, 0, recording.getDuration(), 0);
+		setBackground(Color.WHITE);
+		setMajorTickSpacing(10 * 60000);
+		setMinorTickSpacing(5 * 60000);
+		setPaintTicks(true);
+		setToolTipText("Adjust playback time");
 
-        // label to display time
-        this.timeLabel = timeLabel;
+		// label to display time
+		this.timeLabel = timeLabel;
 
-        // pass event handling to recording
-        addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                recording.sliderStateChanged(e);
-            }
-        });
+		// pass event handling to recording
+		addChangeListener(new javax.swing.event.ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				recording.sliderStateChanged(e);// , recording);
+				// recording.sliderStateChanged(e);
 
-        // handle clicking on the slider track to set playback time
-        addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                // only set the timeSlider to the selected value if significantly different from current value
-                // don't want it being set if the user is only trying to click on the thumb
-                int newValue = getMaximum() / getWidth() * e.getX();
-                int difference = newValue - getValue();
-                if (difference < 0)
-                    difference = -difference;
-                if (difference > (getMaximum() - getMinimum()) / 100)
-                    setValue((int) newValue);
+			}
+		});
 
-                // set focus back to main compinent
-                recording.graphicsContext.requestFocusInWindow();
-            }
-        });
-    }
+		// handle clicking on the slider track to set playback time
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
 
-    // /////////////////////////////////////////////////////////
-    // listener handling
-    // /////////////////////////////////////////////////////////
+				// only set the timeSlider to the selected value if
+				// significantly different from current value
+				// don't want it being set if the user is only trying to click
+				// on the thumb
+				int newValue = getMaximum() / getWidth() * e.getX();
 
-    // use own listener handling to control event firing
-    private ArrayList<ChangeListener> changedListeners = new ArrayList<ChangeListener>();
+				int difference = newValue - getValue();
+				if (difference < 0) {
+					difference = -difference;
+				}
+				if (difference > (getMaximum() - getMinimum()) / 100) {
+					setValue((int) newValue);
+				}
+				// set focus back to main compinent
+				recording.graphicsContext.requestFocusInWindow();
 
-    // register listener
-    public void addChangeListener(ChangeListener listener) {
-        changedListeners.add(listener);
-    }
+			}
+		});
+	}
 
-    // unregister listener
-    public void removeChangeListener(ChangeListener listener) {
-        changedListeners.remove(listener);
-    }
+	// /////////////////////////////////////////////////////////
+	// listener handling
+	// /////////////////////////////////////////////////////////
 
-    // fire event
-    // NOTE: cannot override fireStateChanged(), because this will be called by other JSlider methods
-    private void myFireStateChanged() {
-        for (int i = 0; i < changedListeners.size(); i++)
-            changedListeners.get(i).stateChanged(changeEvent);
-    }
+	// use own listener handling to control event firing
+	private ArrayList<ChangeListener> changedListeners = new ArrayList<ChangeListener>();
 
-    // /////////////////////////////////////////////////////////////////////////
-    // setting value and firing events
-    // /////////////////////////////////////////////////////////////////////////
+	// register listener
+	public void addChangeListener(ChangeListener listener) {
+		changedListeners.add(listener);
+	}
 
-    // override set value
-    public void setValue(int value) {
-        setValue(value, true);
-    }
+	// unregister listener
+	public void removeChangeListener(ChangeListener listener) {
+		changedListeners.remove(listener);
+	}
 
-    // set value with or without firing an event
-    synchronized public void setValue(int value, boolean fireEvent) {
-        // ignore during adjustment
-        if (!fireEvent && getValueIsAdjusting())
-            return;
+	// fire event
+	// NOTE: cannot override fireStateChanged(), because this will be called by
+	// other JSlider methods
+	private void myFireStateChanged() {
+		for (int i = 0; i < changedListeners.size(); i++)
+			changedListeners.get(i).stateChanged(changeEvent);
+	}
 
-        // ignore event caused by clicking on slider or if player paused (causing one msec steps)
-        switch (getValue() - value) {
-        case -1:
-        case 0:
-        case 1:
-            return;
-        }
+	// /////////////////////////////////////////////////////////////////////////
+	// setting value and firing events
+	// /////////////////////////////////////////////////////////////////////////
 
-        // update slider and label
-        super.setValue(value);
-        if (timeLabel != null)
-            timeLabel.setText(Constants.getStringFromTime(value, false));
+	// override set value
+	public void setValue(int value) {
+		setValue(value, true);
+	}
 
-        // fire event with given value
-        if (fireEvent) {
-            changeEvent.time = value;
-            myFireStateChanged();
-        }
-    }
+	// set value with or without firing an event
+	synchronized public void setValue(int value, boolean fireEvent) {
 
-    // adjusting
-    public void setValueIsAdjusting(boolean adjusting) {
-        super.setValueIsAdjusting(adjusting);
+		// ignore during adjustment
+		if (!fireEvent && getValueIsAdjusting())
+			return;
 
-        changeEvent.adjusting = adjusting;
-        // event is only needed for end of adjustment (causes setting audio time)
-        if (!adjusting)
-            myFireStateChanged();
-    }
+		// ignore event caused by clicking on slider or if player paused
+		// (causing one msec steps)
+		switch (getValue() - value) {
+		case -1:
+		case 0:
+		case 1:
+			return;
+		}
 
-    // ///////////////////////////////////////////////////////////////////////
-    // change event class
-    // ///////////////////////////////////////////////////////////////////////
+		// update slider and label
+		super.setValue(value);
+		if (timeLabel != null)
+			timeLabel.setText(Constants.getStringFromTime(value, false));
 
-    // change event including timestamp and adjustment flag
-    public class MyChangeEvent extends ChangeEvent {
-        public int time;
-        public boolean adjusting;
+		// fire event with given value
+		if (fireEvent) {
+			changeEvent.time = value;
+			myFireStateChanged();
+		}
+	}
 
-        public MyChangeEvent(Object object) {
-            super(object);
-        }
-    }
+	// adjusting
+	public void setValueIsAdjusting(boolean adjusting) {
+		super.setValueIsAdjusting(adjusting);
+
+		changeEvent.adjusting = adjusting;
+		// event is only needed for end of adjustment (causes setting audio
+		// time)
+		if (!adjusting)
+			myFireStateChanged();
+	}
+
+	// ///////////////////////////////////////////////////////////////////////
+	// change event class
+	// ///////////////////////////////////////////////////////////////////////
+
+	// change event including timestamp and adjustment flag
+	public class MyChangeEvent extends ChangeEvent {
+		public int time;
+		public boolean adjusting;
+
+		public MyChangeEvent(Object object) {
+			super(object);
+		}
+	}
 }
