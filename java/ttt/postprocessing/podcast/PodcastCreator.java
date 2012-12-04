@@ -281,7 +281,7 @@ public class PodcastCreator {
 		}
 		exec.createListenerStream();
 		outMovieFile = recording.getFileBySuffix("mp4");
-	 j = exec.exec(ffmpegCmd + " -i " + audioFile.getPath() + " -i " +outMovieTmpFile.getPath()+ " -b:a 32k "+ " -b:v 32k " + "-y "+ outMovieFile.getPath());
+	 j = exec.exec(ffmpegCmd + " -i " + "\""+  audioFile.getPath() +"\"" + " -i " + "\""+ outMovieTmpFile.getPath()+"\""+ " -b:a 32k "+ " -b:v 32k " + "-y "+ "\""+ outMovieFile.getPath()+ "\"");
 	
 		outMovieTmpFile.delete();	
 		if (!batch) {
