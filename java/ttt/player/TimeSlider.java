@@ -129,7 +129,8 @@ public class TimeSlider extends JSlider {
 	}
 
 	// set value with or without firing an event
-	synchronized public void setValue(int value, boolean fireEvent) {
+	//synchronized --- causes Freeze
+        public void setValue(int value, boolean fireEvent) {
 
 		// ignore during adjustment
 		if (!fireEvent && getValueIsAdjusting())
