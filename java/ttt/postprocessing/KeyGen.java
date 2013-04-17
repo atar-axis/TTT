@@ -41,7 +41,7 @@ public class KeyGen {
 
     public static void generateKeys() {
         JFileChooser chooser = new JFileChooser();
-        chooser.setSelectedFile(new File("id_dsa"));
+        chooser.setSelectedFile(new File("id_rsa"));
         chooser.setDialogTitle("Choose name for key files");
         chooser.setFileHidingEnabled(false);
         int returnVal = chooser.showSaveDialog(TTT.getInstance());
@@ -59,19 +59,18 @@ public class KeyGen {
                     comment += "@" + localhost;
             } catch (Exception e) {}
 
-            int type = KeyPair.DSA;
+            int type = KeyPair.RSA;
 
             JSch jsch = new JSch();
 
-            // TODO: with or without passprhase??
             String passphrase = "";
-            // JTextField passphraseField = (JTextField) new JPasswordField(20);
-            // Object[] ob = { passphraseField };
-            // int result = JOptionPane.showConfirmDialog(null, ob, "Enter passphrase (empty for no passphrase)",
-            // JOptionPane.OK_CANCEL_OPTION);
-            // if (result == JOptionPane.OK_OPTION) {
-            // passphrase = passphraseField.getText();
-            // }
+            JTextField passphraseField = (JTextField) new JPasswordField(20);
+            Object[] ob = { passphraseField };
+            int result = JOptionPane.showConfirmDialog(null, ob, "Enter passphrase (empty for no passphrase)",
+            JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+		passphrase = passphraseField.getText();
+            }
 
             try {
                 KeyPair kpair = KeyPair.genKeyPair(jsch, type);
@@ -87,6 +86,9 @@ public class KeyGen {
 
             TTT.userPrefs.put("ssh_private_key", chooser.getSelectedFile().getAbsolutePath());
             System.out.println("Private ssh key file set to '" + chooser.getSelectedFile().getAbsolutePath() + "'");
+            System.out.println("Public ssh key file set to '" + chooser.getSelectedFile().getAbsolutePath() + ".pub'");
+	    JOptionPane.showMessageDialog(null, "Public ssh key file '"+chooser.getSelectedFile().getAbsolutePath() + ".pub' saved.\n Don't forget to install it on the TTT-Website.");
+	    
         }
 
     }
