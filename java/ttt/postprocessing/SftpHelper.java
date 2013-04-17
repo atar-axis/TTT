@@ -47,6 +47,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Logger;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.SftpProgressMonitor;
@@ -77,6 +78,11 @@ public class SftpHelper {
 
     public SftpHelper(String user, String host) throws /* JSchException, */Exception {
         JSch jsch = new JSch();
+	//	jsch.setLogger(new Logger(){
+	//	public boolean isEnabled(int level){return true;}
+	//	public void log(int level, String message){System.err.println(message);}
+	//    });
+        UserInfo ui = new MyUserInfo();
 
         // check for private keyfile
         try {
@@ -125,7 +131,6 @@ public class SftpHelper {
         session = jsch.getSession(user, host, 22);
 
         // username and password will be given via UserInfo interface.
-        UserInfo ui = new MyUserInfo();
         session.setUserInfo(ui);
 
         try {
@@ -143,8 +148,8 @@ public class SftpHelper {
         java.util.Hashtable config = new java.util.Hashtable();
         // config.put("cipher.s2c", "none,3des-cbc,blowfish-cbc");
         // config.put("cipher.c2s", "none,3des-cbc,blowfish-cbc");
-        config.put("cipher.s2c", "none,blowfish-cbc");
-        config.put("cipher.c2s", "none,blowfish-cbc");
+	config.put("cipher.s2c", "none,blowfish-cbc");
+	config.put("cipher.c2s", "none,blowfish-cbc");
         // config.put("cipher.s2c", "none,3des-cbc");
         // config.put("cipher.c2s", "none,3des-cbc");
         session.setConfig(config);
@@ -369,14 +374,23 @@ public class SftpHelper {
         }
 
         String passwd;
+	String passphrase;
         JTextField passwordField = (JTextField) new JPasswordField(20);
 
         public String getPassphrase() {
-            return null;
+	    return passphrase;
         }
 
         public boolean promptPassphrase(String message) {
-            return true;
+            Object[] ob = { passwordField };
+	    System.out.println(message);
+	    int result = JOptionPane.showConfirmDialog(null, ob, message, JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                passphrase = passwordField.getText();
+                return true;
+            } else {
+                return false;
+            }
         }
 
         public boolean promptPassword(String message) {
