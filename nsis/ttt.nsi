@@ -111,9 +111,10 @@ Section ""
   File dist/jmf-2.1.1e.jar
   File dist/mp3plugin.jar
   File dist/swing-layout-1.0.2.jar
-  File dist/jsch-0.1.32-patched.jar
+  File dist/jsch-0.1.49.jar
   File dist/itext-1.4.8.jar
   File dist/lti-civil.jar
+  File dist/base64coder.jar
   File nsis/lame.exe
   File nsis/MP4Box.exe
   File nsis/js32.dll
