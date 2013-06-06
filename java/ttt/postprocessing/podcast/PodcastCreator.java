@@ -302,7 +302,7 @@ public class PodcastCreator {
 			"-y",
 			outMovieFile.getPath().replace(" ", "\\ ")
 		});
-		//outMovieTmpFile.delete();	
+		outMovieTmpFile.delete();	
 		if (!batch) {
 			timer.stop();			
 			if (ShowProgressmonitor&&progressMonitor.isCanceled()) {
