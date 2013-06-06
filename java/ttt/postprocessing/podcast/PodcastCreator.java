@@ -187,7 +187,6 @@ public class PodcastCreator {
 			exec.createListenerStream();
 			j = exec.exec(new String[] {
                 ffmpegCmd,
-                "-b:v", String.valueOf(34)+"k",
                 "-loop", "1",
                 "-r", String.valueOf(framesPerSec),
                 "-i", windowImageFile.getPath().replace(" ", "\\ "),
@@ -196,6 +195,7 @@ public class PodcastCreator {
                 "-vframes", String.valueOf(vFrames),
                 "-s", resolutionWidth + "x" + resolutionHeight,
                 "-y",
+                "-b:v", String.valueOf(34)+"k",
                 windowMovieFile.getPath().replace(" ", "\\ ")
             });
 			if (j != 0 || windowMovieFile.length() == 0) {
@@ -302,7 +302,7 @@ public class PodcastCreator {
 			"-y",
 			outMovieFile.getPath().replace(" ", "\\ ")
 		});
-		outMovieTmpFile.delete();	
+		//outMovieTmpFile.delete();	
 		if (!batch) {
 			timer.stop();			
 			if (ShowProgressmonitor&&progressMonitor.isCanceled()) {
