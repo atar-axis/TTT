@@ -174,6 +174,7 @@ public class Exec {
 	 * Extends exec() of the class Runtime by cleaning the output- and error-stream of the executed process in order to avoid that the process goes idle.<br>
 	 */
 	public int exec(String[] cmd) throws Exception {
+		//System.out.println(" ... issuing command " +java.util.Arrays.deepToString(cmd));
 		process = Runtime.getRuntime().exec(cmd);
 		return waitFor();
 	}
