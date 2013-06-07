@@ -212,14 +212,14 @@ public class ImageCreator {
                      BufferedImage tmp = new BufferedImage(targetWidth, targetHeight, type);
                      Graphics2D g2 = tmp.createGraphics();
                      g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, hint);
-                     g2.drawImage(ret, 0, 0, w, h, null);
+                     g2.drawImage(ret, 0, 0, targetWidth, targetHeight, null);
                      g2.dispose();
                      return tmp;
 	     }
 
              do
              {
-		 System.out.println("And another round: "+w+" "+h+" on the way to "+targetWidth+"  " +targetHeight);
+
                      if (higherQuality && w > targetWidth)
                      {
                              w /= 2;
