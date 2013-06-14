@@ -50,6 +50,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import ttt.Constants;
 import ttt.TTT;
+import ttt.audio.Exec;
 import ttt.helper.LibraryChecker;
 import ttt.messages.Annotation;
 import ttt.messages.DeleteAllAnnotation;
@@ -798,7 +799,8 @@ public class Index {
 
                 // write input for Optical Character Recognition
                 if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0){
-                  scriptCreator.writeOCRScreenshot(i, screenshot);}
+                  scriptCreator.writeOCRScreenshot(i, screenshot);
+                }
 
                 if (((mode & ScriptCreator.HTML_SCRIPT) != 0) || ((mode & ScriptCreator.PDF_SCRIPT) != 0)) {
                     // add (future) annotations of index

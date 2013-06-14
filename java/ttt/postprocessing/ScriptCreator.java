@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -42,6 +42,7 @@ import javax.imageio.ImageIO;
 
 import ttt.Constants;
 import ttt.TTT;
+import ttt.audio.Exec;
 import ttt.postprocessing.podcast.ImageCreator;
 import ttt.record.Recording;
 
@@ -239,8 +240,25 @@ public class ScriptCreator {
 
     // create html, screenshot and thumbnail for current index
     public void writeOCRScreenshot(int nr, Image screenshot) {
-        ImageCreator.writeImage(screenshot, ocr_path + File.separator + file_base + "." + ((nr + 1) < 10 ? "0" : "")
-                + ((nr + 1) < 100 ? "0" : "") + (nr + 1) + ".png");
+    	String filename = ocr_path + File.separator + file_base + "." + ((nr + 1) < 10 ? "0" : "")
+                + ((nr + 1) < 100 ? "0" : "") + (nr + 1) + ".png";
+        ImageCreator.writeImage(screenshot, filename);
+        String os = System.getProperty("os.name");
+        if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 ){
+      	  Exec exec = new Exec();
+      	  try {
+      		  exec.exec(new String[] {
+      				  "tesseract",
+      				  filename,
+      				  filename+".hocr",
+      				  "hocr"
+      		  });
+      	  } catch (Exception e) {
+      		  // TODO Auto-generated catch block
+      		  e.printStackTrace();
+      	  }
+        }
+        
     }
 
     // create html, screenshot and thumbnail for current index
