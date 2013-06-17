@@ -48,6 +48,7 @@ import javax.swing.ProgressMonitor;
 
 import ttt.Constants;
 import ttt.TTT;
+import ttt.audio.Exec;
 import ttt.audio.LameEncoder;
 import ttt.audio.MP3Converter;
 import ttt.audio.OggVorbisEncoder;
@@ -111,8 +112,15 @@ public class PostProcessorPanel extends GradientPanel {
             pdfCheckBox.setEnabled(false);
         }
       
-        ocrCheckBox
-                .setToolTipText("generate optimized input for optical character recognition (see full text search help)");        
+        if (Exec.getCommand("tesseract") != null)
+        	ocrCheckBox
+                .setToolTipText("perform optical character recognition via tesseract");
+        else
+        {
+            ocrCheckBox.setToolTipText("tesseract command not found - install tesseract or include in path");
+            ocrCheckBox.setSelected(false);
+            ocrCheckBox.setEnabled(false);
+        }
         
         //ogg vorbis
         if (OggVorbisEncoder.isOggVorbisAvailable() && (recording.getExistingFileBySuffix("wav").exists() /*||
@@ -699,7 +707,7 @@ public class PostProcessorPanel extends GradientPanel {
         pdfCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         ocrCheckBox.setSelected(true);
-        ocrCheckBox.setText("OCR input");
+        ocrCheckBox.setText("perform Tesseract/OCR for fulltext search");
         ocrCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         flashCheckBox.setSelected(true);
@@ -1045,7 +1053,7 @@ public class PostProcessorPanel extends GradientPanel {
         
         jtabPane.add("Info", jPanelInfo);
         jtabPane.add("Thumbs, Script and Flash", jPanelThumbs);
-        jtabPane.add("Full Text Search", jPanelFullTextSearch);
+        //jtabPane.add("Full Text Search", jPanelFullTextSearch);
         jtabPane.add("Publishing", jPanelPublishing);
         this.add(jtabPane);
         this.add(doneButton);

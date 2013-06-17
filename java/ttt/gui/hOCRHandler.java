@@ -143,7 +143,7 @@ public class hOCRHandler extends DefaultHandler {
     // NOTE: desktop resolution is not store within OmniPage 14 XML file but within OmniPage 15 XML files
     Dimension desktopResulotion;
     public void setDesktopResolution(int width, int height) {
-    	System.out.println("Desktop resolution is now "+width+"x"+height);
+//    	System.out.println("Desktop resolution is now "+width+"x"+height);
         desktopResulotion = new Dimension(width, height);
     }
 
@@ -189,7 +189,6 @@ public class hOCRHandler extends DefaultHandler {
                 flag = false;
 
             SearchBaseEntry entry = new SearchBaseEntry(searchText, left, top, right - left, bottom - top, 1);
-//            System.out.println("\tset:\t" + searchText);
             words.add(entry);
         }
     }

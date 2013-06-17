@@ -238,13 +238,18 @@ public class ScriptCreator {
         }
     }
 
-    // create html, screenshot and thumbnail for current index
-    public void writeOCRScreenshot(int nr, Image screenshot) {
-    	String filename = ocr_path + File.separator + file_base + "." + ((nr + 1) < 10 ? "0" : "")
-                + ((nr + 1) < 100 ? "0" : "") + (nr + 1) + ".png";
+    /**
+     * OCR screenshots and processing with tesseract
+     * @param index Index of page to generate and read
+     * @param screenshot screenshot data
+     * @return name of the generated image file
+     */
+    public String writeOCRScreenshot(int index, Image screenshot) {
+    	String filename = ocr_path + File.separator + file_base + "." + ((index + 1) < 10 ? "0" : "")
+                + ((index + 1) < 100 ? "0" : "") + (index + 1) + ".png";
         ImageCreator.writeImage(screenshot, filename);
         String os = System.getProperty("os.name");
-        if (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0 ){
+        if (Exec.getCommand("tesseract")!=null){
       	  Exec exec = new Exec();
       	  try {
       		  exec.exec(new String[] {
@@ -256,9 +261,11 @@ public class ScriptCreator {
       	  } catch (Exception e) {
       		  // TODO Auto-generated catch block
       		  e.printStackTrace();
+      		  return null;
       	  }
+
         }
-        
+		return filename;        
     }
 
     // create html, screenshot and thumbnail for current index
