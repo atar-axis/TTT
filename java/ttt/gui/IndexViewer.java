@@ -290,12 +290,14 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
                 JOptionPane.showMessageDialog(null, searchable, "Searchbase of index #" + (index + 1),
                         JOptionPane.INFORMATION_MESSAGE);
             }
+
         }
 
         public void mouseReleased(MouseEvent event) {}
 
         // index entry selected -> jump to index timestamp
         public void valueChanged(ListSelectionEvent event) {
+
             // Ignore extra messages.
             if (event.getValueIsAdjusting())
                 return;
@@ -304,7 +306,9 @@ public class IndexViewer extends JPanel implements TimeChangedListener {
             if (!list.isSelectionEmpty()) {
                 // jump to selected index entry
                 int selectedRow = list.getMinSelectionIndex();
+                recording.pause();
                 recording.setTime((((IndexEntry) list.getModel().getElementAt(selectedRow))).getTimestamp());
+                recording.play();
             }
             list.clearSelection();
         }

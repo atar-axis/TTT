@@ -365,9 +365,9 @@ public class Messages {
 
             // finished if gathered everything needed for keyframe or if reached current playback time
             if (i == recording.next_message
-                    || (coveredCounter == full && deleteAll && cursor && cursorPosition && whiteboard))
+                    || (coveredCounter == full && deleteAll && cursor && cursorPosition && whiteboard)){
                 break;
-
+            }
             // clear whiteboard at beginning
             if (i == 0 && !whiteboard)
                 collected.add(0, new WhiteboardMessage(0, 0, recording.prefs));
@@ -391,8 +391,8 @@ public class Messages {
         recording.next_message = newNext != -1 ? newNext : 0;
 
         // t = System.currentTimeMillis() - t;
-        // System.out.print("\t" + Constants.getStringFromTime((int) t));
-        // System.out.println("\t"+collected.size() + "\t(" + totalCounter + ")\t"
+        //System.out.print("\t" + Constants.getStringFromTime((int) time));
+        //System.out.println("\t"+collected.size() + "\t(" + totalCounter + ")\t"
         // + Constants.getStringFromTime(time - collected.get(0).getTimestamp()) + " "
         // + ((collected.size() > 0 && time - collected.get(0).getTimestamp() > 120000)) + "\t- ");
     }

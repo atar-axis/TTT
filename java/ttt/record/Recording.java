@@ -666,9 +666,12 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 
 	public int timeset;
 
-	// set playback time
-	// performs visible scrolling while adjusting
-	// also sets audio/video player if not adjusting
+	/**
+	 * set playback time
+	 * performs visible scrolling while adjusting
+	 * also sets audio/video player if not adjusting
+	 * @param time
+	 */
 	public void setTime(int time) {
 
 		time = sync(time);
@@ -693,8 +696,9 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 		graphicsContext.refresh();
 		// synchronize audio/video
 		// only if not adjusting, because synchronizing is slow
-		if (!adjusting && audioVideoPlayer != null)
+		if (!adjusting && audioVideoPlayer != null){
 			setAudioVideoPlayerTime(time);
+		}
 
 		// t = System.currentTimeMillis() - t;
 		// System.out.println(Constants.getStringFromTime((int) t));
