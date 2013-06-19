@@ -71,7 +71,7 @@
     <copy todir="${dist}"><fileset dir="${lib}"></fileset></copy>
     <copy todir="${dist}"><fileset dir="${native}"></fileset></copy>
     <copy todir="${dist}" file="run.sh" />
-    <zip destfile="./ttt.zip" basedir="${dist}" update="true"/> 
+    <zip destfile="./ttt.zip" basedir="." includes="dist/*" update="true"/> 
   </target>
 
   <target name="installer" depends="pack">
