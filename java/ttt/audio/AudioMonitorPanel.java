@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
@@ -132,5 +133,10 @@ public class AudioMonitorPanel extends JPanel {
             graphics.fill(overlappingRec);
         }
     }
+
+	public void warnMuted() {
+		JOptionPane.showMessageDialog(null, "The volume level is suspiciously low.\nPlease check, whether the microphone is muted or the batteries are low", "Volume level alert", JOptionPane.WARNING_MESSAGE);
+		
+	}
 
 }

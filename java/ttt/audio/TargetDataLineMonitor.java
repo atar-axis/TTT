@@ -42,6 +42,7 @@ public class TargetDataLineMonitor implements TargetDataLine {
     private TargetDataLine targetDataLine;
     private float meanSampleValue = 0;
     private AudioMonitorPanel volumeLevelComponent;
+    private int mutecounter=0;
 
     public int read(byte[] buffer, int offset, int len) {
         int i = targetDataLine.read(buffer, offset, len);
@@ -59,6 +60,12 @@ public class TargetDataLineMonitor implements TargetDataLine {
 
         if (volumeLevelComponent != null)
             volumeLevelComponent.setPeakPercentage(meanSampleValue * 2);
+
+	if (meanSampleValue<0.00000001) mutecounter++;
+        if (mutecounter>250){
+        	mutecounter=0;
+        	volumeLevelComponent.warnMuted();
+        }
 
         return i;
     }
