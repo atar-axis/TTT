@@ -63,6 +63,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -456,16 +457,23 @@ public class Player extends JInternalFrame {
         System.out.println(protocol.getProtocolPreferences());
 
         // add user input
-        PaintListener listener = new PaintListener(protocol);
+        PaintListener listener = new PaintListener(protocol,this);
         protocol.addKeyListener(listener);
         protocol.addMouseListener(listener);
         protocol.addMouseMotionListener(listener);
         // MODMSG
         protocol.setPaintListener(listener);
 
+        
         // add display
         JPanel pane = new JPanel(new BorderLayout());
-        pane.add(new JScrollPane(protocol), BorderLayout.CENTER);
+
+        backgroundindicator = new JPanel(new BorderLayout());
+        backgroundindicator.add(new JScrollPane(protocol),BorderLayout.CENTER);
+        backgroundindicator.setBorder(new EmptyBorder(10, 10, 10, 10) );
+        backgroundindicator.setBackground(Color.RED);
+        
+        pane.add(backgroundindicator, BorderLayout.CENTER);
         setTitle(protocol.getProtocolPreferences().name);
 
         setContentPane(pane);
@@ -525,6 +533,7 @@ public class Player extends JInternalFrame {
             pane = new GradientPanel();
             pane.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
             pane.add(recorder.getLoopbackControls());
+
             setContentPane(pane);
             pack();
         }
@@ -679,6 +688,12 @@ public class Player extends JInternalFrame {
     }
 
     Recorder recorder = null;
+    public void indicateOverlay(boolean overlay){
+    	if (overlay) backgroundindicator.setBackground(Color.GRAY);
+    	else backgroundindicator.setBackground(Color.red);
+    	backgroundindicator.repaint();
+    }
+	private JPanel backgroundindicator;
 
     public Recorder getRecorder() {
         return recorder;

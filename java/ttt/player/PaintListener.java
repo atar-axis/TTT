@@ -59,9 +59,12 @@ public class PaintListener extends RFBKeyAndMouseListener implements KeyEventDis
 	static int  instancecount = 0;
     GraphicsContext graphicsContext;
     private PaintControls paintControls;
+    private Player player;
+    
 
-    public PaintListener(GraphicsContext graphicsContext) {
+    public PaintListener(GraphicsContext graphicsContext, Player player) {
         super(graphicsContext);
+    	this.player=player;
         this.graphicsContext = graphicsContext;         
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
          
@@ -109,7 +112,8 @@ public class PaintListener extends RFBKeyAndMouseListener implements KeyEventDis
 
     public void setActivated(boolean activated) {
         this.activated = activated;
-
+        player.indicateOverlay(activated);
+        
         // set cursor
         if (activated) {
 
