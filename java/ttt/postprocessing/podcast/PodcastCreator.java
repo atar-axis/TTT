@@ -298,9 +298,11 @@ public class PodcastCreator {
 		exec.createListenerStream();
 		outMovieFile = recording.getFileBySuffix("mp4");
 		String[] line = new String[] {
-				ffmpegCmd,
+				"avconv",
 				"-i", audioFile.getPath().replace(" ", "\\ "),
 				"-i", outMovieTmpFile.getPath().replace(" ", "\\ "),
+				"-strict","experimental",
+				"-c:a","aac",
 				"-b:a", "32k",
 				"-b:v", "32k",
 				"-y",
