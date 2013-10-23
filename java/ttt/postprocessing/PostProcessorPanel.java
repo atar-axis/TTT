@@ -355,6 +355,7 @@ public class PostProcessorPanel extends GradientPanel {
             if (recording.thumbnailsAvailable()) {
                 thumbnailsStatusField.setForeground(Color.GREEN);
                 thumbnailsStatusField.setText("found");
+                thumbnailsCheckBox.setSelected(false);
             } else {
                 thumbnailsStatusField.setForeground(Color.RED);
                 thumbnailsStatusField.setText("not found");
@@ -363,6 +364,7 @@ public class PostProcessorPanel extends GradientPanel {
                 htmlStatusField.setForeground(Color.GREEN);
                 htmlStatusField.setText("folder found");
                 htmlStatusField.setToolTipText("folder exists - content not confirmed");
+                htmlCheckBox.setSelected(false);
             } else {
                 htmlStatusField.setForeground(Color.RED);
                 htmlStatusField.setText("not found");
@@ -371,6 +373,7 @@ public class PostProcessorPanel extends GradientPanel {
             if (recording.getExistingFileBySuffix("pdf").exists()) {
                 pdfStatusField.setForeground(Color.GREEN);
                 pdfStatusField.setText("found");
+                pdfCheckBox.setSelected(false);
             } else {
                 pdfStatusField.setForeground(Color.RED);
                 pdfStatusField.setText("not found");
@@ -379,6 +382,7 @@ public class PostProcessorPanel extends GradientPanel {
                 ocrStatusField.setForeground(Color.GREEN);
                 ocrStatusField.setText("folder found");
                 ocrStatusField.setToolTipText("folder exists - content not confirmed");
+                ocrCheckBox.setSelected(false);
             } else {
                 ocrStatusField.setForeground(Color.RED);
                 ocrStatusField.setText("not found");
@@ -390,6 +394,7 @@ public class PostProcessorPanel extends GradientPanel {
                camStatusField.setForeground(Color.GREEN);
                camStatusField.setText("folder found");
                camStatusField.setToolTipText("folder exists - content not confirmed");
+               camCheckBox.setSelected(false);
             } else {
             	camStatusField.setForeground(Color.RED);
             	camStatusField.setText("not found");
@@ -400,6 +405,7 @@ public class PostProcessorPanel extends GradientPanel {
             if (recording.getExistingFileBySuffix("mp3").exists()) {
                 mp3StatusField.setForeground(Color.GREEN);
                 mp3StatusField.setText("found");
+                mp3CheckBox.setSelected(false);
             } else {
                 mp3StatusField.setForeground(Color.RED);
                 mp3StatusField.setText("not found");
@@ -407,6 +413,7 @@ public class PostProcessorPanel extends GradientPanel {
             if (recording.getExistingFileBySuffix("ogg").exists()) {
                 oggVorbisStatusField.setForeground(Color.GREEN);
                 oggVorbisStatusField.setText("found");
+                oggVorbisCheckBox.setSelected(false);
             } else {
                 oggVorbisStatusField.setForeground(Color.RED);
                 oggVorbisStatusField.setText("not found");
@@ -418,6 +425,7 @@ public class PostProcessorPanel extends GradientPanel {
             } else if (file.isFile()) {
                 flashStatusField.setForeground(Color.GREEN);
                 flashStatusField.setText("found");
+                flashCheckBox.setSelected(false);
             } else {
                 flashStatusField.setForeground(Color.RED);
                 flashStatusField.setText("not found");
@@ -425,6 +433,7 @@ public class PostProcessorPanel extends GradientPanel {
             if (recording.getExistingFileBySuffix("mp4").exists()) {
                 mp4StatusField.setForeground(Color.GREEN);
                 mp4StatusField.setText("found");
+                mp4CheckBox.setSelected(false);
             } else {
                 mp4StatusField.setForeground(Color.RED);
                 mp4StatusField.setText("not found");
@@ -434,9 +443,11 @@ public class PostProcessorPanel extends GradientPanel {
                 html5StatusField.setForeground(Color.GREEN);
                 html5StatusField.setText("folder found");
                 html5StatusField.setToolTipText("folder exists - content not confirmed");
+                html5CheckBox.setSelected(false);
                 html5PlayerStatusField.setForeground(Color.GREEN);
                 html5PlayerStatusField.setText("folder found");
                 html5PlayerStatusField.setToolTipText("folder exists - content not confirmed");
+                html5PlayerCheckBox.setSelected(false);
             } else {
                 html5StatusField.setForeground(Color.RED);
                 html5StatusField.setText("not found");
