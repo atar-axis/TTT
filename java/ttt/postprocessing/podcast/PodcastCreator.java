@@ -233,7 +233,8 @@ public class PodcastCreator {
 				//append the created window movie (windowMovieFile) to the output movie (outMovieFile) using MP4Box
 				//NOTE: appending slideMovieFile to outMovieFile directly via "MP4Box -cat slideMovieFile.getPath() outMovieFile.getPath()" causes renaming problems in some cases. Thus outMovieTmpFile is used
 				exec.createListenerStream();
-				j = exec.exec(new String[] { MP4BOX, "-cat", windowMovieFile.getPath(), outMovieFile.getPath(), "-out", outMovieTmpFile.getPath()});
+				String [] line = new String[] { MP4BOX, "-cat", windowMovieFile.getPath(), outMovieFile.getPath(), "-out", outMovieTmpFile.getPath()};
+				j = exec.exec(line);
 				if (j != 0 || outMovieTmpFile.length() == 0) {
 					//error while appending the slideMovie to the output file
 					windowMovieFile.delete();
@@ -241,7 +242,10 @@ public class PodcastCreator {
 					outMovieTmpFile.delete();
 					windowImageFile.delete();
 					if(TTT.verbose){
-					System.out.println("Unable join slide movies using MP4Box:");
+					System.out.println("Unable join slide movies using the command:");
+					String cmdline="";
+					for (String s:line) cmdline+=s+" ";
+					System.out.println(cmdline);
 					System.out.println(exec.getListenerStream());}
 					throw new IOException("unable join slide movies using MP4Box");
 				}				
@@ -293,15 +297,16 @@ public class PodcastCreator {
 		}
 		exec.createListenerStream();
 		outMovieFile = recording.getFileBySuffix("mp4");
-		j = exec.exec(new String[] {
-			ffmpegCmd,
-			"-i", audioFile.getPath().replace(" ", "\\ "),
-			"-i", outMovieTmpFile.getPath().replace(" ", "\\ "),
-			"-b:a", "32k",
-			"-b:v", "32k",
-			"-y",
-			outMovieFile.getPath().replace(" ", "\\ ")
-		});
+		String[] line = new String[] {
+				ffmpegCmd,
+				"-i", audioFile.getPath().replace(" ", "\\ "),
+				"-i", outMovieTmpFile.getPath().replace(" ", "\\ "),
+				"-b:a", "32k",
+				"-b:v", "32k",
+				"-y",
+				outMovieFile.getPath().replace(" ", "\\ ")
+			};
+		j = exec.exec(line);
 		outMovieTmpFile.delete();	
 		if (!batch) {
 			timer.stop();			
@@ -323,7 +328,10 @@ public class PodcastCreator {
 			//error while adding audio stream
 			outMovieFile.delete();
 			if(TTT.verbose){
-			System.out.println("Unable add audio stream using ffmpeg:");
+			System.out.println("Unable add audio stream using the command:");
+			String cmdline="";
+			for (String s:line) cmdline+=s+" ";
+			System.out.println(cmdline);
 			System.out.println(exec.getListenerStream());
 			}
 			throw new IOException("unable to add audio stream using ffmpeg");
