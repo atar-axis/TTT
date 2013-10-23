@@ -241,13 +241,13 @@ public class PodcastCreator {
 					outMovieFile.delete();
 					outMovieTmpFile.delete();
 					windowImageFile.delete();
-					if(TTT.verbose){
-					System.out.println("Unable join slide movies using the command:");
 					String cmdline="";
 					for (String s:line) cmdline+=s+" ";
+					if(TTT.verbose){
+					System.out.println("Unable join slide movies using the command:");
 					System.out.println(cmdline);
 					System.out.println(exec.getListenerStream());}
-					throw new IOException("unable join slide movies using MP4Box");
+					throw new IOException("unable join slide movies using \n"+cmdline);
 				}				
 			}
 			//replace outMovieFile by outMovieFileTmp
@@ -326,15 +326,15 @@ public class PodcastCreator {
 		}
 		if (j != 0 || outMovieFile.length() == 0) {
 			//error while adding audio stream
-			outMovieFile.delete();
-			if(TTT.verbose){
-			System.out.println("Unable add audio stream using the command:");
 			String cmdline="";
 			for (String s:line) cmdline+=s+" ";
+			if(TTT.verbose){
+			System.out.println("Unable add audio stream using the command:");
 			System.out.println(cmdline);
 			System.out.println(exec.getListenerStream());
-			}
-			throw new IOException("unable to add audio stream using ffmpeg");
+			}else
+				outMovieFile.delete();
+			throw new IOException("unable to add audio stream via \n"+cmdline);
 		}
 		if(TTT.verbose){
 		System.out.println("Podcast created in " + Constants.getStringFromTime((int)(System.currentTimeMillis()-startTime)));
