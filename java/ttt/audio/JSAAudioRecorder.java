@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -33,12 +33,12 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Line;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.TargetDataLine;
 
 
 public class JSAAudioRecorder extends Thread implements IAudioRecorder {
-
     private static final AudioFormat[] audioFormats = {
             new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 22050.0F, 16, 1, 2, 22050.0F, false),
             new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 11025.0F, 16, 1, 2, 11025.0F, false),
@@ -101,10 +101,26 @@ public class JSAAudioRecorder extends Thread implements IAudioRecorder {
         System.exit(0);
     }
 
+    public static String availableInputs(){
+    	String ret="[";
+    	for (Mixer.Info info: AudioSystem.getMixerInfo()){
+            TargetDataLine tdl = null;    		
+    		for (int i = 0; i < audioFormats.length; i++) {
+                DataLine.Info in = new DataLine.Info(TargetDataLine.class, audioFormats[i]);
+                if (AudioSystem.isLineSupported(in)) {
+                    break;
+                }
+            }
+    		
+    		ret+=info.getName()+"/\n                           ";
+    	}
+    	return ret+"]";
+    }
+    
     /** Creates a new instance of JSAAudioRecorder */
     public JSAAudioRecorder(AudioMonitorPanel volumeLevelComponent) throws Exception {
         targetDataLine = null;
-
+      
         // Try to get a Targetline from which the audio data is read
         for (int i = 0; i < audioFormats.length; i++) {
             info = new DataLine.Info(TargetDataLine.class, audioFormats[i]);

@@ -86,6 +86,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import ttt.audio.AudioRecorder;
+import ttt.audio.JSAAudioRecorder;
 import ttt.connections.TTTConnection;
 import ttt.editor.tttEditor.TTTEditor;
 import ttt.editor2.Editor2;
@@ -104,7 +105,7 @@ import ttt.record.LectureProfileDialog;
 import ttt.record.Recording;
 
 public class TTT extends JFrame {
-	static final String version = "23.10.2013";
+	static final String version = "30.10.2013";
 
 	public static boolean debug = !true;
 	public static boolean verbose = true;
@@ -1175,7 +1176,8 @@ public class TTT extends JFrame {
 			+ "   Java Vendor: " + System.getProperty("java.vendor") + "\n"
 			+ "   JMF Version  " + getJMFVersion() + "\n"
 			+ "   Operating System: " + System.getProperty("os.name") + " ("
-			+ System.getProperty("os.version") + ")\n" + "\n\n"
+			+ System.getProperty("os.version") + ")\n" 
+			+ "   Available Sound Inputs: "+ JSAAudioRecorder.availableInputs() +"\n"+ "\n\n"
 			+ "   This software may be redistributed under the terms\n"
 			+ "   of the GNU General Public License (version 3 or later)\n"
 			+ "   see <http://www.gnu.org/licenses/>\n";
