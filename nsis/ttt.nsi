@@ -20,8 +20,8 @@ BrandingText " "
 
 ;steal most recent URLs from http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html
 !define JRE_VERSION "1.7"
-!define JREX_URL "http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jre-7u45-windows-x64.exe"
-!define JREI_URL "http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jre-7u45-windows-i586.exe"
+!define JREX_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=81819"
+!define JREI_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=81819"
 Var JRE_URL
 
 Function .onInit
