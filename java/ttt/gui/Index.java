@@ -783,9 +783,12 @@ public class Index {
                 }
                 // set time of index
                 IndexEntry indexEntry = index.get(i);
-
+                int timestamp = indexEntry.getTimestamp();
+                if (i+1<index.size()){
+                	timestamp += (index.get(i+1).getTimestamp()-timestamp)*.95;
+                }
                
-                recording.setTime(indexEntry.getTimestamp());
+                recording.setTime(timestamp);
 
                 // create screenshot
                 Image screenshot = recording.graphicsContext.getScreenshotWithoutAnnotations();
