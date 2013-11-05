@@ -784,9 +784,10 @@ public class Index {
                 // set time of index
                 IndexEntry indexEntry = index.get(i);
                 int timestamp = indexEntry.getTimestamp();
-                if (i+1<index.size()){
-                	timestamp += (index.get(i+1).getTimestamp()-timestamp)*.95;
-                }
+                if ((mode & ScriptCreator.OCR_OPTIMIZED) == 0)
+                	if (i+1<index.size()){
+                		timestamp += (index.get(i+1).getTimestamp()-timestamp)*.95;
+                	}
                
                 recording.setTime(timestamp);
 
