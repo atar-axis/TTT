@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -346,6 +346,7 @@ public class RFBConnection implements Connection {
     }
 
     // read server initialisation
+    private int resChangeErrorCount = 15;
     private void readServerInit(DataInputStream initializationDataInputStream) throws IOException {
         int framebufferWidth = initializationDataInputStream.readUnsignedShort();
         int framebufferHeight = initializationDataInputStream.readUnsignedShort();
@@ -354,9 +355,11 @@ public class RFBConnection implements Connection {
         if ((prefs.framebufferHeight > 0 && prefs.framebufferHeight != framebufferHeight)
                 || (prefs.framebufferWidth > 0 && prefs.framebufferWidth != framebufferWidth)) {
 
-            TTT.showMessage("Resolution of remote desktop has changed - NOT SUPPORTED BY TTT\n"
+            if (resChangeErrorCount++>=16) {
+            	TTT.showMessage("Resolution of remote desktop has changed - NOT SUPPORTED BY TTT\n"
                     + "Please close and restart TTT Recorder", "Reconnection Error", JOptionPane.ERROR_MESSAGE);
-
+            	resChangeErrorCount=0;
+            }
             // TODO: close recorder
 
             throw new IOException("Cannot reconnect: Resolution of remote desktop has changed");
