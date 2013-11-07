@@ -523,12 +523,6 @@ public class TTT extends JFrame {
 				ActionEvent.CTRL_MASK));
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// NOTE: post processing dialog is designed with NetBeans and
-				// requires Swing Layout Extension Library
-				// TODO: redesign without Swing Layout Extension Library
-				if (!LibraryChecker.isSwingLayoutExtensionsLibraryInstalled())
-					return;
-
 				final File file = showFileDialog();
 				if (file != null) {
 					// get out of Event Dispatiching Thread

@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -67,22 +67,6 @@ public class LibraryChecker {
                         JOptionPane.WARNING_MESSAGE);
             }
         return isITextPdfLibraryInstalled;
-    }
-
-    private static boolean isSwingLayoutExtensionsLibraryInstalled = false;
-
-    public static boolean isSwingLayoutExtensionsLibraryInstalled() {
-        if (!isSwingLayoutExtensionsLibraryInstalled)
-            try {
-                ClassLoader.getSystemClassLoader().loadClass("org.jdesktop.layout.GroupLayout");
-                isSwingLayoutExtensionsLibraryInstalled = true;
-            } catch (ClassNotFoundException e) {
-                System.out.println("Swing Layout Extensions Library: NOT INSTALLED");
-                JOptionPane.showMessageDialog(TTT.ttt,
-                        "Swing Layout Extensions Library is not installed:\nCannot open post processing dialog",
-                        "Error...", JOptionPane.ERROR_MESSAGE);
-            }
-        return isSwingLayoutExtensionsLibraryInstalled;
     }
 
     private static boolean isJSchInstalled = false;
