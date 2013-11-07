@@ -39,12 +39,16 @@ import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.swing.GroupLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingConstants;
 
 import ttt.Constants;
 import ttt.TTT;
@@ -79,6 +83,7 @@ public class PostProcessorPanel extends GradientPanel {
     
     //saves the enable status of some components. See setEnabled(boolean)
     private HashMap<Object, Boolean> ctrlSatus = new HashMap<Object, Boolean>();
+	private JTextField mp4WidthString;
     
     /** Creates new form PostProcessorPanel */
     public PostProcessorPanel(Recording recording) throws IOException {
@@ -211,6 +216,7 @@ public class PostProcessorPanel extends GradientPanel {
         	mp4CheckBox.setToolTipText("generating a mp4 podcast requires ffmpeg, mp4box, and an audio file");
         	mp4CheckBox.setSelected(false);
         	mp4CheckBox.setEnabled(false);
+        	mp4WidthString.setEnabled(false);
         }
         if (recording.getExistingFileBySuffix("bjpg").exists()) {
         	camCheckBox.setToolTipText("generating a CamVid file");
@@ -574,6 +580,7 @@ public class PostProcessorPanel extends GradientPanel {
         oggVorbisStatusField = new javax.swing.JLabel();
         mp4CheckBox = new javax.swing.JCheckBox();
         mp4StatusField = new javax.swing.JLabel();
+        mp4WidthString = new javax.swing.JTextField();
         camCheckBox = new javax.swing.JCheckBox();
         camStatusField = new javax.swing.JLabel();
         jPanelFullTextSearch = new javax.swing.JPanel();
@@ -633,72 +640,72 @@ public class PostProcessorPanel extends GradientPanel {
 
         videoField.setText("N/A");
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanelInfo);
+        GroupLayout jPanel1Layout = new GroupLayout(jPanelInfo);
         jPanelInfo.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jlblTitle)
-                    .add(jlblFile)
-                    .add(jlblDate)
-                    .add(jlblDuration)
-                    .add(jlblIndex)
-                    .add(jlblResultion, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 79, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jlblAudio)
-                    .add(jlblVideo))
-                .add(6, 6, 6)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(videoField)
-                    .add(audioField)
-                    .add(filenameField)
-                    .add(indexField)
-                    .add(durationField)
-                    .add(dateField)
-                    .add(resolutionField)
-                    .add(titleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 433, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblTitle)
+                    .addComponent(jlblFile)
+                    .addComponent(jlblDate)
+                    .addComponent(jlblDuration)
+                    .addComponent(jlblIndex)
+                    .addComponent(jlblResultion,GroupLayout.PREFERRED_SIZE, 79,GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlblAudio)
+                    .addComponent(jlblVideo))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(videoField)
+                    .addComponent(audioField)
+                    .addComponent(filenameField)
+                    .addComponent(indexField)
+                    .addComponent(durationField)
+                    .addComponent(dateField)
+                    .addComponent(resolutionField)
+                    .addComponent(titleField, GroupLayout.PREFERRED_SIZE, 433,GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel1Layout.createSequentialGroup()
-                .add(0, 0, 0)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(titleField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(filenameField))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jlblTitle)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jlblFile)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(dateField)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(durationField)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(indexField)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(resolutionField))
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(jlblDate)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jlblDuration)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jlblIndex)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jlblResultion)))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jlblAudio)
-                    .add(audioField))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jlblVideo)
-                    .add(videoField))
+            jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filenameField))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlblTitle)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlblFile)))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(dateField)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(durationField)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(indexField)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resolutionField))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jlblDate)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlblDuration)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlblIndex)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlblResultion)))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlblAudio)
+                    .addComponent(audioField))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlblVideo)
+                    .addComponent(videoField))
                 .addContainerGap())
         );
 
@@ -776,6 +783,7 @@ public class PostProcessorPanel extends GradientPanel {
         mp4CheckBox.setSelected(true);
         mp4CheckBox.setText("MP4 podcast");
         mp4CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        mp4WidthString.setText("480");
 
         mp4StatusField.setText("not found");
 
@@ -786,100 +794,100 @@ public class PostProcessorPanel extends GradientPanel {
         camStatusField.setBackground(new java.awt.Color(100, 208, 200));
         camStatusField.setText("not found");
 
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanelThumbs);
+        GroupLayout jPanel2Layout = new GroupLayout(jPanelThumbs);
         jPanelThumbs.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
+            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(thumbnailsCheckBox)
-                    .add(htmlCheckBox)
-                    .add(pdfCheckBox)
-                    .add(ocrCheckBox)
-                    .add(mp3CheckBox)
-                    .add(oggVorbisCheckBox)
-                    .add(flashCheckBox)
-                    .add(html5CheckBox)
-                    .add(html5PlayerCheckBox)
-                    .add(mp4CheckBox)
-                    .add(camCheckBox))
-                .add(28, 28, 28)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(thumbnailsStatusField)
-                    .add(htmlStatusField)
-                    .add(pdfStatusField)
-                    .add(ocrStatusField)
-                    .add(mp3StatusField)
-                    .add(oggVorbisStatusField)
-                    .add(flashStatusField)
-                    .add(html5StatusField)
-                    .add(html5PlayerStatusField)
-                    .add(mp4StatusField)
-                    .add(camStatusField))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 405, Short.MAX_VALUE)
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(createHelpButton)
-                    .add(createButton))
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(thumbnailsCheckBox)
+                    .addComponent(htmlCheckBox)
+                    .addComponent(pdfCheckBox)
+                    .addComponent(ocrCheckBox)
+                    .addComponent(mp3CheckBox)
+                    .addComponent(oggVorbisCheckBox)
+                    .addComponent(flashCheckBox)
+                    .addComponent(html5CheckBox)
+                    .addComponent(html5PlayerCheckBox)
+                    .addComponent(mp4CheckBox)
+                    .addComponent(camCheckBox))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(thumbnailsStatusField)
+                    .addComponent(htmlStatusField)
+                    .addComponent(pdfStatusField)
+                    .addComponent(ocrStatusField)
+                    .addComponent(mp3StatusField)
+                    .addComponent(oggVorbisStatusField)
+                    .addComponent(flashStatusField)
+                    .addComponent(html5StatusField)
+                    .addComponent(html5PlayerStatusField)
+                    .addComponent(mp4StatusField)
+                    .addComponent(camStatusField))
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(createHelpButton)
+                    .addComponent(createButton))
                 .addContainerGap())
         );
 
-        jPanel2Layout.linkSize(new java.awt.Component[] {createButton, createHelpButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        jPanel2Layout.linkSize(SwingConstants.HORIZONTAL,new java.awt.Component[] {createButton, createHelpButton});
 
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel2Layout.createSequentialGroup()
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(thumbnailsCheckBox)
-                            .add(thumbnailsStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(htmlCheckBox)
-                            .add(htmlStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(pdfCheckBox)
-                            .add(pdfStatusField)))
-                    .add(createHelpButton))
-                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(ocrCheckBox)
-                            .add(ocrStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(mp3CheckBox)
-                            .add(mp3StatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(oggVorbisCheckBox)
-                            .add(oggVorbisStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(flashCheckBox)
-                            .add(flashStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(html5CheckBox)
-                            .add(html5StatusField))
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(html5PlayerCheckBox)
-                            .add(html5PlayerStatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(mp4CheckBox)
-                            .add(mp4StatusField))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(camCheckBox)
-                            .add(camStatusField))
+            jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(thumbnailsCheckBox)
+                            .addComponent(thumbnailsStatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(htmlCheckBox)
+                            .addComponent(htmlStatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(pdfCheckBox)
+                            .addComponent(pdfStatusField)))
+                    .addComponent(createHelpButton))
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(ocrCheckBox)
+                            .addComponent(ocrStatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(mp3CheckBox)
+                            .addComponent(mp3StatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(oggVorbisCheckBox)
+                            .addComponent(oggVorbisStatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(flashCheckBox)
+                            .addComponent(flashStatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(html5CheckBox)
+                            .addComponent(html5StatusField))
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(html5PlayerCheckBox)
+                            .addComponent(html5PlayerStatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(mp4CheckBox)
+                            .addComponent(mp4StatusField))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(camCheckBox)
+                            .addComponent(camStatusField))
                         .addContainerGap(24, Short.MAX_VALUE))
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(createButton)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(createButton)
                         .addContainerGap())))
         );
 
@@ -926,51 +934,51 @@ public class PostProcessorPanel extends GradientPanel {
 
         jlblChoosFile.setText("Choose file:");
 
-        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanelFullTextSearch);
+       GroupLayout jPanel3Layout = new GroupLayout(jPanelFullTextSearch);
         jPanelFullTextSearch.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel3Layout.createSequentialGroup()
+            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jlblChoosFile)
-                    .add(jlblStatus, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(searchFilenameField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 331, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(searchStatusField))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(openSearchbaseFileDialogButton)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 150, Short.MAX_VALUE)
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, importSearchbaseButton)
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, searchHelpButton))
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblChoosFile)
+                    .addComponent(jlblStatus,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(searchFilenameField,GroupLayout.PREFERRED_SIZE, 331,GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchStatusField))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(openSearchbaseFileDialogButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent( importSearchbaseButton, GroupLayout.Alignment.TRAILING)
+                    .addComponent( searchHelpButton,GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
-        jPanel3Layout.linkSize(new java.awt.Component[] {importSearchbaseButton, searchHelpButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        jPanel3Layout.linkSize(SwingConstants.HORIZONTAL,new java.awt.Component[] {importSearchbaseButton, searchHelpButton});
 
         jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanel3Layout.createSequentialGroup()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jlblStatus, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(searchStatusField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 15, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jlblChoosFile)
-                            .add(searchFilenameField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(openSearchbaseFileDialogButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(searchHelpButton)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(importSearchbaseButton)))
+            jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlblStatus,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchStatusField,GroupLayout.PREFERRED_SIZE, 15,GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlblChoosFile)
+                            .addComponent(searchFilenameField,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)
+                            .addComponent(openSearchbaseFileDialogButton,GroupLayout.PREFERRED_SIZE, 22,GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(searchHelpButton)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(importSearchbaseButton)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jPanel3Layout.linkSize(new java.awt.Component[] {importSearchbaseButton, openSearchbaseFileDialogButton}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        jPanel3Layout.linkSize(SwingConstants.VERTICAL,new java.awt.Component[] {importSearchbaseButton, openSearchbaseFileDialogButton});
 
         doneButton.setText("Done");
         doneButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1010,56 +1018,56 @@ public class PostProcessorPanel extends GradientPanel {
             }
         });
 
-        org.jdesktop.layout.GroupLayout jPanelPublishingLayout = new org.jdesktop.layout.GroupLayout(jPanelPublishing);
+        GroupLayout jPanelPublishingLayout = new GroupLayout(jPanelPublishing);
         jPanelPublishing.setLayout(jPanelPublishingLayout);
         jPanelPublishingLayout.setHorizontalGroup(
-            jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelPublishingLayout.createSequentialGroup()
+            jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPublishingLayout.createSequentialGroup()
                 .addContainerGap()
-                .add(jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jlblUser)
-                    .add(jlblServer)
-                    .add(jlblPath))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanelPublishingLayout.createSequentialGroup()
-                        .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 322, Short.MAX_VALUE)
-                        .add(publishHelpButton))
-                    .add(jPanelPublishingLayout.createSequentialGroup()
-                        .add(pathField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 322, Short.MAX_VALUE)
-                        .add(publishButton))
-                    .add(serverField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 238, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblUser)
+                    .addComponent(jlblServer)
+                    .addComponent(jlblPath))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelPublishingLayout.createSequentialGroup()
+                        .addComponent(userField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 322, Short.MAX_VALUE)
+                        .addComponent(publishHelpButton))
+                    .addGroup(jPanelPublishingLayout.createSequentialGroup()
+                        .addComponent(pathField,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 322, Short.MAX_VALUE)
+                        .addComponent(publishButton))
+                    .addComponent(serverField, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-        jPanelPublishingLayout.linkSize(new java.awt.Component[] {pathField, serverField, userField}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        jPanelPublishingLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {pathField, serverField, userField});
 
-        jPanelPublishingLayout.linkSize(new java.awt.Component[] {publishButton, publishHelpButton}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        jPanelPublishingLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {publishButton, publishHelpButton});
 
         jPanelPublishingLayout.setVerticalGroup(
-            jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelPublishingLayout.createSequentialGroup()
-                .add(jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanelPublishingLayout.createSequentialGroup()
-                        .add(jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jlblUser)
-                            .add(userField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(publishHelpButton))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jlblServer)
-                            .add(serverField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanelPublishingLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                            .add(jlblPath)
-                            .add(pathField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                    .add(org.jdesktop.layout.GroupLayout.TRAILING, publishButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelPublishingLayout.createSequentialGroup()
+                .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelPublishingLayout.createSequentialGroup()
+                        .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlblUser)
+                            .addComponent(userField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(publishHelpButton))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlblServer)
+                            .addComponent(serverField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlblPath)
+                            .addComponent(pathField,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))
+                    .addComponent( publishButton,GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
-     //   org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+     //  GroupLayout layout = newGroupLayout(this);
         
         
         jtabPane.add("Info", jPanelInfo);
