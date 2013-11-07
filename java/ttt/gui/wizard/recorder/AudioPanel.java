@@ -7,6 +7,8 @@ package ttt.gui.wizard.recorder;
 
 import java.awt.event.ActionListener;
 
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -71,31 +73,26 @@ public class AudioPanel extends javax.swing.JPanel {
         audioSettingsButton.setMinimumSize(new java.awt.Dimension(25, 25));
         audioSettingsButton.setPreferredSize(new java.awt.Dimension(25, 25));
 
-        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(org.jdesktop.layout.GroupLayout.TRAILING, volumeLevelComponent1,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE).add(
-                        org.jdesktop.layout.GroupLayout.TRAILING,
-                        jPanel1Layout.createSequentialGroup().add(volumeLabel).addPreferredGap(
-                                org.jdesktop.layout.LayoutStyle.RELATED, 16, Short.MAX_VALUE).add(jSliderRecVolume,
-                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 320,
-                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addPreferredGap(
-                                org.jdesktop.layout.LayoutStyle.RELATED).add(audioSettingsButton,
-                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25,
-                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)));
-        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                jPanel1Layout.createSequentialGroup().addContainerGap().add(volumeLevelComponent1,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 35,
-                        org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).add(24, 24, 24).add(
-                        jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                                jSliderRecVolume, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(
-                                jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false).add(
-                                        volumeLabel, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).add(
-                                        audioSettingsButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(volumeLevelComponent1,GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+                .addGroup(GroupLayout.Alignment.TRAILING,jPanel1Layout.createSequentialGroup()
+                		.addComponent(volumeLabel)
+                		.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                		.addComponent(jSliderRecVolume,GroupLayout.PREFERRED_SIZE, 320,GroupLayout.PREFERRED_SIZE)
+                		.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                		.addComponent(audioSettingsButton,GroupLayout.PREFERRED_SIZE, 25,GroupLayout.PREFERRED_SIZE)));
+        jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        				.addContainerGap()
+        				.addComponent(volumeLevelComponent1,GroupLayout.PREFERRED_SIZE, 35,GroupLayout.PREFERRED_SIZE)
+        				.addGap(24, 24, 24)
+        				.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        						.addComponent(jSliderRecVolume,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+        								.addComponent(volumeLabel, GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        								.addComponent(audioSettingsButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap()));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Info"));
@@ -113,27 +110,23 @@ public class AudioPanel extends javax.swing.JPanel {
         InfoTextArea.setDoubleBuffered(true);
         jScrollPane1.setViewportView(InfoTextArea);
 
-        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                .add(org.jdesktop.layout.GroupLayout.TRAILING, jScrollPane1,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE));
-        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                jScrollPane1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE));
+        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPane1,GroupLayout.Alignment.TRAILING,GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE));
+        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        		.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE));
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
+        GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(jPanel2,
-                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                Short.MAX_VALUE).add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-        layout.setVerticalGroup(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING).add(
-                layout.createSequentialGroup().add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                        org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED).add(jPanel1,
-                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE,
-                                org.jdesktop.layout.GroupLayout.DEFAULT_SIZE,
-                                org.jdesktop.layout.GroupLayout.PREFERRED_SIZE).addContainerGap(113, Short.MAX_VALUE)));
+        layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        		.addComponent(jPanel2,GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)
+        		.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+        layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        		.addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addContainerGap(113, Short.MAX_VALUE)));
     }// </editor-fold>//GEN-END:initComponents
 
     /**
