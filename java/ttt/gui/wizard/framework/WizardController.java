@@ -21,13 +21,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+
+import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+
 import ttt.Recorder;
 import ttt.TTT;
 import ttt.gui.wizard.recorder.AdvicePanelDescriptor;
@@ -143,35 +148,35 @@ public class WizardController extends javax.swing.JFrame {
             }
         });
 
-        org.jdesktop.layout.GroupLayout jPanelActionsLayout = new org.jdesktop.layout.GroupLayout(jPanelActions);
+        GroupLayout jPanelActionsLayout = new GroupLayout(jPanelActions);
         jPanelActions.setLayout(jPanelActionsLayout);
         jPanelActionsLayout.setHorizontalGroup(
-            jPanelActionsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanelActionsLayout.createSequentialGroup()
+            jPanelActionsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, jPanelActionsLayout.createSequentialGroup()
                 .addContainerGap(164, Short.MAX_VALUE)
-                .add(jButtonBack, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 83, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jButtonNext, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 87, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(20, 20, 20)
-                .add(jButtonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 90, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-            .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                .addComponent(jButtonBack, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonNext, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(jButtonCancel, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE))
+            .addComponent(jSeparator1, GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
         );
 
-        jPanelActionsLayout.linkSize(new java.awt.Component[] {jButtonBack, jButtonCancel, jButtonNext}, org.jdesktop.layout.GroupLayout.HORIZONTAL);
+        jPanelActionsLayout.linkSize(SwingConstants.HORIZONTAL, jButtonBack, jButtonCancel, jButtonNext);
 
         jPanelActionsLayout.setVerticalGroup(
-            jPanelActionsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(jPanelActionsLayout.createSequentialGroup()
-                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .add(15, 15, 15)
-                .add(jPanelActionsLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jButtonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jButtonNext, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(jButtonBack, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+            jPanelActionsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelActionsLayout.createSequentialGroup()
+                .addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addGroup(jPanelActionsLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonCancel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonNext, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBack, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jPanelActionsLayout.linkSize(new java.awt.Component[] {jButtonBack, jButtonCancel, jButtonNext}, org.jdesktop.layout.GroupLayout.VERTICAL);
+        jPanelActionsLayout.linkSize(SwingConstants.VERTICAL,jButtonBack, jButtonCancel, jButtonNext);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
