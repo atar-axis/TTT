@@ -27,6 +27,8 @@ package ttt.postprocessing;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
@@ -43,6 +45,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -70,9 +73,7 @@ import ttt.record.Recording;
  * @author ziewer
  */
 public class PostProcessorPanel extends GradientPanel {
-    // NOTE: post processing dialog is designed with NetBeans and requires Swing Layout Extension Library
-    // TODO: redesign without Swing Layout Extension Library
-	
+
     // corresponding recording
     private Recording recording;
     // states if recording has modifications which have not been stored yet
@@ -82,7 +83,7 @@ public class PostProcessorPanel extends GradientPanel {
     private boolean batch = false;
     
     //saves the enable status of some components. See setEnabled(boolean)
-    private HashMap<Object, Boolean> ctrlSatus = new HashMap<Object, Boolean>();
+    private HashMap<Object, Boolean> ctrlStatus = new HashMap<Object, Boolean>();
 	private JTextField mp4WidthString;
     
     /** Creates new form PostProcessorPanel */
@@ -440,6 +441,7 @@ public class PostProcessorPanel extends GradientPanel {
                 mp4StatusField.setForeground(Color.GREEN);
                 mp4StatusField.setText("found");
                 mp4CheckBox.setSelected(false);
+                mp4WidthString.setEnabled(false);
             } else {
                 mp4StatusField.setForeground(Color.RED);
                 mp4StatusField.setText("not found");
@@ -783,7 +785,14 @@ public class PostProcessorPanel extends GradientPanel {
         mp4CheckBox.setSelected(true);
         mp4CheckBox.setText("MP4 podcast");
         mp4CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        mp4WidthString.setText("480");
+        mp4CheckBox.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				mp4WidthString.setEnabled(mp4CheckBox.isSelected());
+			}
+        });
+        
+        mp4WidthString.setText(""+TTT.userPrefs.getInt("VideoResolution", 480));
 
         mp4StatusField.setText("not found");
 
@@ -812,6 +821,9 @@ public class PostProcessorPanel extends GradientPanel {
                     .addComponent(html5PlayerCheckBox)
                     .addComponent(mp4CheckBox)
                     .addComponent(camCheckBox))
+                .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                		.addComponent(mp4WidthString)
+                	)
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addComponent(thumbnailsStatusField)
@@ -824,15 +836,17 @@ public class PostProcessorPanel extends GradientPanel {
                     .addComponent(html5StatusField)
                     .addComponent(html5PlayerStatusField)
                     .addComponent(mp4StatusField)
-                    .addComponent(camStatusField))
+                    .addComponent(camStatusField)
+                    )
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 405, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                     .addComponent(createHelpButton)
                     .addComponent(createButton))
+                    
                 .addContainerGap())
         );
 
-        jPanel2Layout.linkSize(SwingConstants.HORIZONTAL,new java.awt.Component[] {createButton, createHelpButton});
+        jPanel2Layout.linkSize(SwingConstants.HORIZONTAL, createButton, createHelpButton);
 
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -879,7 +893,9 @@ public class PostProcessorPanel extends GradientPanel {
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(mp4CheckBox)
-                            .addComponent(mp4StatusField))
+                            .addComponent(mp4WidthString)
+                            .addComponent(mp4StatusField)
+                            )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(camCheckBox)
@@ -956,7 +972,7 @@ public class PostProcessorPanel extends GradientPanel {
                 .addContainerGap())
         );
 
-        jPanel3Layout.linkSize(SwingConstants.HORIZONTAL,new java.awt.Component[] {importSearchbaseButton, searchHelpButton});
+        jPanel3Layout.linkSize(SwingConstants.HORIZONTAL, importSearchbaseButton, searchHelpButton);
 
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -978,7 +994,7 @@ public class PostProcessorPanel extends GradientPanel {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jPanel3Layout.linkSize(SwingConstants.VERTICAL,new java.awt.Component[] {importSearchbaseButton, openSearchbaseFileDialogButton});
+        jPanel3Layout.linkSize(SwingConstants.VERTICAL,importSearchbaseButton, openSearchbaseFileDialogButton);
 
         doneButton.setText("Done");
         doneButton.addActionListener(new java.awt.event.ActionListener() {
@@ -1042,9 +1058,9 @@ public class PostProcessorPanel extends GradientPanel {
                 .addContainerGap())
         );
 
-        jPanelPublishingLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {pathField, serverField, userField});
+        jPanelPublishingLayout.linkSize(SwingConstants.HORIZONTAL, pathField, serverField, userField);
 
-        jPanelPublishingLayout.linkSize(SwingConstants.HORIZONTAL, new java.awt.Component[] {publishButton, publishHelpButton});
+        jPanelPublishingLayout.linkSize(SwingConstants.HORIZONTAL, publishButton, publishHelpButton);
 
         jPanelPublishingLayout.setVerticalGroup(
             jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -1068,7 +1084,6 @@ public class PostProcessorPanel extends GradientPanel {
         );
 
      //  GroupLayout layout = newGroupLayout(this);
-        
         
         jtabPane.add("Info", jPanelInfo);
         jtabPane.add("Thumbs, Script and Flash", jPanelThumbs);
@@ -1117,45 +1132,47 @@ public class PostProcessorPanel extends GradientPanel {
     public void setEnabled(boolean enabled) {
     	if (enabled == false) {
     		//Save the enable status of components which may be disabled
-    		ctrlSatus.put(thumbnailsCheckBox, thumbnailsCheckBox.isEnabled());
-    		ctrlSatus.put(pdfCheckBox, pdfCheckBox.isEnabled());
-    		ctrlSatus.put(flashCheckBox, flashCheckBox.isEnabled());
-    		ctrlSatus.put(html5CheckBox, html5CheckBox.isEnabled());
-    		ctrlSatus.put(html5PlayerCheckBox, html5PlayerCheckBox.isEnabled());
-    		ctrlSatus.put(mp3CheckBox, mp3CheckBox.isEnabled());
-    		ctrlSatus.put(oggVorbisCheckBox, oggVorbisCheckBox.isEnabled());
-    		ctrlSatus.put(mp4CheckBox, mp4CheckBox.isEnabled());
-    		ctrlSatus.put(camCheckBox, camCheckBox.isEnabled());
-    		ctrlSatus.put(userField, userField.isEnabled());
-    		ctrlSatus.put(serverField, serverField.isEnabled());
-    		ctrlSatus.put(pathField, pathField.isEnabled());
-    		ctrlSatus.put(publishButton, publishButton.isEnabled());
+    		ctrlStatus.put(thumbnailsCheckBox, thumbnailsCheckBox.isEnabled());
+    		ctrlStatus.put(pdfCheckBox, pdfCheckBox.isEnabled());
+    		ctrlStatus.put(flashCheckBox, flashCheckBox.isEnabled());
+    		ctrlStatus.put(html5CheckBox, html5CheckBox.isEnabled());
+    		ctrlStatus.put(html5PlayerCheckBox, html5PlayerCheckBox.isEnabled());
+    		ctrlStatus.put(mp3CheckBox, mp3CheckBox.isEnabled());
+    		ctrlStatus.put(oggVorbisCheckBox, oggVorbisCheckBox.isEnabled());
+    		ctrlStatus.put(mp4CheckBox, mp4CheckBox.isEnabled());
+    		ctrlStatus.put(mp4WidthString,mp4WidthString.isEnabled());
+    		ctrlStatus.put(camCheckBox, camCheckBox.isEnabled());
+    		ctrlStatus.put(userField, userField.isEnabled());
+    		ctrlStatus.put(serverField, serverField.isEnabled());
+    		ctrlStatus.put(pathField, pathField.isEnabled());
+    		ctrlStatus.put(publishButton, publishButton.isEnabled());
     	}
         super.setEnabled(enabled);
         titleField.setEnabled(enabled);
-        thumbnailsCheckBox.setEnabled(enabled && ctrlSatus.get(thumbnailsCheckBox)); 
+        thumbnailsCheckBox.setEnabled(enabled && ctrlStatus.get(thumbnailsCheckBox)); 
         htmlCheckBox.setEnabled(enabled);
-        pdfCheckBox.setEnabled(enabled && ctrlSatus.get(pdfCheckBox));
+        pdfCheckBox.setEnabled(enabled && ctrlStatus.get(pdfCheckBox));
         ocrCheckBox.setEnabled(enabled);
 
-        flashCheckBox.setEnabled(enabled && ctrlSatus.get(flashCheckBox));	     
-        html5CheckBox.setEnabled(enabled && ctrlSatus.get(html5CheckBox));
-        html5PlayerCheckBox.setEnabled(enabled && ctrlSatus.get(html5PlayerCheckBox));
-        mp3CheckBox.setEnabled(enabled && ctrlSatus.get(mp3CheckBox));
-        oggVorbisCheckBox.setEnabled(enabled && ctrlSatus.get(oggVorbisCheckBox));
-        mp4CheckBox.setEnabled(enabled && ctrlSatus.get(mp4CheckBox));	
-        camCheckBox.setEnabled(enabled && ctrlSatus.get(camCheckBox));
+        flashCheckBox.setEnabled(enabled && ctrlStatus.get(flashCheckBox));	     
+        html5CheckBox.setEnabled(enabled && ctrlStatus.get(html5CheckBox));
+        html5PlayerCheckBox.setEnabled(enabled && ctrlStatus.get(html5PlayerCheckBox));
+        mp3CheckBox.setEnabled(enabled && ctrlStatus.get(mp3CheckBox));
+        oggVorbisCheckBox.setEnabled(enabled && ctrlStatus.get(oggVorbisCheckBox));
+        mp4CheckBox.setEnabled(enabled && ctrlStatus.get(mp4CheckBox));	
+        mp4StatusField.setEnabled(mp4CheckBox.isSelected());
+        camCheckBox.setEnabled(enabled && ctrlStatus.get(camCheckBox));
         createHelpButton.setEnabled(enabled);
         createButton.setEnabled(enabled);
         searchFilenameField.setEnabled(enabled);
         openSearchbaseFileDialogButton.setEnabled(enabled);
         searchHelpButton.setEnabled(enabled);
         importSearchbaseButton.setEnabled(enabled);
-        userField.setEnabled(enabled && ctrlSatus.get(userField));	
-        serverField.setEnabled(enabled && ctrlSatus.get(serverField));	
-        pathField.setEnabled(enabled && ctrlSatus.get(pathField));	
+        userField.setEnabled(enabled && ctrlStatus.get(userField));	
+        serverField.setEnabled(enabled && ctrlStatus.get(serverField));	
+        pathField.setEnabled(enabled && ctrlStatus.get(pathField));	
         publishHelpButton.setEnabled(enabled);
-        publishButton.setEnabled(enabled && ctrlSatus.get(publishButton));	
+        publishButton.setEnabled(enabled && ctrlStatus.get(publishButton));	
         doneButton.setEnabled(enabled);
     }
 
@@ -1513,7 +1530,11 @@ public class PostProcessorPanel extends GradientPanel {
     	//create mp4 podcast
         try {
             if (mp4CheckBox.isSelected()) {
-                PodcastCreator.createPodcast(recording, batch);
+            	int x = Integer.parseInt(mp4WidthString.getText());
+            	if (x==0) x=480;
+            	TTT.userPrefs.putInt("VideoResolution", x);
+            	int y = (int)(x * .75);
+            	PodcastCreator.createPodcast(recording, x, y, batch,true);
             }
         } catch (Exception e) {
         	e.printStackTrace();

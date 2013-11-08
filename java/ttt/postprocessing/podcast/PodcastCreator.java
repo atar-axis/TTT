@@ -94,7 +94,18 @@ public class PodcastCreator {
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, boolean batch,boolean ShowProgressmonitor) throws Exception {
-		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch, ShowProgressmonitor);
+		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, batch, ShowProgressmonitor);
+	}
+	
+	/**
+	 * Creates podcast using default parameters
+	 * @param recording
+	 * @param batch
+	 * @return True: Podcast created successfully.<br>False: Canceled by user.
+	 * @throws Exception
+	 */
+	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, boolean batch,boolean ShowProgressmonitor) throws Exception {
+		return createPodcast(recording, resolutionWidth, resolutionHeight, FRAMES_PER_SEC, batch, ShowProgressmonitor);
 	}
 	
 	
