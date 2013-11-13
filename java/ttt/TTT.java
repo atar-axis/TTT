@@ -548,7 +548,7 @@ public class TTT extends JFrame {
 										recording));
 								frame.pack();
 								frame.setResizable(true);
-
+								frame.setClosable(true);
 								// post processing
 								TTT ttt = getInstance();
 								ttt.showTTT();
@@ -907,7 +907,6 @@ public class TTT extends JFrame {
 	protected void activateNativeLook() {
 		
 		try {
-
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			this.paintAll(this.getGraphics());
 		} catch (ClassNotFoundException e) {
@@ -1553,7 +1552,11 @@ public class TTT extends JFrame {
 				break;
 			}
 		}
-		getInstance().showTTT();
+		SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+		    	getInstance().showTTT();
+		    }
+		});
 	}
 
 	// MOD TD

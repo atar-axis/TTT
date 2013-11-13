@@ -47,7 +47,7 @@ public class PodcastCreator {
 
 	private static final int RESOLUTION_WIDTH = 480;
 	private static final int RESOLUTION_HEIGTH = 320;
-	private static final String FFMPEG = "ffmpeg";
+	private static final String FFMPEG = "avconv";
 	private static final String MP4BOX = "MP4Box";
 
 	private static final double FRAMES_PER_SEC = 1;
@@ -188,9 +188,9 @@ public class PodcastCreator {
 			if (ShowProgressmonitor && !batch && i < recording.messages.size()) {
 				progressMonitor.setProgress(i);
 			}
-			if(TTT.verbose){
-			System.out.println("   Message (" + i + "/" + recording.messages.size() + ")");
-			}
+			//if(TTT.verbose){
+			//	System.out.println("   Message (" + i + "/" + recording.messages.size() + ")");
+			//}
 			//create window movie using ffmpeg
 			//write scaled window image
 			ImageIO.write(ImageCreator.getScaledInstance(recording.getGraphicsContext().getScreenshot(), resolutionWidth, resolutionHeight, RenderingHints.VALUE_INTERPOLATION_BICUBIC, true), "png", windowImageFile);
@@ -200,8 +200,8 @@ public class PodcastCreator {
                 ffmpegCmd,
                 "-loop", "1",
                 "-r", String.valueOf(framesPerSec),
-                "-i", windowImageFile.getPath().replace(" ", "\\ "),
                 "-pix_fmt", "rgb24",
+                "-i", windowImageFile.getPath().replace(" ", "\\ "),
                 "-vcodec", "mpeg4",
                 "-vframes", String.valueOf(vFrames),
                 "-s", resolutionWidth + "x" + resolutionHeight,
@@ -295,9 +295,9 @@ public class PodcastCreator {
 					scanner.useDelimiter("[ ]+");
 					if (scanner.findInLine("frame=") != null && scanner.hasNextInt()){
 						int i = scanner.nextInt();
-						if(TTT.verbose){
-						System.out.println("   Frame (" + i + "/" + nFrames + ")");
-						}
+						//if(TTT.verbose){
+						// System.out.println("   Frame (" + i + "/" + nFrames + ")");
+						//}
 						if(ShowProgressmonitor){
 						progressMonitor.setProgress(i);}
 					}
@@ -309,7 +309,7 @@ public class PodcastCreator {
 		exec.createListenerStream();
 		outMovieFile = recording.getFileBySuffix("mp4");
 		String[] line = new String[] {
-				"avconv",
+				ffmpegCmd,
 				"-i", audioFile.getPath().replace(" ", "\\ "),
 				"-i", outMovieTmpFile.getPath().replace(" ", "\\ "),
 				"-strict","experimental",
