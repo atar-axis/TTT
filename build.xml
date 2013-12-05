@@ -73,6 +73,9 @@
     <copy todir="${dist}"><fileset dir="${lib}"></fileset></copy>
     <copy todir="${dist}"><fileset dir="${native}"></fileset></copy>
     <copy todir="${dist}" file="run.sh" />
+    <copy todir="${dist}" file="beamer.sh" />
+    <copy todir="${dist}" file="rotateTablet.sh" />
+    <copy todir="${dist}" file="rotatebackTablet.sh" />
     <zip destfile="./ttt.zip" basedir="." includes="dist/*" update="true"/> 
   </target>
 
