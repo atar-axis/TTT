@@ -161,12 +161,12 @@ public class hOCRHandler extends DefaultHandler {
             // reset searchtext
             searchText = null;
             
-    		String[] coords = attrs.getValue("title").substring(5).split(" ");
+    		String[] coords = attrs.getValue("title").substring(5).split("[ ;]");
     		left   = Integer.parseInt(coords[0]);
     		top    = Integer.parseInt(coords[1]);
     		right  = Integer.parseInt(coords[2]);
     		bottom = Integer.parseInt(coords[3]);
-    		System.out.println("Durch!"+left+"/q"+top);
+    		//System.out.println("Durch!"+left+"/q"+top);
     	}
     	
         if (localName.equals("div") && attrs.getValue("class").equals("ocr_page")) {

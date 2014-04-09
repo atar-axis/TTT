@@ -808,7 +808,7 @@ public class Index {
                 // write input for Optical Character Recognition
                 if ((mode & ScriptCreator.OCR_OPTIMIZED) != 0){
                   String filename = scriptCreator.writeOCRScreenshot(i, screenshot);
-                  readSearchBaseFromHOCRFile(filename+".hocr.html", i);
+                  readSearchBaseFromHOCRFile(filename+".hocr.hocr", i);
                   // cleanup mess
                   {
                 	  File f = new File(filename);
