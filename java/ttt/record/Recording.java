@@ -436,6 +436,7 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 		int len;
 		while ((len = in.readInt()) > 0) {
 			byte[] extension = new byte[len];
+			System.out.println("About to read #bytes: "+len);
 			in.readFully(extension);
 			if (TTT.verbose)
 				System.out.println("Extension: Tag[" + extension[0] + "] "
@@ -451,6 +452,7 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 			original = false;
 	}
 
+	public void resetIndex() { index =null; }
 	public Index index = new Index(this);
 
 	private void parseExtensions() throws IOException {
@@ -958,7 +960,7 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 		out.writeByte(0); // padding
 		out.writeByte(0);
 		out.writeByte(0);
-		out.writeInt(prefs.name.length());
+		out.writeInt(prefs.name.length()+1);//getBytes() is Null-terminated!!!!
 		out.write(prefs.name.getBytes());
 	}
 
@@ -969,9 +971,9 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 	void writeExtensions(DataOutputStream out) throws IOException {
 		// write current index extensions instead of read one (maybe modified)
 		System.out.println("Writing Index Table");
-		index.writeIndexExtension(out);
+		if (index!=null) index.writeIndexExtension(out);
 
-		if (index.getSearchbaseFormat() == Index.XML_SEARCHBASE) {
+		if (index!=null)  if (index.getSearchbaseFormat() == Index.XML_SEARCHBASE) {
 			System.out.println("Write Searchbase");
 			SearchbaseExtension.writeSearchbaseExtension(out, index);
 		}

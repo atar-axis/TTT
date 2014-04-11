@@ -584,7 +584,7 @@ public class TTTProcessor {
             					duration +	placeholderRecording[i].getMessages().getMessages().get(j).getTimestamp());
             			}
             	}
-            	finalExtensions.addAll(placeholderRecording[i].getExtensions());
+            	//finalExtensions.addAll(placeholderRecording[i].getExtensions());
             	finalMessages.addAll(placeholderRecording[i].getMessages().getMessages());
             	duration += (placeholderRecording[i].getMessages().get(placeholderRecording[i].getMessages().size()-1).getTimestamp());
     
@@ -595,7 +595,7 @@ public class TTTProcessor {
         }
         
        FinalRecord = placeholderRecording[0];
-       
+       FinalRecord.resetIndex();
        FinalRecord.setMessages(finalMessages);
        FinalRecord.setfileDesktop(outputFile);
        FinalRecord.setExtensions(finalExtensions);

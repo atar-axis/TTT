@@ -105,7 +105,7 @@ import ttt.record.LectureProfileDialog;
 import ttt.record.Recording;
 
 public class TTT extends JFrame {
-	static final String version = "09.04.2014";
+	static final String version = "11.04.2014";
 
 	public static boolean debug = !true;
 	public static boolean verbose = true;
@@ -739,28 +739,7 @@ public class TTT extends JFrame {
 		menuBar.add(menu2);
 
 		menuItem = new JMenuItem("Open Editor");
-		// Open Editor
-		menuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (enabledNativeLookAndFeel) {
-					try {
-						UIManager.setLookAndFeel(UIManager
-								.getCrossPlatformLookAndFeelClassName());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				TTTEditor.OpenEditorAndShowFileDialog();
-
-			}
-		});
-		menuItem.setToolTipText("run TTT Editor to edit recorded lectures");
-		menuItem.setIcon(Constants.getIcon("16x16/configure.png"));
-		menuItem.setMnemonic(KeyEvent.VK_F);
-		menu2.add(menuItem);
-
-		menuItem = new JMenuItem("Open Editor2 Beta");
-		// Open Editor
+		// Open Editor2
 		menuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
