@@ -111,7 +111,6 @@ Section ""
   File dist/ttt.jar
   File dist/jmf-2.1.1e.jar
   File dist/mp3plugin.jar
-  File dist/swing-layout-1.0.2.jar
   File dist/jsch-0.1.49.jar
   File dist/itext-1.4.8.jar
   File dist/lti-civil.jar
