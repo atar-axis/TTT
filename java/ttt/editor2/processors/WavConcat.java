@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.SequenceInputStream;
 import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
-
+import java.util.Vector;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -116,28 +116,31 @@ public class WavConcat {
 		
 		saveDuration();
 		
-		for(int i = 2; InFiles.length >= i;i++){
+		int framelength=0;
+		Vector<AudioInputStream> vec = new Vector<AudioInputStream>();
+		try {
+		    for (int i=0;i<InFiles.length;i++){
+			AudioInputStream clip = AudioSystem.getAudioInputStream(InFiles[i]);
+			framelength+=clip.getFrameLength();
+			vec.add(clip);
+		    }
+
 		
-         try {
-                 AudioInputStream clip1 = AudioSystem.getAudioInputStream(InFiles[i-2]);
-                 AudioInputStream clip2 = AudioSystem.getAudioInputStream(InFiles[i-1]);
 
-                            
-                 AudioInputStream appendedFiles = 
-                         new AudioInputStream(
-                             new SequenceInputStream(clip1, clip2),     
-                             clip1.getFormat(), 
-                             clip1.getFrameLength() + clip2.getFrameLength());
-
-                 AudioSystem.write(appendedFiles, 
-                         AudioFileFormat.Type.WAVE, 
-                         OutFile);
-                 InFiles[i-2] = OutFile;
-         } catch (Exception e) {
-                 e.printStackTrace();
-         }
+		    AudioInputStream appendedFiles = 
+			new AudioInputStream(
+					     new SequenceInputStream(vec.elements()),
+					     vec.firstElement().getFormat(), 
+					     framelength);
+		    
+		    AudioSystem.write(appendedFiles, 
+				      AudioFileFormat.Type.WAVE, 
+				      OutFile);
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
-		
+
+
          return true;		
 	}
 }
