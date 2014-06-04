@@ -88,6 +88,7 @@ public class WavConcat {
 		chunk[0] = Offset[7];
 
 		durations[count++] = TimeUnit.SECONDS.toNanos((convertByteArrayToInt(chunk) / convertByteArrayToInt(rate)));
+		System.out.println(count+ "th Audiofile with length  " + durations[count-1]/60000000000l +" sec");
 			}catch (FileNotFoundException e) {
 				System.err.println("Error reading file: " + i.toString());
 				e.printStackTrace();

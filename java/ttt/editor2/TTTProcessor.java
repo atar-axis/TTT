@@ -570,7 +570,7 @@ public class TTTProcessor {
     	 ArrayList<Message> finalMessages = new ArrayList<Message>();
     	 ArrayList<byte[]> finalExtensions = new ArrayList<byte[]>();
     	 //used to correct the timestamp
-    	 int duration = 1;
+    	 int duration = 0;
     	Recording[] placeholderRecording = new Recording[desktopFiles.length];
     	
     	
@@ -586,7 +586,9 @@ public class TTTProcessor {
             	}
             	//finalExtensions.addAll(placeholderRecording[i].getExtensions());
             	finalMessages.addAll(placeholderRecording[i].getMessages().getMessages());
-            	duration += (placeholderRecording[i].getMessages().get(placeholderRecording[i].getMessages().size()-1).getTimestamp());
+		System.out.println("Extended Desktop recording by "+ (placeholderRecording[i].getMessages().get(placeholderRecording[i].getMessages().size()-1).getTimestamp())/60000l +" minutes");
+            	
+            	duration = (placeholderRecording[i].getMessages().get(placeholderRecording[i].getMessages().size()-1).getTimestamp());
     
             } catch (Exception e) {
                 System.out.println("Error reading file: " + e);
