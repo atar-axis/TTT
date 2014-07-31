@@ -968,8 +968,10 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 		out.writeByte(0); // padding
 		out.writeByte(0);
 		out.writeByte(0);
-		out.writeInt(prefs.name.length()+1);//getBytes() is Null-terminated!!!!
-		out.write(prefs.name.getBytes());
+		byte[] temp = prefs.name.getBytes();
+		out.writeInt(temp.length);// we need to query the length of the byte array instead of the pure size of 
+		// the string, as some chars are encoded with several bytes 
+		out.write(temp);
 	}
 
 	// ///////////////////////////////////////
