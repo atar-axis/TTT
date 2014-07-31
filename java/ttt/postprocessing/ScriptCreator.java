@@ -456,7 +456,6 @@ public class ScriptCreator {
         // // Image.getScaledInstance() is pretty lame
         // // NOTE: unscaled image resists in memory until drawn - draw to new image to free memory
         // return img.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
-
         // that is about 30% faster under Linux
         // TODO: Image.getScaledInstance() is suposed to be improved in Java 7 - check again
         return getScaledInstance(toBufferedImage(img), targetWidth, targetHeight,

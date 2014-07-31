@@ -784,12 +784,12 @@ public class Index {
                 // set time of index
                 IndexEntry indexEntry = index.get(i);
                 int timestamp = indexEntry.getTimestamp();
-                if ((mode & ScriptCreator.OCR_OPTIMIZED) == 0)
+            	if ((mode & ScriptCreator.OCR_OPTIMIZED) == 0)
                 	if (i+1<index.size()){
                 		timestamp += (index.get(i+1).getTimestamp()-timestamp)*.95;
                 	}
                
-                recording.setTime(timestamp);
+                recording.setTime(timestamp,false);
 
                 // create screenshot
                 Image screenshot = recording.graphicsContext.getScreenshotWithoutAnnotations();
@@ -797,12 +797,12 @@ public class Index {
                 // set thumbnail
                 if ((mode & ScriptCreator.THUMBNAILS) != 0) {                    
 
-                	
+
                     // faster image scaling
-                    Image thumbnail = ScriptCreator.getScaledInstance(screenshot, recording.prefs.framebufferWidth
+                	//Image thumbnail = recording.graphicsContext.getThumbnailWithoutAnnotations(thumbnail_scale_factor);
+                    Image                 	thumbnail = ScriptCreator.getScaledInstance(screenshot, recording.prefs.framebufferWidth
                             / thumbnail_scale_factor, recording.prefs.framebufferHeight / thumbnail_scale_factor);
                     indexEntry.setThumbnail(thumbnail);
-                  
                 }
 
                 // write input for Optical Character Recognition

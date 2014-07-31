@@ -35,6 +35,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
@@ -209,10 +210,10 @@ public class GraphicsContext extends JComponent implements GraphicInterface, Mes
 
         // show blank page if whiteboard activated
         if (isWhiteboardEnabled()) {
-            screenshot = new BufferedImage(prefs.framebufferWidth, prefs.framebufferHeight, BufferedImage.TYPE_INT_RGB);
+            screenshot = new BufferedImage(prefs.framebufferWidth/ thumbnail_scale_factor, prefs.framebufferHeight/ thumbnail_scale_factor, BufferedImage.TYPE_INT_RGB);
             Graphics g = screenshot.getGraphics();
             g.setColor(Color.white);
-            g.fillRect(0, 0, prefs.framebufferWidth, prefs.framebufferHeight);
+            g.fillRect(0, 0, prefs.framebufferWidth/ thumbnail_scale_factor, prefs.framebufferHeight/ thumbnail_scale_factor);
             // g.setColor(Color.black);
             // g.setFont(g.getFont().deriveFont(100f));
             // g.drawString("WHITEBOARD", 200, 200);
@@ -222,13 +223,13 @@ public class GraphicsContext extends JComponent implements GraphicInterface, Mes
         // show desktop
         else {
             // Create a buffered image using the default color model
-            screenshot = new BufferedImage(prefs.framebufferWidth, prefs.framebufferHeight, BufferedImage.TYPE_INT_RGB);
+            screenshot = new BufferedImage(prefs.framebufferWidth/ thumbnail_scale_factor, prefs.framebufferHeight/ thumbnail_scale_factor, BufferedImage.TYPE_INT_RGB);
 
             // Copy image to buffered image
-            Graphics g = ((BufferedImage) screenshot).createGraphics();
-
+            Graphics2D g = ((BufferedImage) screenshot).createGraphics();
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
             // Paint the image onto the buffered image
-            g.drawImage(memImage, 0, 0, null);
+            g.drawImage(memImage, 0, 0,prefs.framebufferWidth/ thumbnail_scale_factor, prefs.framebufferHeight / thumbnail_scale_factor ,null);
             g.dispose();
         }
         return screenshot;

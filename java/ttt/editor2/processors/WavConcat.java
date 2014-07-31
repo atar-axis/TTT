@@ -24,7 +24,7 @@ public class WavConcat {
 	
 	byte[] header = new byte[44]; // stores the header for the wav. (wav header size is are 44 byte)
 
-	byte[] InBuffer; //reads each file and writes them then into the OutBuffer
+	//byte[] InBuffer; //reads each file and writes them then into the OutBuffer
 	byte[] Offset = new byte[44]; //used to skip the .wav header of the files
 	FileInputStream fileIn;
 	int Position = 44; //where to paste the new byte in the OutBuffer
@@ -67,9 +67,7 @@ public class WavConcat {
 	private void saveDuration() {
 		for(File i: InFiles) {
 			try {
-				InBuffer = new byte[(int) (i.length() - Offset.length)];
 				fileIn = new FileInputStream(i);
-
 				fileIn.read(Offset); 
 		
 		//Duration = chunk/ bitrate (chunk = informationsize)

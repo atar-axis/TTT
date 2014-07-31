@@ -675,6 +675,10 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 	 * @param time
 	 */
 	public void setTime(int time) {
+		setTime(time,true);
+	}
+	public void setTime(int time, boolean skipPlayer) {
+	
 
 		time = sync(time);
 		// System.out.println("set: " + Constants.getStringFromTime(time));
@@ -698,8 +702,11 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 		graphicsContext.refresh();
 		// synchronize audio/video
 		// only if not adjusting, because synchronizing is slow
-		if (!adjusting && audioVideoPlayer != null){
+		if (skipPlayer && !adjusting && audioVideoPlayer != null){
+
 			setAudioVideoPlayerTime(time);
+			
+			
 		}
 
 		// t = System.currentTimeMillis() - t;
@@ -709,9 +716,9 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 
 	public void setAudioVideoPlayerTime(int time) {
 		// synchronize audio/video
+
 		if (audioVideoPlayer != null)
 			audioVideoPlayer.setTime(time);
-
 		// notify playback loop
 		interrupt();
 	}
@@ -789,6 +796,7 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 		if (event instanceof MyChangeEvent) {
 			adjusting = ((MyChangeEvent) event).adjusting;
 			if (adjusting) {
+				System.out.println(" -> Set adjusting!");
 				// visible scrolling
 				setTime(((MyChangeEvent) event).time);
 			} else {
