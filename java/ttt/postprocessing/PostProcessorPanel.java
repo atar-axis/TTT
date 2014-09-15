@@ -151,7 +151,7 @@ public class PostProcessorPanel extends GradientPanel {
         	mp3CheckBox.setEnabled(false);
         } 
         if (FlashContext.isCreationPossible(recording)) {
-        	flashCheckBox.setToolTipText("generate a flash/swf version of this recording");
+        	flashCheckBox.setToolTipText("generate a flash/swf version of this recording (deprecated)");
         	if (recording.getExistingFileBySuffix("mp3").exists() == false) {
         		flashCheckBox.addItemListener(new ItemListener() {
         			public void itemStateChanged(ItemEvent event) {
@@ -173,7 +173,7 @@ public class PostProcessorPanel extends GradientPanel {
         }
         
         if (Html5Context.isCreationPossible(recording)) {
-        	html5CheckBox.setToolTipText("generate a HTML5 version of this recording");
+        	html5CheckBox.setToolTipText("generate a HTML5 version of this recording (deprecated)");
         	if (recording.getExistingFileBySuffix("mp3").exists() == false) {
         		html5CheckBox.addItemListener(new ItemListener() {
         			public void itemStateChanged(ItemEvent event) {
@@ -207,7 +207,7 @@ public class PostProcessorPanel extends GradientPanel {
         	html5CheckBox.setSelected(false);
         	html5CheckBox.setEnabled(false);
         }
-        html5PlayerCheckBox.setToolTipText("generate the HTML5 player files necessary for playing the HTML5 recording");
+        html5PlayerCheckBox.setToolTipText("generate the HTML5 player files necessary for playing the HTML5 recording (deprecated)");
         
         
         
@@ -730,16 +730,16 @@ public class PostProcessorPanel extends GradientPanel {
         ocrCheckBox.setText("perform Tesseract/OCR for fulltext search");
         ocrCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        flashCheckBox.setSelected(true);
-        flashCheckBox.setText("Flash/SWF");
+        flashCheckBox.setSelected(false);
+        flashCheckBox.setText("Flash/SWF (deprecated)");
         flashCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
-        html5CheckBox.setSelected(true);
-        html5CheckBox.setText("HTML5 video");
+        html5CheckBox.setSelected(false);
+        html5CheckBox.setText("HTML5 video (deprecated)");
         html5CheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
-        html5PlayerCheckBox.setSelected(true);
-        html5PlayerCheckBox.setText("HTML5 player");
+        html5PlayerCheckBox.setSelected(false);
+        html5PlayerCheckBox.setText("HTML5 player (deprecated)");
         html5PlayerCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         
         createButton.setText("Create");
@@ -776,8 +776,8 @@ public class PostProcessorPanel extends GradientPanel {
 
         mp3StatusField.setText("not found");
         
-        oggVorbisCheckBox.setSelected(true);
-        oggVorbisCheckBox.setText("Ogg Vorbis audio");
+        oggVorbisCheckBox.setSelected(false);
+        oggVorbisCheckBox.setText("Ogg Vorbis audio (not needed)");
         oggVorbisCheckBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         oggVorbisStatusField.setText("not found");
@@ -1354,6 +1354,10 @@ public class PostProcessorPanel extends GradientPanel {
                     // copy everything to server
                     System.out.println("\nCopying data to server " + user + "@" + host + ":" + basePath);
                     System.out.println();
+
+                    // copy recording
+                    session.publish(recording.getDirectory() + recording.getFileBase() + ".ttt", basePath, batch);
+                    session.publish(recording.getDirectory() + recording.getFileBase() + ".mp3", basePath, batch);
 
                     // copy zips
                     session.publish(recording.getDirectory() + recording.getFileBase() + "_a.zip", basePath, batch);

@@ -438,7 +438,8 @@ public class Index {
             buffer.flush();
 
             // write length of extension
-            out.writeInt(byteArrayOutputStream.size());
+            int tmp = byteArrayOutputStream.size();
+            out.writeInt(tmp);
             // write extension
             out.write(byteArrayOutputStream.toByteArray());
         } // else no index available
@@ -779,7 +780,7 @@ public class Index {
                     }
                 }
                 if(TTT.verbose){
-                System.out.print(".");
+                	System.out.print(".");
                 }
                 // set time of index
                 IndexEntry indexEntry = index.get(i);
