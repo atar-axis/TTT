@@ -25,6 +25,7 @@
 package ttt;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.Closeable;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.zip.DeflaterOutputStream;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -44,6 +46,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import ttt.audio.AudioRecorder;
 import ttt.gui.GradientPanel;
@@ -236,8 +239,8 @@ public class Recorder implements MessageConsumer, Closeable {
         stopButton.addActionListener(actionListener);
         playButton.addActionListener(actionListener);
 
-        controlPanel = new GradientPanel();
-        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
+        controlPanel = new GradientPanel(SwingConstants.VERTICAL);
+        controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
 
         JComponent volumeLevelComponent;
 		if (audioVideoRecorder != null) {
@@ -252,7 +255,7 @@ public class Recorder implements MessageConsumer, Closeable {
        }
 		
 		
-		
+        controlPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         controlPanel.add(recordButton);
         controlPanel.add(stopButton);
         controlPanel.add(playButton);

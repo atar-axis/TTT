@@ -93,7 +93,7 @@ public class Player extends JInternalFrame {
     public static void main(String[] args){
     	try {
     		JFrame jay = new JFrame("Player");
-			Player play = new Player("/home/ludwig/testLecture/Theoretische_Informatik_2010_05_03.ttt");
+			Player play = new Player("/home/petter/ttt/testrecordings/Diskrete_Strukturen_2013_10_29.ttt");
 			jay.add(play);
 		//	jay.setSize(300,300);
 			jay.pack();
@@ -496,13 +496,13 @@ public class Player extends JInternalFrame {
         }
 
         JPanel panel = new GradientPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder());
 
         // Paint Controls
         panel.add(new PaintControls(listener));
 
-        panel.add(Box.createHorizontalGlue());
+        //panel.add(Box.createVerticalGlue());
 
         if (recorder != null) {
         	// Recorder Controls
@@ -512,17 +512,17 @@ public class Player extends JInternalFrame {
         	else{
         		panel.add(recorder.getVideoControls());
         	}
-            panel.add(Box.createHorizontalGlue());
+            panel.add(Box.createVerticalGlue());
         }
 
         // Fullscreen Controls
         panel.add(getFullscreenButton());
-        panel.add(Box.createRigidArea(new Dimension(20, 0)));
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         panel.add(getReconnectButton(connection));
-        panel.add(Box.createRigidArea(new Dimension(20, 0)));
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        pane.add(panel, BorderLayout.NORTH);
+        pane.add(panel, BorderLayout.EAST);
         panel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         pack();

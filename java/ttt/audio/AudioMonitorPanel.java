@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -34,10 +34,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
+import ttt.gui.GradientPanel;
 
-public class AudioMonitorPanel extends JPanel {
+
+public class AudioMonitorPanel extends GradientPanel {
 
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("Audio Volume Meter");
@@ -50,6 +53,7 @@ public class AudioMonitorPanel extends JPanel {
     private JSAAudioRecorder wavAudioRecorder;
 
     public AudioMonitorPanel(boolean active) throws Exception {
+    	super(SwingConstants.VERTICAL);
         setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 
         if (active) {

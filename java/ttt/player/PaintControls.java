@@ -31,18 +31,17 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 
 import ttt.Constants;
 import ttt.gui.GradientPanel;
@@ -71,6 +70,7 @@ public class PaintControls extends GradientPanel {
     private PaintListener paintListener;
 
     public PaintControls(PaintListener paintListener) {
+    	super(SwingConstants.VERTICAL);
         this.paintListener = paintListener;
         paintListener.setPaintControls(this);
 
@@ -251,16 +251,16 @@ public class PaintControls extends GradientPanel {
         whiteboardNext.setToolTipText("next whiteboard page");
         whiteboardNext.setFocusable(false);
 
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        add(Box.createRigidArea(new Dimension(20, 0)));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(activateButton);
-        add(Box.createRigidArea(new Dimension(20, 0)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(colorButtons[0]);
         add(colorButtons[1]);
         add(colorButtons[2]);
         add(colorButtons[3]);
         add(colorButtons[4]);
-        add(Box.createRigidArea(new Dimension(20, 0)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(mouseButton);
         add(textButton);
         add(freeButton);
@@ -268,9 +268,9 @@ public class PaintControls extends GradientPanel {
         add(lineButton);
         add(rectangleButton);
         add(deleteButton);
-        add(Box.createRigidArea(new Dimension(20, 0)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(deleteAllButton);
-        add(Box.createRigidArea(new Dimension(80, 0)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
 
         add(whiteboardPrevious);
         add(whiteboardEnable);

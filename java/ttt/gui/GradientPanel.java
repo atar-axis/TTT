@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -53,19 +53,30 @@ public class GradientPanel extends JPanel {
          super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        if (vertical) {
+        if (vertical) 
+        //{
             // A non-cyclic gradient
-            double change = 0.65;
-            Color startColor = new Color(221, 232, 243);
-            Color endColor = new Color(184, 207, 229);
+        //    double change = 0.65;
+        //    Color startColor = new Color(221, 232, 243);
+        //    Color endColor = new Color(184, 207, 229);
+            {
+                // A non-cyclic gradient
+                double change = 0.35;
+                double change2 = 0.35;
+                Color startColor = new Color(221, 232, 243);
+                Color endColor = new Color(221, 232, 243);
 
             GradientPaint gradient = new GradientPaint(0, 0, startColor, 0, (int) (change * getHeight()), Color.white);
             g2d.setPaint(gradient);
             g2d.fillRect(0, 0, getWidth(), (int) (change * getHeight()));
 
-            gradient = new GradientPaint(0, (int) (change * getHeight()), Color.white, 0, getHeight(), endColor);
+            g2d.setPaint(Color.WHITE);
+            g2d.fillRect(0, (int) (change * getHeight()), getWidth(), (int) (change2 * getHeight()));
+            
+            
+            gradient = new GradientPaint(0, (int) (change2 * getHeight()), Color.white, 0, getHeight(), endColor);
             g2d.setPaint(gradient);
-            g2d.fillRect(0, (int) (change * getHeight()), getWidth(), getHeight());
+            g2d.fillRect(0, (int) (change2 * getHeight()), getWidth(), getHeight());
 
         } else {
             // A non-cyclic gradient
