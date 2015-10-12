@@ -31,22 +31,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.swing.GroupLayout;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
@@ -61,6 +69,7 @@ import ttt.audio.MP3Converter;
 import ttt.audio.OggVorbisEncoder;
 import ttt.gui.GradientPanel;
 import ttt.gui.Index;
+import ttt.helper.Base64Codec;
 import ttt.helper.LibraryChecker;
 import ttt.postprocessing.flash.FlashContext;
 import ttt.postprocessing.html5.Html5Context;
@@ -98,6 +107,10 @@ public class PostProcessorPanel extends GradientPanel {
         // create GUI
         initComponents();
  
+        passwordCheck.setSelected(false);
+        passwordCheck.setText("protect by Password ");
+        passwordField.setText(TTT.userPrefs.get("publish_password", "nyancat"));
+        
         // set previously used fields
         userField.setText(TTT.userPrefs.get("publish_user", "<enter user name>"));
         serverField.setText(TTT.userPrefs.get("publish_server", "ttt.in.tum.de"));
@@ -234,11 +247,13 @@ public class PostProcessorPanel extends GradientPanel {
                 .setToolTipText("Import searchbase generated with external Optical Character Recognition (OCR) Software");
 
         if (LibraryChecker.isJSchInstalled()) {
+        	passwordField.setToolTipText("specify the password for the .htaccess file");
             userField.setToolTipText("specify the user name");
             serverField.setToolTipText("specify the name of the file server");
             pathField.setToolTipText("specify the path to the basic file folder");
             publishButton.setToolTipText("copy recording and additional files to the specified file server");
         } else {
+        	passwordField.setEnabled(false);
             userField.setToolTipText("JSch Library for ssh/sftp is not installed - cannot copy data to file server");
             userField.setEnabled(false);
             serverField.setToolTipText("JSch Library for ssh/sftp is not installed - cannot copy data to file server");
@@ -599,6 +614,8 @@ public class PostProcessorPanel extends GradientPanel {
         jlblServer = new javax.swing.JLabel();
         jlblPath = new javax.swing.JLabel();
         userField = new javax.swing.JTextField();
+        passwordField = new JPasswordField();
+        passwordCheck = new JCheckBox();
         serverField = new javax.swing.JTextField();
         pathField = new javax.swing.JTextField();
         publishButton = new javax.swing.JButton();
@@ -1041,12 +1058,15 @@ public class PostProcessorPanel extends GradientPanel {
             .addGroup(jPanelPublishingLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+//                		.addGroup(jPanelPublishingLayout.createSequentialGroup()
+       				.addComponent(passwordCheck)
                     .addComponent(jlblUser)
                     .addComponent(jlblServer)
                     .addComponent(jlblPath))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPublishingLayout.createSequentialGroup()
+           				.addComponent(passwordField,GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addComponent(userField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 322, Short.MAX_VALUE)
                         .addComponent(publishHelpButton))
@@ -1068,9 +1088,14 @@ public class PostProcessorPanel extends GradientPanel {
                 .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPublishingLayout.createSequentialGroup()
                         .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        		.addComponent(passwordCheck)
+                        		.addComponent(passwordField)
+                        		.addComponent(publishHelpButton)
+                        		)
+                        .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(jlblUser)
                             .addComponent(userField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(publishHelpButton))
+                            )
                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelPublishingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                             .addComponent(jlblServer)
@@ -1143,6 +1168,8 @@ public class PostProcessorPanel extends GradientPanel {
     		ctrlStatus.put(mp4WidthString,mp4WidthString.isEnabled());
     		ctrlStatus.put(camCheckBox, camCheckBox.isEnabled());
     		ctrlStatus.put(userField, userField.isEnabled());
+    		ctrlStatus.put(passwordCheck, passwordCheck.isEnabled());
+    		ctrlStatus.put(passwordField, passwordField.isEnabled());
     		ctrlStatus.put(serverField, serverField.isEnabled());
     		ctrlStatus.put(pathField, pathField.isEnabled());
     		ctrlStatus.put(publishButton, publishButton.isEnabled());
@@ -1169,6 +1196,8 @@ public class PostProcessorPanel extends GradientPanel {
         searchHelpButton.setEnabled(enabled);
         importSearchbaseButton.setEnabled(enabled);
         userField.setEnabled(enabled && ctrlStatus.get(userField));	
+        passwordField.setEnabled(enabled && ctrlStatus.get(passwordField));	
+        passwordCheck.setEnabled(enabled && ctrlStatus.get(passwordCheck));	
         serverField.setEnabled(enabled && ctrlStatus.get(serverField));	
         pathField.setEnabled(enabled && ctrlStatus.get(pathField));	
         publishHelpButton.setEnabled(enabled);
@@ -1309,6 +1338,24 @@ public class PostProcessorPanel extends GradientPanel {
 
                     // open sftp session
                     String user = userField.getText();
+                    String password = String.valueOf(passwordField.getPassword());
+                    MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+                    crypt.reset();
+                    crypt.update(password.getBytes("UTF-8"));
+                    byte[] hash = crypt.digest();
+                    Formatter formatter = new Formatter();
+                    for (byte b : hash)
+                    {
+                        formatter.format("%02x", b);
+                    }
+                    String sha1InBase64 = Base64Codec.encodeToString(hash);
+                    formatter.toString();
+                    formatter.close();
+                    
+                    //JOptionPane.showMessageDialog(null,"Password in plain "+password +" : "+ sha1InBase64);
+                    
+                    
+                    boolean usePassword = passwordCheck.isSelected();
                     String host = serverField.getText();
                     SftpHelper session = new SftpHelper(user, host);
                     
@@ -1318,6 +1365,8 @@ public class PostProcessorPanel extends GradientPanel {
                         path = path + "/";
                     String basePath = path + recording.getFileBase() + "/";
 
+                    
+                    
                     // store fields for the next time
                     TTT.userPrefs.put("publish_user", user);
                     TTT.userPrefs.put("publish_server", host);
@@ -1355,6 +1404,13 @@ public class PostProcessorPanel extends GradientPanel {
                     System.out.println("\nCopying data to server " + user + "@" + host + ":" + basePath);
                     System.out.println();
 
+                    // copy authentication parts
+                    if (usePassword) {
+                    	createPasswordFiles(recording.getDirectory(),basePath,sha1InBase64);
+                    	session.publish(recording.getDirectory()+".htaccess", basePath,batch);
+                    	session.publish(recording.getDirectory()+".htpasswd", basePath,batch);
+                    }
+                    
                     // copy recording
                     session.publish(recording.getDirectory() + recording.getFileBase() + ".ttt", basePath, batch);
                     session.publish(recording.getDirectory() + recording.getFileBase() + ".mp3", basePath, batch);
@@ -1417,6 +1473,20 @@ public class PostProcessorPanel extends GradientPanel {
                     setEnabled(true);
                 }
             }
+
+			private void createPasswordFiles(String directory, String basePath, String sha1InBase64) throws FileNotFoundException, UnsupportedEncodingException {
+				PrintWriter fw = new PrintWriter(directory+"/.htaccess", "UTF-8");
+				fw.println("AuthType Basic");
+				fw.println("AuthName \"Lecture password for student\"");
+				fw.println("AuthUserFile "+basePath+"/.htpasswd");
+				fw.println("Require valid-user");
+				fw.flush();
+				fw.close();
+				fw = new PrintWriter(directory+"/.htpasswd","UTF-8");
+				fw.println("student:{SHA}"+sha1InBase64);
+				fw.flush();
+				fw.close();
+			}
 
         });
         if (batch)
@@ -1791,6 +1861,8 @@ public class PostProcessorPanel extends GradientPanel {
     private javax.swing.JLabel thumbnailsStatusField;
     private javax.swing.JTextField titleField;
     private javax.swing.JTextField userField;
+    private JCheckBox passwordCheck;
+    private JPasswordField passwordField;
     private javax.swing.JLabel videoField;
     // End of variables declaration
 }
