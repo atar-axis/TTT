@@ -44,6 +44,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -58,7 +59,6 @@ import javax.swing.JViewport;
 import javax.swing.event.MouseInputAdapter;
 
 import ttt.ProtocolPreferences;
-import ttt.TTT;
 import ttt.messages.Annotation;
 import ttt.messages.CursorMessage;
 import ttt.messages.CursorPositionMessage;
@@ -306,7 +306,7 @@ public class GraphicsContext extends JComponent implements GraphicInterface, Mes
         }
 
         pixelsSource.setAnimated(true);
-        rawPixelsImage = TTT.getInstance().createImage(pixelsSource);
+        rawPixelsImage = Toolkit.getDefaultToolkit().createImage(pixelsSource);
     }
 
     // ////////////////////////////////////////////////////////
