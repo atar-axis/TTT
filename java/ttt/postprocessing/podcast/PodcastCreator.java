@@ -56,14 +56,71 @@ public class PodcastCreator {
 	public static void main(String[] args) throws Exception {
 		
 		if (args.length == 0) {
-			System.out.println("PodcastCreator recording");
+			System.out.println("PodcastCreator filename.ttt ");
+			System.out.println("PodcastCreator filename.ttt [-originalsize| - size widthxheight] [-debug] [-crop widthxheight+xxy]");
 			return;
 		}
-		Recording recording = new Recording(new File(args[0]), false);
-		PodcastCreator.createPodcast(recording, true);
+    TTT.verbose=false;
+    Recording recording = new Recording(new File(args[0]), false);
+    TTT.verbose=false;
+    int width = recording.prefs.framebufferWidth;
+    int height = recording.prefs.framebufferHeight;
+    int cropx=0,cropy=0;
+    int cropw=width;
+    int croph=height;
+    
+    if (args.length == 1) {
+        PodcastCreator.createPodcast(recording, true);
+        return;
+    }
+    if (args.length > 1) {
+        args = java.util.Arrays.copyOfRange(args,1,args.length);
+        int i = 0;
+        for (String param:args){
+            i++;
+            if (!param.startsWith("-")) continue;
+            switch (param) {
+            case "-originalsize":
+                cropw=width = recording.prefs.framebufferWidth;
+                height = recording.prefs.framebufferHeight;
+                cropx=cropy=0;
+                if (height%2==1) height++;
+                croph=height;
+                break;
+            case "-size":
+                String [] res = args[i].split("x");
+                cropw=width=Integer.parseInt(res[0]);
+                height=Integer.parseInt(res[1]);
+                cropx=cropy=0;
+                if (height%2==1) height++;
+                croph=height;
+                break;
+            case "-debug":
+                TTT.verbose=true;
+                TTT.debug=true;
+                break;
+            case "-crop":
+                String [] crop = args[i].split("\\+");
+                String [] reso = crop[0].split("x");
+                cropw=Integer.parseInt(reso[0]);
+                croph=Integer.parseInt(reso[1]);
+                if (height%2==1) height--;
+                String [] offset = crop[1].split("x");
+                cropx=Integer.parseInt(offset[0]);
+                cropy=Integer.parseInt(offset[1]);
+                break;
+            default:
+                System.out.println("unknown parameter: "+param);
+                break;
+            }
+        }
+        System.out.println("Generating podcast with dimensions "+cropw+"x"+croph+" @"+cropx+"/"+cropy+" from recording "+width+"x"+height);
+        PodcastCreator.createPodcast(recording,width,height,FRAMES_PER_SEC,true,false,cropw,croph,cropx,cropy);
+    }
+
 	}
-	
-	
+
+
 	/**
 	 * Checks whether it is possible to create a podcast
 	 * @param recording
@@ -82,7 +139,7 @@ public class PodcastCreator {
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, boolean batch) throws Exception {
-		return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch, true);
+      return createPodcast(recording, RESOLUTION_WIDTH, RESOLUTION_HEIGTH, FRAMES_PER_SEC, batch, true,RESOLUTION_WIDTH,RESOLUTION_HEIGTH,0,0);
 	}
 	
 	
@@ -105,7 +162,7 @@ public class PodcastCreator {
 	 * @throws Exception
 	 */
 	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, boolean batch,boolean ShowProgressmonitor) throws Exception {
-		return createPodcast(recording, resolutionWidth, resolutionHeight, FRAMES_PER_SEC, batch, ShowProgressmonitor);
+      return createPodcast(recording, resolutionWidth, resolutionHeight, FRAMES_PER_SEC, batch, ShowProgressmonitor,resolutionWidth,resolutionHeight,0,0);
 	}
 	
 	
@@ -116,10 +173,14 @@ public class PodcastCreator {
 	 * @param resolutionHeight Podcast heigth
 	 * @param framesPerSec Frames per second
 	 * @param batch
+   * @param croppedw cropped frame width
+   * @param croppedh cropped frame height
+   * @param croppedx cropped frame x offset
+   * @param croppedy cropped frame y offset
 	 * @return True: Podcast created successfully.<br>False: Canceled by user
 	 * @throws Exception
 	 */
-	public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, double framesPerSec, boolean batch, final boolean ShowProgressmonitor) throws Exception {
+    public static boolean createPodcast(Recording recording, int resolutionWidth, int resolutionHeight, double framesPerSec, boolean batch, final boolean ShowProgressmonitor,int croppedw,int croppedh, int croppedx,int croppedy) throws Exception {
 		if(TTT.verbose){
 		System.out.println("----------------------------------------------");
 		System.out.println("PodcastCreator");
@@ -204,8 +265,14 @@ public class PodcastCreator {
                 "-i", windowImageFile.getPath().replace(" ", "\\ "),
                 "-vcodec", "mpeg4",
                 "-vframes", String.valueOf(vFrames),
-                "-s", resolutionWidth + "x" + resolutionHeight,
+                "-s",
+                croppedw + "x" + croppedh,
+                //resolutionWidth + "x" + resolutionHeight,
+                //"100x100",
                 "-y",
+                "-vf",
+                "crop="+croppedw+":"+croppedh+":"+croppedx+":"+croppedy,
+                //"crop=100:100:10:50",
                 "-b:v", String.valueOf(34)+"k",
                 windowMovieFile.getPath().replace(" ", "\\ ")
             });
@@ -259,7 +326,7 @@ public class PodcastCreator {
 					System.out.println(cmdline);
 					System.out.println(exec.getListenerStream());}
 					throw new IOException("unable join slide movies using \n"+cmdline);
-				}				
+				}
 			}
 			//replace outMovieFile by outMovieFileTmp
 			outMovieFile.delete();
@@ -319,6 +386,12 @@ public class PodcastCreator {
 				"-y",
 				outMovieFile.getPath().replace(" ", "\\ ")
 			};
+    if (TTT.debug){
+			String cmdline="";
+			for (String s:line) cmdline+=s+" ";
+			System.out.println("debugging ffmpeg line: "+cmdline);
+    }
+    
 		j = exec.exec(line);
 		outMovieTmpFile.delete();	
 		if (!batch) {

@@ -55,7 +55,7 @@
   <target name="classes" depends="init">
     <depend srcdir="${java}" destdir="${classes}" cache="${etc}" />
     <javac srcdir="${java}" destdir="${classes}" verbose="off" listfiles="off"
-      source="6" target="6" debug="on" encoding="Cp1252" >
+      source="7" target="7" debug="on" encoding="Cp1252" >
       <classpath refid="libraries"/>
     </javac>
     
