@@ -1,6 +1,5 @@
 package ttt.converter;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import ttt.messages.Message;
 
 import java.io.ByteArrayOutputStream;
@@ -18,25 +17,29 @@ class FullFrameContainer {
     private ByteArrayOutputStream data;
     private int offset;
 
-    void addFullFrame(Message fullFrame){
+    void addFullFrame(Message fullFrame) {
         this.fullFrames.add(fullFrame);
         this.addMessage(fullFrame);
     }
 
-    void addMessage(Message message){
+    void addMessage(Message message) {
         this.messages.add(message);
     }
 
-    int getFullFrameCount(){
+    int getFullFrameCount() {
         return this.fullFrames.size();
     }
 
-    void setOffset(int offset){
+    void setOffset(int offset) {
         this.offset = offset;
     }
 
+    int getOffset() {
+        return this.offset;
+    }
+
     void writeFullFrameHeader(DataOutputStream os) throws IOException {
-        if(fullFrames.size() <= 0){
+        if (fullFrames.size() <= 0) {
             return;
         }
         os.writeInt(this.fullFrames.get(0).getTimestamp());

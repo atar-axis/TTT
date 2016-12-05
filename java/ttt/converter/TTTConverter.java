@@ -15,28 +15,28 @@ import java.util.zip.DeflaterOutputStream;
 
 /**
  * Created by sebastianstein on 05.12.16.
- *
+ * <p>
  * Converter to convert a old ttt file to the new streaming structure
  */
 public class TTTConverter {
     private static int fullFramesPerChunk = 1;
 
     public static void main(String[] arguments) throws IOException {
-        if(arguments.length < 0){
+        if (arguments.length < 0) {
             printHelp();
             return;
         }
-        switch(arguments[0]){
+        switch (arguments[0]) {
             case "-h":
                 printHelp();
                 break;
             default:
-                if(arguments.length < 2){
+                if (arguments.length < 2) {
                     System.out.println("Wrong number of inputs");
                     break;
                 }
-                String from = arguments [0];
-                String to = arguments [1];
+                String from = arguments[0];
+                String to = arguments[1];
                 Recording recording = new Recording(new File(from), false);
                 //ArrayList<Message> fullFrames = getFullFrames(recording);
                 //System.out.println(fullFrames.toString());
@@ -46,17 +46,18 @@ public class TTTConverter {
 
     /**
      * get a List of FullFrames from a Recording
+     *
      * @param recording the Recording which FullFrames have to be extracted
-     * @return  a ArrayList of FullFrames
+     * @return a ArrayList of FullFrames
      */
-    private static ArrayList<Message> getFullFrames(Recording recording){
+    private static ArrayList<Message> getFullFrames(Recording recording) {
         ArrayList<Message> fullFrames = new ArrayList<>();
         for (Message message : recording.getMessages().getMessages()) {
-            if(message.getEncoding() != Constants.EncodingHextile){
+            if (message.getEncoding() != Constants.EncodingHextile) {
                 continue;
             }
             Rectangle bounds = ((HextileMessage) message).getBounds();
-            if(bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight){
+            if (bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight) {
                 fullFrames.add(message);
             }
         }
@@ -68,13 +69,13 @@ public class TTTConverter {
         FullFrameContainer actualContainer = new FullFrameContainer();
         containerList.add(actualContainer);
         for (Message message : recording.getMessages().getMessages()) {
-            if(message.getEncoding() != Constants.EncodingHextile){
+            if (message.getEncoding() != Constants.EncodingHextile) {
                 actualContainer.addMessage(message);
                 continue;
             }
             Rectangle bounds = ((HextileMessage) message).getBounds();
-            if(bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight){
-                if(actualContainer.getFullFrameCount() >= fullFramesPerChunk){
+            if (bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight) {
+                if (actualContainer.getFullFrameCount() >= fullFramesPerChunk) {
                     actualContainer = new FullFrameContainer();
                     containerList.add(actualContainer);
                 }
@@ -85,7 +86,7 @@ public class TTTConverter {
         }
 
         int offset = 0;
-        for(FullFrameContainer container : containerList){
+        for (FullFrameContainer container : containerList) {
             container.setOffset(offset);
             offset += container.writeMessages();
             System.out.println("deflated container, offset: " + offset);
@@ -112,12 +113,12 @@ public class TTTConverter {
         out.writeLong(recording.getProtocolPreferences().starttime);
 
         // write fullFrameList
-        for(FullFrameContainer container : containerList){
+        for (FullFrameContainer container : containerList) {
             container.writeFullFrameHeader(out);
         }
-
+        out = new DataOutputStream(fileOut);
         // write body
-        for(FullFrameContainer container : containerList){
+        for (FullFrameContainer container : containerList) {
             container.writeData(out);
         }
         System.out.println("written file");
@@ -125,7 +126,7 @@ public class TTTConverter {
         out.close();
     }
 
-    private static void printHelp(){
+    private static void printHelp() {
         System.out.println("Help for TTTConverter:");
         System.out.println("'-h' for help");
         System.out.println("'from' 'to' to convert the file 'from' and save it in the file 'to'");
