@@ -37,34 +37,24 @@ public class TTTConverter {
                 }
                 String from = arguments[0];
                 String to = arguments[1];
-                Recording recording = new Recording(new File(from), false);
-                //ArrayList<Message> fullFrames = getFullFrames(recording);
-                //System.out.println(fullFrames.toString());
-                convertRecording(recording, to);
+                convertRecording(from, to);
         }
     }
 
-    /**
-     * get a List of FullFrames from a Recording
-     *
-     * @param recording the Recording which FullFrames have to be extracted
-     * @return a ArrayList of FullFrames
-     */
-    private static ArrayList<Message> getFullFrames(Recording recording) {
-        ArrayList<Message> fullFrames = new ArrayList<>();
-        for (Message message : recording.getMessages().getMessages()) {
-            if (message.getEncoding() != Constants.EncodingHextile) {
-                continue;
-            }
-            Rectangle bounds = ((HextileMessage) message).getBounds();
-            if (bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight) {
-                fullFrames.add(message);
-            }
-        }
-        return fullFrames;
+    private static void printHelp() {
+        System.out.println("Help for TTTConverter:");
+        System.out.println("'TTTConverter -h' for help");
+        System.out.println("'TTTConverter from.ttt to.ttt' to convert the file 'from.ttt' and save it in the file 'to.ttt'");
     }
 
-    private static void convertRecording(Recording recording, String to) throws IOException {
+    private static void convertRecording(String from, String to) throws IOException {
+        Recording recording = new Recording(new File(from), false);
+        ArrayList<FullFrameContainer> containerList = createContainer(recording);
+        deflateData(containerList);
+        writeFile(recording, containerList, to);
+    }
+
+    private static ArrayList<FullFrameContainer> createContainer(Recording recording) {
         ArrayList<FullFrameContainer> containerList = new ArrayList<>();
         FullFrameContainer actualContainer = new FullFrameContainer();
         containerList.add(actualContainer);
@@ -84,17 +74,21 @@ public class TTTConverter {
                 actualContainer.addMessage(message);
             }
         }
+        return containerList;
+    }
 
+    private static void deflateData(ArrayList<FullFrameContainer> containerList) throws IOException {
         int offset = 0;
         for (FullFrameContainer container : containerList) {
             container.setOffset(offset);
             offset += container.writeMessages();
             System.out.println("deflated container, offset: " + offset);
         }
+    }
 
+    private static void writeFile(Recording recording, ArrayList<FullFrameContainer> containerList, String to) throws IOException {
         FileOutputStream fileOut = new FileOutputStream(to);
         DataOutputStream out = new DataOutputStream(fileOut);
-        // progressMonitor.setProgress(1);
 
         // write header
         //
@@ -116,19 +110,14 @@ public class TTTConverter {
         for (FullFrameContainer container : containerList) {
             container.writeFullFrameHeader(out);
         }
-        out = new DataOutputStream(fileOut);
+
         // write body
+        out = new DataOutputStream(fileOut);
         for (FullFrameContainer container : containerList) {
             container.writeData(out);
         }
         System.out.println("written file");
 
         out.close();
-    }
-
-    private static void printHelp() {
-        System.out.println("Help for TTTConverter:");
-        System.out.println("'-h' for help");
-        System.out.println("'from' 'to' to convert the file 'from' and save it in the file 'to'");
     }
 }

@@ -23,6 +23,10 @@ class FullFrameContainer {
     }
 
     void addMessage(Message message) {
+        // fallback to prevent mistakes
+        if(this.fullFrames.size() == 0){
+            this.fullFrames.add(message);
+        }
         this.messages.add(message);
     }
 
@@ -50,21 +54,15 @@ class FullFrameContainer {
         int lastTimestamp = -1; // causes first message including timestamp
         this.data = new ByteArrayOutputStream();
         DataOutputStream os = new DataOutputStream(new DeflaterOutputStream(data));
-        for (int i = 0; i < messages.size(); i++) {
-            Message message = (Message) messages.get(i);
-
+        for (Message message : messages) {
             // write message (with timestamp if needed)
             int timestamp = message.getTimestamp();
-
-            if (timestamp == lastTimestamp)
+            if (timestamp == lastTimestamp) {
                 message.write(os, Message.NO_TIMESTAMP);
-            else
+            } else {
                 message.write(os, timestamp);
-
+            }
             lastTimestamp = timestamp;
-
-            if (i % 1000 == 0)
-                System.out.print(".");
         }
         os.close();
         this.data.close();
