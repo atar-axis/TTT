@@ -951,7 +951,7 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 	}
 
 	// initialization
-	void writeInit(DataOutputStream out) throws IOException {
+	public void writeInit(DataOutputStream out) throws IOException {
 		// write protocol initialisation
 		out.writeShort(prefs.framebufferWidth);
 		out.writeShort(prefs.framebufferHeight);
@@ -978,7 +978,7 @@ public class Recording extends MessageProducerAdapter implements Runnable,
 	// Extensions
 	// ///////////////////////////////////////
 
-	void writeExtensions(DataOutputStream out) throws IOException {
+	public void writeExtensions(DataOutputStream out) throws IOException {
 		// write current index extensions instead of read one (maybe modified)
 		System.out.println("Writing Index Table");
 		if (index!=null) index.writeIndexExtension(out);
