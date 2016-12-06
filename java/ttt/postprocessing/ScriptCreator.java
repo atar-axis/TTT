@@ -128,7 +128,10 @@ public class ScriptCreator {
                     if (file.toString().toLowerCase().endsWith(".ttt")) {
                         System.out.print(file + "\t");
                         Recording recording = new Recording(file.getCanonicalPath(), false);
-                        recording.createScript(HTML_SCRIPT | OCR_OPTIMIZED | PDF_SCRIPT);
+                        int mode = HTML_SCRIPT |  PDF_SCRIPT;
+                        if (recording.index.searchbaseFormatStored==recording.index.NO_SEARCHBASE) mode = mode | OCR_OPTIMIZED;  
+                        recording.createScript(mode);
+                        if (recording.index.getSearchbaseFormat()!=recording.index.searchbaseFormatStored) recording.store();
                         System.out.println();
                     }
                 }
