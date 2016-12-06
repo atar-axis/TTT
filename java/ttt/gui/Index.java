@@ -814,7 +814,7 @@ public class Index {
                   {
                 	  File f = new File(filename);
                 	  f.delete();
-                	  f = new File(filename+".hocr.html");
+                	  f = new File(filename+".hocr.hocr");
                 	  f.delete();
                   }
                 }
