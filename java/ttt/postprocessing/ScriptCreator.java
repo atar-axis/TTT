@@ -135,8 +135,10 @@ public class ScriptCreator {
             } else {
                 System.out.print(arg + "\t");
                 Recording recording = new Recording(arg, false);
-                recording.createScript(HTML_SCRIPT | OCR_OPTIMIZED | PDF_SCRIPT);
-                // recording.store();
+                int mode = HTML_SCRIPT |  PDF_SCRIPT;
+                if (recording.index.searchbaseFormatStored==recording.index.NO_SEARCHBASE) mode = mode | OCR_OPTIMIZED;  
+                recording.createScript(mode);
+                if (recording.index.getSearchbaseFormat()!=recording.index.searchbaseFormatStored) recording.store();
             }
         }
         System.exit(0);
