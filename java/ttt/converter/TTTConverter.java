@@ -6,10 +6,7 @@ import ttt.messages.Message;
 import ttt.record.Recording;
 
 import java.awt.*;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.DeflaterOutputStream;
 
@@ -19,8 +16,6 @@ import java.util.zip.DeflaterOutputStream;
  * Converter to convert a old ttt file to the new streaming structure
  */
 public class TTTConverter {
-    private static int fullFramesPerChunk = 1;
-
     public static void main(String[] arguments) throws IOException {
         if (arguments.length < 0) {
             printHelp();
@@ -50,8 +45,8 @@ public class TTTConverter {
     private static void convertRecording(String from, String to) throws IOException {
         Recording recording = new Recording(new File(from), false);
         ArrayList<FullFrameContainer> containerList = createContainer(recording);
-        deflateData(containerList);
-        writeFile(recording, containerList, to);
+        compressData(containerList);
+        writeFile(compressHeader(recording, containerList), containerList, to);
     }
 
     private static ArrayList<FullFrameContainer> createContainer(Recording recording) {
@@ -65,58 +60,64 @@ public class TTTConverter {
             }
             Rectangle bounds = ((HextileMessage) message).getBounds();
             if (bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight) {
-                if (actualContainer.getFullFrameCount() >= fullFramesPerChunk) {
-                    actualContainer = new FullFrameContainer();
-                    containerList.add(actualContainer);
-                }
-                actualContainer.addFullFrame(message);
-            } else {
-                actualContainer.addMessage(message);
+                actualContainer = new FullFrameContainer();
+                containerList.add(actualContainer);
             }
+            actualContainer.addMessage(message);
         }
         return containerList;
     }
 
-    private static void deflateData(ArrayList<FullFrameContainer> containerList) throws IOException {
+    private static void compressData(ArrayList<FullFrameContainer> containerList) throws IOException {
         int offset = 0;
         for (FullFrameContainer container : containerList) {
             container.setOffset(offset);
-            offset += container.writeMessages();
             System.out.println("deflated container, offset: " + offset);
+            offset += container.writeMessages();
         }
     }
 
-    private static void writeFile(Recording recording, ArrayList<FullFrameContainer> containerList, String to) throws IOException {
-        FileOutputStream fileOut = new FileOutputStream(to);
-        DataOutputStream out = new DataOutputStream(fileOut);
+    private static byte[] compressHeader(Recording recording, ArrayList<FullFrameContainer> containerList) throws IOException {
+        ByteArrayOutputStream data = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(new DeflaterOutputStream(data));
 
-        // write header
-        //
-        // write version message
-        out.write(Constants.VersionMessageTTT.getBytes());
-
-        // write compressed messages to file
-        out = new DataOutputStream(new DeflaterOutputStream(fileOut));
+        // write init
         recording.writeInit(out);
 
-        recording.writeExtensions(out);
-
-        //TODO move start time
-        // NOTE: badly designed - should be placed before extensions as part
-        // of init
+        // write start time
         out.writeLong(recording.getProtocolPreferences().starttime);
 
-        // write fullFrameList
+        // write extensions
+        recording.writeExtensions(out);
+
+        // write list of full frames with (compressed) offsets
+        out.writeInt(containerList.size());
         for (FullFrameContainer container : containerList) {
             container.writeFullFrameHeader(out);
         }
 
-        // write body
-        out = new DataOutputStream(fileOut);
+        out.close();
+        data.close();
+        return data.toByteArray();
+    }
+
+    private static void writeFile(byte[] header, ArrayList<FullFrameContainer> containerList, String to) throws IOException {
+        FileOutputStream fileOut = new FileOutputStream(to);
+        DataOutputStream out = new DataOutputStream(fileOut);
+
+        // write version message
+        out.write(Constants.VersionMessageTTTStream.getBytes());
+        // write header size
+        out.writeInt(header.length + 16);
+
+        // write compressed header to file
+        out.write(header);
+
+        // write compressed messages to file
         for (FullFrameContainer container : containerList) {
             container.writeData(out);
         }
-        System.out.println("written file");
+        System.out.println("written file " + to);
 
         out.close();
     }

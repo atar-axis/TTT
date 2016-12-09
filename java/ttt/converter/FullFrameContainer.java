@@ -12,26 +12,12 @@ import java.util.zip.DeflaterOutputStream;
  * Created by sebastianstein on 05.12.16.
  */
 class FullFrameContainer {
-    private ArrayList<Message> fullFrames = new ArrayList<>();
     private ArrayList<Message> messages = new ArrayList<>();
     private ByteArrayOutputStream data;
     private int offset;
 
-    void addFullFrame(Message fullFrame) {
-        this.fullFrames.add(fullFrame);
-        this.addMessage(fullFrame);
-    }
-
     void addMessage(Message message) {
-        // fallback to prevent mistakes
-        if(this.fullFrames.size() == 0){
-            this.fullFrames.add(message);
-        }
         this.messages.add(message);
-    }
-
-    int getFullFrameCount() {
-        return this.fullFrames.size();
     }
 
     void setOffset(int offset) {
@@ -43,10 +29,10 @@ class FullFrameContainer {
     }
 
     void writeFullFrameHeader(DataOutputStream os) throws IOException {
-        if (fullFrames.size() <= 0) {
+        if (messages.size() <= 0) {
             return;
         }
-        os.writeInt(this.fullFrames.get(0).getTimestamp());
+        os.writeInt(this.messages.get(0).getTimestamp());
         os.writeInt(this.offset);
     }
 

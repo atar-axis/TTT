@@ -1,6 +1,6 @@
 // TeleTeachingTool - Presentation Recording With Automated Indexing
 //
-// Copyright (C) 2003-2008 Peter Ziewer - Technische Universität München
+// Copyright (C) 2003-2008 Peter Ziewer - Technische Universitï¿½t Mï¿½nchen
 // 
 //    This file is part of TeleTeachingTool.
 //
@@ -39,6 +39,7 @@ import javax.swing.ImageIcon;
 public class Constants {
 
     public static final String VersionMessageTTT = "TTT 001.001\n";
+    public static final String VersionMessageTTTStream = "TTT 001.002\n";
     public static final String VersionMessageRFB = "RFB 003.003\n";
 
     // TODO: check values of defer variables - allow user preferences
@@ -475,16 +476,16 @@ public class Constants {
                 	//removed to avoid compilation error
                     // NOTE: problematical for underlining
 //                    switch (ch) {
-//                    case 'ä':
+//                    case 'ï¿½':
 //                        stringBuffer.append("ae");
 //                        break;
-//                    case 'ö':
+//                    case 'ï¿½':
 //                        stringBuffer.append("oe");
 //                        break;
-//                    case 'ü':
+//                    case 'ï¿½':
 //                        stringBuffer.append("ue");
 //                        break;
-//                    case 'ß':
+//                    case 'ï¿½':
 //                        stringBuffer.append("ss");
 //                        break;
 //                    default:
