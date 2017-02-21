@@ -1,11 +1,9 @@
 package ttt.converter;
 
 import ttt.Constants;
-import ttt.messages.HextileMessage;
-import ttt.messages.Message;
+import ttt.TTT;
 import ttt.record.Recording;
 
-import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.DeflaterOutputStream;
@@ -16,7 +14,19 @@ import java.util.zip.DeflaterOutputStream;
  * Converter to convert a old ttt file to the new streaming structure
  */
 public class TTTConverter {
+    // 0: error
+    // 1: debug
+    // 2: verbose
+    static int loglevel = 0;
+
     public static void main(String[] arguments) throws IOException {
+        if(loglevel <= 1){
+            TTT.verbose = false;
+        }
+        if(loglevel <= 0){
+            TTT.debug = false;
+        }
+
         if (arguments.length < 0) {
             printHelp();
             return;
@@ -44,40 +54,22 @@ public class TTTConverter {
 
     private static void convertRecording(String from, String to) throws IOException {
         Recording recording = new Recording(new File(from), false);
-        ArrayList<FullFrameContainer> containerList = createContainer(recording);
+        ArrayList<FullFrameContainer> containerList = FullFrameContainer.createContainer(recording);
         compressData(containerList);
         writeFile(compressHeader(recording, containerList), containerList, to);
     }
 
-    private static ArrayList<FullFrameContainer> createContainer(Recording recording) {
-        ArrayList<FullFrameContainer> containerList = new ArrayList<>();
-        FullFrameContainer actualContainer = new FullFrameContainer();
-        containerList.add(actualContainer);
-        for (Message message : recording.getMessages().getMessages()) {
-            if (message.getEncoding() != Constants.EncodingHextile) {
-                actualContainer.addMessage(message);
-                continue;
-            }
-            Rectangle bounds = ((HextileMessage) message).getBounds();
-            if (bounds.width == recording.getProtocolPreferences().framebufferWidth && bounds.height == recording.getProtocolPreferences().framebufferHeight) {
-                actualContainer = new FullFrameContainer();
-                containerList.add(actualContainer);
-            }
-            actualContainer.addMessage(message);
-        }
-        return containerList;
-    }
-
     private static void compressData(ArrayList<FullFrameContainer> containerList) throws IOException {
+        TTTConverter.log("Compress Messages", 1);
         int offset = 0;
         for (FullFrameContainer container : containerList) {
             container.setOffset(offset);
-            System.out.println("deflated container, offset: " + offset);
             offset += container.writeMessages();
         }
     }
 
     private static byte[] compressHeader(Recording recording, ArrayList<FullFrameContainer> containerList) throws IOException {
+        TTTConverter.log("Compress Header", 1);
         ByteArrayOutputStream data = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(new DeflaterOutputStream(data));
 
@@ -102,11 +94,13 @@ public class TTTConverter {
     }
 
     private static void writeFile(byte[] header, ArrayList<FullFrameContainer> containerList, String to) throws IOException {
+        TTTConverter.log("Write File", 1);
         FileOutputStream fileOut = new FileOutputStream(to);
         DataOutputStream out = new DataOutputStream(fileOut);
 
         // write version message
         out.write(Constants.VersionMessageTTTStream.getBytes());
+
         // write header size
         out.writeInt(header.length + 16);
 
@@ -117,8 +111,13 @@ public class TTTConverter {
         for (FullFrameContainer container : containerList) {
             container.writeData(out);
         }
-        System.out.println("written file " + to);
 
         out.close();
+    }
+
+    public static void log(String message, int loglevel){
+        if(loglevel <= TTTConverter.loglevel){
+            System.out.println(message);
+        }
     }
 }

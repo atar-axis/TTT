@@ -27,16 +27,11 @@ package ttt.messages;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 
 import ttt.Constants;
+import ttt.converter.TTTConverter;
 import ttt.gui.GraphicsContext;
 import ttt.postprocessing.flash.FlashContext;
 import ttt.postprocessing.html5.Html5Context;
@@ -73,6 +68,10 @@ public class HextileMessage extends FramebufferUpdateMessage {
             DataInputStream is) throws IOException {
         this(timestamp, x, y, width, height,
                 handleAndBufferHextileRect(graphicsContext, is, x, y, width, height, false));
+    }
+
+    public HextileMessage(int timestamp, int x, int y, int width, int height, GraphicsContext graphicsContext) throws IOException {
+        this(timestamp, x, y, width, height, getDataFromGraphicsContext(graphicsContext));
     }
 
     public int getEncoding() {
@@ -629,5 +628,55 @@ public class HextileMessage extends FramebufferUpdateMessage {
                 isNotFullImage = false;
             }
         }
+    }
+
+    static private byte[] getDataFromGraphicsContext(GraphicsContext context) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream buffer = new DataOutputStream(new BufferedOutputStream(byteArrayOutputStream));
+        int x = 0;
+        int y = 0;
+        int w = context.prefs.framebufferWidth;
+        int h = context.prefs.framebufferHeight;
+
+        for (int ty = y; ty < y + h; ty += 16) {
+            int th = 16;
+            if (y + h - ty < 16)
+                th = y + h - ty;
+
+            for (int tx = x; tx < x + w; tx += 16) {
+                int tw = 16;
+                if (x + w - tx < 16)
+                    tw = x + w - tx;
+
+                // TODO implement Subrects instead of RAW
+                buffer.writeByte(Constants.HextileRaw);
+
+                switch (context.prefs.bytesPerPixel) {
+                    case 2:
+                        int[] pixel = context.getPixels(tx, ty, tw, th);
+                        for (int dy = 0; dy < th; dy++) {
+                            int offset = dy * tw;
+                            for (int dx = 0; dx < tw; dx++){
+                                int color = pixel[offset + dx];
+
+                                byte r = (byte) ((color >> 19) & 0x1f);
+                                byte g = (byte) ((color >> 11) & 0x1f);
+                                byte b = (byte) ((color >> 2) & 0x3f);
+                                short d16 = (short) ((((short) b) << 10) | (((short) g) << 5) | r);
+
+                                buffer.writeByte (d16);
+                                buffer.writeByte (d16 >> 8);
+                            }
+                        }
+                        break;
+                    default:
+                        // TODO implement other color densities
+                        TTTConverter.log("color density not implemented yet", 0);
+
+                }
+            }
+        }
+        buffer.close();
+        return byteArrayOutputStream.toByteArray();
     }
 }
