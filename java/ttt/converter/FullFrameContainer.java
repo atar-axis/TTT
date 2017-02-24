@@ -17,14 +17,14 @@ import java.util.Arrays;
 import java.util.zip.DeflaterOutputStream;
 
 /**
- * Created by sebastianstein on 05.12.16.
+ * Created by Sebastian Stein on 05.12.16.
  */
 class FullFrameContainer {
     public ArrayList<Message> messages = new ArrayList<>();
     private ByteArrayOutputStream data;
     private int offset;
 
-    void addMessage(Message message) {
+    private void addMessage(Message message) {
         this.messages.add(message);
     }
 
@@ -150,7 +150,6 @@ class FullFrameContainer {
             container.addMessage(tmpMessage);
         }
 
-        // TODO test annotations (new deleteAll?)
         container.messages.add(new DeleteAllAnnotation(timestamp));
         container.messages.addAll(Arrays.asList(context.getCurrentAnnotationsAsArray()));
 
@@ -164,7 +163,6 @@ class FullFrameContainer {
             container.addMessage(tmpMessage);
         }
 
-        // TODO update Timestamps
         for (Message m : container.messages) {
             m.setTimestamp(timestamp);
         }

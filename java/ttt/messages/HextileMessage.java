@@ -670,9 +670,8 @@ public class HextileMessage extends FramebufferUpdateMessage {
                         }
                         break;
                     default:
-                        // TODO implement other color densities
+                        // TODO implement other color densities and endianness
                         TTTConverter.log("color density not implemented yet", 0);
-
                 }
             }
         }

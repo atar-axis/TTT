@@ -5,7 +5,10 @@ import ttt.TTT;
 import ttt.record.Recording;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.zip.DeflaterOutputStream;
 
 /**
@@ -17,13 +20,14 @@ public class TTTConverter {
     // 0: error
     // 1: debug
     // 2: verbose
-    static int loglevel = 0;
+    private static int logLevel = 0;
+    private static DateFormat dateFormat = new SimpleDateFormat(/*"dd.MM.yy " +*/ "HH:mm:ss");
 
     public static void main(String[] arguments) throws IOException {
-        if(loglevel <= 1){
+        if(TTTConverter.logLevel <= 1){
             TTT.verbose = false;
         }
-        if(loglevel <= 0){
+        if(TTTConverter.logLevel <= 0){
             TTT.debug = false;
         }
 
@@ -53,10 +57,12 @@ public class TTTConverter {
     }
 
     private static void convertRecording(String from, String to) throws IOException {
+        TTTConverter.log("Converting File " + from + " to " + to, 0);
         Recording recording = new Recording(new File(from), false);
         ArrayList<FullFrameContainer> containerList = FullFrameContainer.createContainer(recording);
         compressData(containerList);
         writeFile(compressHeader(recording, containerList), containerList, to);
+        TTTConverter.log("Finished Converting. Result: " + to, 0);
     }
 
     private static void compressData(ArrayList<FullFrameContainer> containerList) throws IOException {
@@ -115,9 +121,9 @@ public class TTTConverter {
         out.close();
     }
 
-    public static void log(String message, int loglevel){
-        if(loglevel <= TTTConverter.loglevel){
-            System.out.println(message);
+    public static void log(String message, int logLevel){
+        if(logLevel <= TTTConverter.logLevel){
+            System.out.println(dateFormat.format(new Date()) + ": " + message);
         }
     }
 }
