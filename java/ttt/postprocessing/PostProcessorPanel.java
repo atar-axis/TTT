@@ -1605,11 +1605,13 @@ public class PostProcessorPanel extends GradientPanel {
         try {
             if (mp4CheckBox.isSelected()) {
             	int x = Integer.parseInt(mp4WidthString.getText());
-            	if (x==0) x=480;
+            	if (x==0) x=recording.prefs.framebufferWidth;
             	TTT.userPrefs.putInt("VideoResolution", x);
             	int y = (int)(x * recording.prefs.framebufferHeight)/recording.prefs.framebufferWidth;
+            	int cropx = 0, cropy=0;
+            	int cropw=x, croph=y;
             	System.out.println("  creating MP4-Video with resolution "+x+"x"+y);
-            	PodcastCreator.createPodcast(recording, x, y, batch,true);
+            	PodcastCreator.createPodcast(recording, x, y, 1, batch,true,cropw,croph,cropx,cropy);
             }
         } catch (Exception e) {
         	e.printStackTrace();

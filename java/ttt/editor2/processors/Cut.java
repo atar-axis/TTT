@@ -63,6 +63,9 @@ import javax.media.protocol.DataSource;
 import javax.media.protocol.FileTypeDescriptor;
 import javax.media.protocol.PushBufferDataSource;
 import javax.media.protocol.PushBufferStream;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 /**
  * A sample program to cut an input file given the start and end points.
@@ -203,12 +206,59 @@ public class Cut implements ControllerListener, DataSinkListener {
 
         System.exit(0);
     }
-
+    public boolean doIt(MediaLocator inML, MediaLocator outML, long start[], long end[], boolean frameMode){
+    	if (!inML.getRemainder().endsWith(".wav")){
+    		System.err.println(inML.getRemainder());
+    		return false;
+    	}
+    	
+    	AudioInputStream inputStream = null;
+        AudioInputStream shortenedStream = null;
+    	
+        try {
+        	// Open input
+        	File file = new File(inML.getRemainder());
+        	if (!file.exists()) {
+            	System.err.println(" ... file does not exist: "+ inML.getRemainder());
+            	return false;
+        	}
+            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+            javax.sound.sampled.AudioFormat format = fileFormat.getFormat();
+            inputStream = AudioSystem.getAudioInputStream(file);
+            
+            System.err.println("  ... cut audio from "+start[0]+" ns to "+end[0]+"ns");
+            
+            
+            double startSecond=(start[0]/1000/1000)/1000.0;
+            double endSecond=(end[0]/1000/1000)/1000.0;
+            double secondsToCopy=endSecond-startSecond;
+            
+            // compute parameters for performing the cut
+            int bytesPerSecond = format.getFrameSize() * (int)format.getFrameRate();
+            inputStream.skip((long)(startSecond * bytesPerSecond));
+            long framesOfAudioToCopy = (long)(secondsToCopy * (int)format.getFrameRate());
+            
+            System.err.println("  ... cut audio from "+startSecond+" sec to "+endSecond+" sec");
+            
+            // Finally write output
+            shortenedStream = new AudioInputStream(inputStream, format, framesOfAudioToCopy);
+            File destinationFile = new File(outML.getRemainder());
+            AudioSystem.write(shortenedStream, fileFormat.getType(), destinationFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+          } finally {
+            if (inputStream != null) try { inputStream.close(); } catch (Exception e) { e.printStackTrace(); return false; }
+            if (shortenedStream != null) try { shortenedStream.close(); } catch (Exception e) { e.printStackTrace();return false; }
+          }
+        System.err.println("  ...done cutting.");    	
+    	return true;
+    }
     /**
      * Given a source media locator, destination media locator and a start and end point, this program cuts the pieces
      * out.
      */
-    public boolean doIt(MediaLocator inML, MediaLocator outML, long start[], long end[], boolean frameMode) {
+    public boolean doItOld(MediaLocator inML, MediaLocator outML, long start[], long end[], boolean frameMode) {
 
         // Guess the output content descriptor from the file extension.
         ContentDescriptor cd;
